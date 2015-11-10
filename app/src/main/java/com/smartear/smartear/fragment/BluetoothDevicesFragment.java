@@ -50,6 +50,7 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        binding.setIsEmpty(true);
         adapter = new RecyclerViewAdapterBase<BluetoothDevice, ItemBluetoothDeviceBinding>() {
             @Override
             public ItemBluetoothDeviceBinding inflateItem(LayoutInflater inflater, ViewGroup parent, int viewType) {
@@ -78,6 +79,7 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
         try {
             Method method = device.getClass().getMethod("createBond", (Class[]) null);
             method.invoke(device, (Object[]) null);
+            ProgressDialogFragment.showCancelable(getActivity());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -87,6 +89,7 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
         try {
             Method method = device.getClass().getMethod("removeBond", (Class[]) null);
             method.invoke(device, (Object[]) null);
+            ProgressDialogFragment.showCancelable(getActivity());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -111,6 +114,7 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
     public void onDeviceFound(BluetoothDevice device) {
         if (!adapter.getItems().contains(device)) {
             adapter.addItem(device);
+            binding.setIsEmpty(false);
         }
     }
 
@@ -118,11 +122,13 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
     public void onDevicePaired(BluetoothDevice device) {
         Toast.makeText(getActivity(), R.string.paired, Toast.LENGTH_SHORT).show();
         adapter.notifyDataSetChanged();
+        ProgressDialogFragment.hide(getActivity());
     }
 
     @Override
     public void onDeviceUnPaired(BluetoothDevice device) {
         Toast.makeText(getActivity(), R.string.unPaired, Toast.LENGTH_SHORT).show();
         adapter.notifyDataSetChanged();
+        ProgressDialogFragment.hide(getActivity());
     }
 }
