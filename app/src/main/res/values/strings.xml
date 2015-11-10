@@ -8,4 +8,6 @@
     <string name="pairedDevices">Paired Devices</string>
     <string name="thereIsNoDevicesYet">There is no devices yet</string>
     <string name="addDevice">Add device</string>
+    <string name="paired">Paired</string>
+    <string name="unPaired">unPaired</string>
 </resources>

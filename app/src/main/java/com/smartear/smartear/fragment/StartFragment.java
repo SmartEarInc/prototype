@@ -17,6 +17,7 @@ import android.widget.SeekBar;
 
 import com.smartear.smartear.R;
 import com.smartear.smartear.databinding.FragmentStartBinding;
+import com.smartear.smartear.viewmodels.StartFragmentModel;
 
 import java.util.ArrayList;
 import java.util.Set;
@@ -26,11 +27,13 @@ import java.util.Set;
  * Company: APPGRANULA LLC
  * Date: 10.11.2015
  */
-public class StartFragment extends BaseFragment {
+public class StartFragment extends BaseBluetoothFragment {
     private static final String TAG = "StartFragment";
     FragmentStartBinding binding;
-    public static final int STREAM_BLUETOOTH_SCO = 6;
+    public static final int DEFAULT_STREAM = AudioManager.STREAM_MUSIC;
+
     private SettingsContentObserver settingsContentObserver;
+    private StartFragmentModel startFragmentModel = new StartFragmentModel();
 
     @Override
     public String getFragmentTag() {
@@ -52,6 +55,7 @@ public class StartFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        binding.setViewModel(startFragmentModel);
         binding.pairDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,7 +66,7 @@ public class StartFragment extends BaseFragment {
 
     }
 
-    private void initPairedDevices() {
+    private void updatePairedDevices() {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         Set<BluetoothDevice> deviceSet = bluetoothAdapter.getBondedDevices();
         ArrayList<String> names = new ArrayList<>();
@@ -71,21 +75,22 @@ public class StartFragment extends BaseFragment {
         }
         String text = TextUtils.join(", ", names);
         if (TextUtils.isEmpty(text)) {
-            binding.pairedDevices.setText(getString(R.string.thereIsNoDevicesYet));
-        } else {
-            binding.pairedDevices.setText(text);
+            text = getString(R.string.thereIsNoDevicesYet);
         }
+        startFragmentModel.devicesText.set(text);
     }
 
     private void initSoundControl() {
         final AudioManager am = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
-        int maxVolume = am.getStreamMaxVolume(STREAM_BLUETOOTH_SCO);
-        binding.soundSeekBar.setMax(maxVolume);
-        binding.soundSeekBar.setProgress(am.getStreamVolume(STREAM_BLUETOOTH_SCO));
+        int maxVolume = am.getStreamMaxVolume(DEFAULT_STREAM);
+
+        startFragmentModel.maxVolumeLevel.set(maxVolume);
+        updateCurrentVolumeUI(am);
+
         binding.soundSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                am.setStreamVolume(STREAM_BLUETOOTH_SCO, progress, 0);
+                am.setStreamVolume(DEFAULT_STREAM, progress, 0);
             }
 
             @Override
@@ -101,14 +106,14 @@ public class StartFragment extends BaseFragment {
         binding.mute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                am.setStreamVolume(STREAM_BLUETOOTH_SCO, 0, 0);
+                am.setStreamVolume(DEFAULT_STREAM, 0, 0);
             }
         });
 
     }
 
     private void updateCurrentVolumeUI(AudioManager am) {
-        binding.soundSeekBar.setProgress(am.getStreamVolume(STREAM_BLUETOOTH_SCO));
+        startFragmentModel.volumeLevel.set(am.getStreamVolume(DEFAULT_STREAM));
     }
 
     private void initVolumeObserver() {
@@ -117,10 +122,25 @@ public class StartFragment extends BaseFragment {
     }
 
     @Override
+    public void onDeviceFound(BluetoothDevice device) {
+        updatePairedDevices();
+    }
+
+    @Override
+    public void onDevicePaired(BluetoothDevice device) {
+        updatePairedDevices();
+    }
+
+    @Override
+    public void onDeviceUnPaired(BluetoothDevice device) {
+        updatePairedDevices();
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         initVolumeObserver();
-        initPairedDevices();
+        updatePairedDevices();
     }
 
     @Override

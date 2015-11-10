@@ -6,7 +6,6 @@
 
         <import type="android.bluetooth.BluetoothDevice" />
 
-        <import type="com.smartear.smartear.fragment.BluetoothDevicesFragment" />
 
         <variable
             name="item"
@@ -23,12 +22,12 @@
             android:id="@+id/deviceName"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            app:imageLeftDrawable="@{BluetoothDevicesFragment.isPaired(item)?@drawable/ic_bt_device_paired:@drawable/ic_bt_device}"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
             android:text="@{item.getName()}"
-            android:textSize="24sp" />
+            android:textSize="24sp"
+            app:imageLeftDrawable="@{item.getBondState()==BluetoothDevice.BOND_BONDED?@drawable/ic_bt_device_paired:@drawable/ic_bt_device}" />
     </FrameLayout>
 </layout>
