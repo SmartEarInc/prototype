@@ -1,8 +1,10 @@
 package com.smartear.smartear.fragment;
 
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 import com.smartear.smartear.BaseActivity;
 
@@ -18,6 +20,12 @@ public abstract class BaseFragment extends Fragment {
     public abstract String getFragmentTag();
 
     public abstract String getTitle();
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
     public void replaceFragment(BaseFragment fragment, boolean addToBackStack) {
         getBaseActivity().replaceFragment(fragment, addToBackStack);
@@ -57,4 +65,12 @@ public abstract class BaseFragment extends Fragment {
         return ((AppCompatActivity) getActivity()).getSupportActionBar();
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            getFragmentManager().popBackStack();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

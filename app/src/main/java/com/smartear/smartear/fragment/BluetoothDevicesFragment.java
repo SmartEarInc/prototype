@@ -1,16 +1,13 @@
 package com.smartear.smartear.fragment;
 
-import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -51,12 +48,18 @@ public class BluetoothDevicesFragment extends BaseFragment {
 
                 if (state == BluetoothDevice.BOND_BONDED && prevState == BluetoothDevice.BOND_BONDING) {
                     Toast.makeText(context, "Paired", Toast.LENGTH_SHORT).show();
+                    adapter.notifyDataSetChanged();
                 } else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED) {
                     Toast.makeText(context, "unPaired", Toast.LENGTH_SHORT).show();
+                    adapter.notifyDataSetChanged();
                 }
             }
         }
     };
+
+    public static boolean isPaired(BluetoothDevice device) {
+        return device.getBondState() == BluetoothDevice.BOND_BONDED;
+    }
 
     @Override
     public String getFragmentTag() {

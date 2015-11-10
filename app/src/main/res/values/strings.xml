@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">SmartEar</string>
     <string name="action_settings">Settings</string>
-    <string name="pairDevice">Pair device</string>
     <string name="bluetoothDevices">Bluetooth devices</string>
     <string name="progress_message">Please, wait…</string>
     <string name="soundControl">Sound control</string>
     <string name="mute">Mute</string>
+    <string name="pairedDevices">Paired Devices</string>
+    <string name="thereIsNoDevicesYet">There is no devices yet</string>
+    <string name="addDevice">Add device</string>
 </resources>

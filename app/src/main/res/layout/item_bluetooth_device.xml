@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
+        <import type="android.bluetooth.BluetoothDevice" />
+
+        <import type="com.smartear.smartear.fragment.BluetoothDevicesFragment" />
 
         <variable
             name="item"
@@ -18,8 +23,8 @@
             android:id="@+id/deviceName"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            app:imageLeftDrawable="@{BluetoothDevicesFragment.isPaired(item)?@drawable/ic_bt_device_paired:@drawable/ic_bt_device}"
             android:drawablePadding="8dp"
-            android:drawableLeft="@drawable/ic_bt_device"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"

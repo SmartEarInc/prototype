@@ -1,5 +1,7 @@
 package com.smartear.smartear.fragment;
 
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.database.ContentObserver;
 import android.media.AudioManager;
@@ -7,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,9 @@ import android.widget.SeekBar;
 
 import com.smartear.smartear.R;
 import com.smartear.smartear.databinding.FragmentStartBinding;
+
+import java.util.ArrayList;
+import java.util.Set;
 
 /**
  * Created: Belozerov
@@ -53,6 +59,22 @@ public class StartFragment extends BaseFragment {
             }
         });
         initSoundControl();
+
+    }
+
+    private void initPairedDevices() {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        Set<BluetoothDevice> deviceSet = bluetoothAdapter.getBondedDevices();
+        ArrayList<String> names = new ArrayList<>();
+        for (BluetoothDevice device : deviceSet) {
+            names.add(device.getName());
+        }
+        String text = TextUtils.join(", ", names);
+        if (TextUtils.isEmpty(text)) {
+            binding.pairedDevices.setText(getString(R.string.thereIsNoDevicesYet));
+        } else {
+            binding.pairedDevices.setText(text);
+        }
     }
 
     private void initSoundControl() {
@@ -98,6 +120,7 @@ public class StartFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         initVolumeObserver();
+        initPairedDevices();
     }
 
     @Override
