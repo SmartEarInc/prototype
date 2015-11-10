@@ -23,5 +23,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pairDevice" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/soundControl" />
+
+        <SeekBar
+            android:id="@+id/soundSeekBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp" />
+
+        <Button
+            android:id="@+id/mute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:text="@string/mute" />
+
     </LinearLayout>
 </layout>

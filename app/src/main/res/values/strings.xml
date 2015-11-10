@@ -4,4 +4,6 @@
     <string name="pairDevice">Pair device</string>
     <string name="bluetoothDevices">Bluetooth devices</string>
     <string name="progress_message">Please, wait…</string>
+    <string name="soundControl">Sound control</string>
+    <string name="mute">Mute</string>
 </resources>

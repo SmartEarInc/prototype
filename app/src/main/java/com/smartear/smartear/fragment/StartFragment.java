@@ -1,10 +1,16 @@
 package com.smartear.smartear.fragment;
 
+import android.content.Context;
+import android.database.ContentObserver;
+import android.media.AudioManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 
 import com.smartear.smartear.R;
 import com.smartear.smartear.databinding.FragmentStartBinding;
@@ -17,6 +23,8 @@ import com.smartear.smartear.databinding.FragmentStartBinding;
 public class StartFragment extends BaseFragment {
     private static final String TAG = "StartFragment";
     FragmentStartBinding binding;
+    public static final int STREAM_BLUETOOTH_SCO = 6;
+    private SettingsContentObserver settingsContentObserver;
 
     @Override
     public String getFragmentTag() {
@@ -44,5 +52,70 @@ public class StartFragment extends BaseFragment {
                 replaceFragment(new BluetoothDevicesFragment(), true);
             }
         });
+        initSoundControl();
     }
+
+    private void initSoundControl() {
+        final AudioManager am = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+        int maxVolume = am.getStreamMaxVolume(STREAM_BLUETOOTH_SCO);
+        binding.soundSeekBar.setMax(maxVolume);
+        binding.soundSeekBar.setProgress(am.getStreamVolume(STREAM_BLUETOOTH_SCO));
+        binding.soundSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                am.setStreamVolume(STREAM_BLUETOOTH_SCO, progress, 0);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        binding.mute.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                am.setStreamVolume(STREAM_BLUETOOTH_SCO, 0, 0);
+            }
+        });
+
+    }
+
+    private void updateCurrentVolumeUI(AudioManager am) {
+        binding.soundSeekBar.setProgress(am.getStreamVolume(STREAM_BLUETOOTH_SCO));
+    }
+
+    private void initVolumeObserver() {
+        settingsContentObserver = new SettingsContentObserver(new Handler());
+        getActivity().getApplicationContext().getContentResolver().registerContentObserver(Settings.System.CONTENT_URI, true, settingsContentObserver);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        initVolumeObserver();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().getApplicationContext().getContentResolver().unregisterContentObserver(settingsContentObserver);
+    }
+
+    private class SettingsContentObserver extends ContentObserver {
+        public SettingsContentObserver(Handler handler) {
+            super(handler);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            super.onChange(selfChange);
+            updateCurrentVolumeUI((AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE));
+        }
+    }
+
 }
