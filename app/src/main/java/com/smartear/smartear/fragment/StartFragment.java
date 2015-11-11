@@ -1,6 +1,5 @@
 package com.smartear.smartear.fragment;
 
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.database.ContentObserver;
@@ -20,7 +19,7 @@ import com.smartear.smartear.databinding.FragmentStartBinding;
 import com.smartear.smartear.viewmodels.StartFragmentModel;
 
 import java.util.ArrayList;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created: Belozerov
@@ -66,19 +65,6 @@ public class StartFragment extends BaseBluetoothFragment {
 
     }
 
-    private void updatePairedDevices() {
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        Set<BluetoothDevice> deviceSet = bluetoothAdapter.getBondedDevices();
-        ArrayList<String> names = new ArrayList<>();
-        for (BluetoothDevice device : deviceSet) {
-            names.add(device.getName());
-        }
-        String text = TextUtils.join(", ", names);
-        if (TextUtils.isEmpty(text)) {
-            text = getString(R.string.thereIsNoDevicesYet);
-        }
-        startFragmentModel.devicesText.set(text);
-    }
 
     private void initSoundControl() {
         final AudioManager am = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
@@ -122,25 +108,46 @@ public class StartFragment extends BaseBluetoothFragment {
     }
 
     @Override
+    protected void onDeviceDisconnected(BluetoothDevice device) {
+        updateConnectedDevices();
+    }
+
+    @Override
+    protected void onDeviceConnected(BluetoothDevice device) {
+        updateConnectedDevices();
+    }
+
+    @Override
     public void onDeviceFound(BluetoothDevice device) {
-        updatePairedDevices();
     }
 
     @Override
     public void onDevicePaired(BluetoothDevice device) {
-        updatePairedDevices();
+        updateConnectedDevices();
     }
 
     @Override
     public void onDeviceUnPaired(BluetoothDevice device) {
-        updatePairedDevices();
+        updateConnectedDevices();
     }
 
     @Override
     public void onResume() {
         super.onResume();
         initVolumeObserver();
-        updatePairedDevices();
+    }
+
+    @Override
+    protected void updateConnectedDevices(List<BluetoothDevice> connectedDevices) {
+        ArrayList<String> names = new ArrayList<>();
+        for (BluetoothDevice device : connectedDevices) {
+            names.add(!TextUtils.isEmpty(device.getName()) ? device.getName() : device.toString());
+        }
+        String text = TextUtils.join(", ", names);
+        if (TextUtils.isEmpty(text)) {
+            text = getString(R.string.thereIsNoDevicesYet);
+        }
+        startFragmentModel.devicesText.set(text);
     }
 
     @Override

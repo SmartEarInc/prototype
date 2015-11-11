@@ -2,20 +2,18 @@ package com.smartear.smartear.fragment;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import com.smartear.smartear.viewmodels.BluetoothDeviceWrapper;
-
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Belozerow on 10.11.2015.
  */
 public abstract class BaseBluetoothFragment extends BaseFragment {
-    private ArrayList<BluetoothDeviceWrapper> connectedDivicesList;
     BroadcastReceiver bluetoothReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -36,8 +34,24 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
                     onDeviceUnPaired(device);
                 }
             }
+
+            if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
+                final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                onDeviceConnected(device);
+            }
+
+            if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
+                final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+                onDeviceDisconnected(device);
+            }
         }
     };
+
+    protected abstract void onDeviceDisconnected(BluetoothDevice device);
+
+    protected abstract void onDeviceConnected(BluetoothDevice device);
+
+    private List<BluetoothDevice> connectedDevices;
 
     public abstract void onDeviceFound(BluetoothDevice device);
 
@@ -50,8 +64,31 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
         super.onResume();
         IntentFilter filter = new IntentFilter(BluetoothDevice.ACTION_FOUND);
         filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
+        filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
         getActivity().registerReceiver(bluetoothReceiver, filter);
+
+        updateConnectedDevices();
     }
+
+    protected void updateConnectedDevices() {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        BluetoothProfile.ServiceListener profileListener = new BluetoothProfile.ServiceListener() {
+            @Override
+            public void onServiceConnected(int profile, BluetoothProfile proxy) {
+                connectedDevices = proxy.getConnectedDevices();
+                updateConnectedDevices(connectedDevices);
+            }
+
+            @Override
+            public void onServiceDisconnected(int profile) {
+
+            }
+        };
+        bluetoothAdapter.getProfileProxy(getActivity(), profileListener, BluetoothProfile.HEADSET);
+    }
+
+    protected abstract void updateConnectedDevices(List<BluetoothDevice> connectedDevices);
 
     @Override
     public void onPause() {

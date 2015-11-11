@@ -5,12 +5,13 @@
     <data>
 
         <import type="android.bluetooth.BluetoothDevice" />
+
         <import type="android.text.TextUtils" />
 
 
         <variable
             name="item"
-            type="android.bluetooth.BluetoothDevice" />
+            type="com.smartear.smartear.viewmodels.BluetoothDeviceWrapper" />
     </data>
 
     <FrameLayout
@@ -27,8 +28,8 @@
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/activity_horizontal_margin"
             android:paddingRight="@dimen/activity_horizontal_margin"
-            android:text="@{TextUtils.isEmpty(item.getName())?item.toString():item.getName()}"
+            android:text="@{item.getName()}"
             android:textSize="24sp"
-            app:imageLeftDrawable="@{item.getBondState()==BluetoothDevice.BOND_BONDED?@drawable/ic_bt_device_paired:@drawable/ic_bt_device}" />
+            app:imageLeftDrawable="@{item.isConnected?@drawable/ic_bt_device_paired:@drawable/ic_bt_device}" />
     </FrameLayout>
 </layout>
