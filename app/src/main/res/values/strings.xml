@@ -17,4 +17,7 @@
     <string name="microphone">Microphone</string>
     <string name="souncControl">Sounc control</string>
     <string name="microphoneControl">Microphone control</string>
+    <string name="voiceRecognizer">Voice Recognizer</string>
+    <string name="startRecording">Start recording</string>
+    <string name="stopRecording">Stop recording</string>
 </resources>

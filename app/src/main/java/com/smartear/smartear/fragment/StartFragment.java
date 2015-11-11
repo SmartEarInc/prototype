@@ -66,6 +66,13 @@ public class StartFragment extends BaseBluetoothFragment {
         initSoundControl();
         startFragmentModel.isMute.set(muteHelper.isMute());
         startFragmentModel.isMicMute.set(muteHelper.isMicMute());
+
+        binding.voiceRecognizer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(new VoiceRecognizeFragment(), true);
+            }
+        });
     }
 
 
