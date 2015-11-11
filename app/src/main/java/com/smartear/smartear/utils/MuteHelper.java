@@ -32,7 +32,6 @@ public class MuteHelper {
             editor.putInt(stream.key, am.getStreamVolume(stream.stream));
             am.setStreamVolume(stream.stream, 0, 0);
         }
-        editor.putBoolean("isMute", true);
         editor.apply();
     }
 
@@ -42,7 +41,6 @@ public class MuteHelper {
         for (Stream stream : streams) {
             am.setStreamVolume(stream.stream, sharedPreferences.getInt(stream.key, stream.stream), 0);
         }
-        sharedPreferences.edit().putBoolean("isMute", false).apply();
     }
 
     public boolean isMute() {
@@ -53,6 +51,21 @@ public class MuteHelper {
             }
         }
         return true;
+    }
+
+    public void muteMic() {
+        AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        am.setMicrophoneMute(true);
+    }
+
+    public void unMuteMic() {
+        AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        am.setMicrophoneMute(false);
+    }
+
+    public boolean isMicMute() {
+        AudioManager am = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        return am.isMicrophoneMute();
     }
 
     private static class Stream {

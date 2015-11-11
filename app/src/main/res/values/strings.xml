@@ -14,4 +14,7 @@
     <string name="ringControl">Ringtone control</string>
     <string name="notificationControl">Notification Control</string>
     <string name="systemControl">System control</string>
+    <string name="microphone">Microphone</string>
+    <string name="souncControl">Sounc control</string>
+    <string name="microphoneControl">Microphone control</string>
 </resources>

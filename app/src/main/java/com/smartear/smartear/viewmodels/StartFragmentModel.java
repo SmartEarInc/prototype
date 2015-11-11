@@ -16,4 +16,5 @@ public class StartFragmentModel {
     public ObservableInt ringMaxVolumeLevel = new ObservableInt();
 
     public ObservableBoolean isMute = new ObservableBoolean();
+    public ObservableBoolean isMicMute = new ObservableBoolean();
 }

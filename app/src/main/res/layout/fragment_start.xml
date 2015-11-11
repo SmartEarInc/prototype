@@ -40,10 +40,7 @@
                 android:gravity="center"
                 android:text="@{viewModel.devicesText}" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#ccc" />
+
 
             <Button
                 android:id="@+id/pairDevice"
@@ -52,6 +49,16 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="12dp"
                 android:text="@string/addDevice" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="@string/souncControl" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#ccc" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -90,6 +97,25 @@
                 android:layout_marginTop="12dp"
                 android:text="@{viewModel.isMute?@string/unMute:@string/mute}" />
 
+
+            <TextView
+                android:text="@string/microphoneControl"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_height="wrap_content" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#ccc" />
+
+
+            <Button
+                android:id="@+id/muteMic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="12dp"
+                android:text="@{viewModel.isMicMute?@string/unMute:@string/mute}" />
         </LinearLayout>
     </ScrollView>
 

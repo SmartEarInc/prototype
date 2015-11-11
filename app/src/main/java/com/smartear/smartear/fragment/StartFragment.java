@@ -65,6 +65,7 @@ public class StartFragment extends BaseBluetoothFragment {
         muteHelper = new MuteHelper(getActivity());
         initSoundControl();
         startFragmentModel.isMute.set(muteHelper.isMute());
+        startFragmentModel.isMicMute.set(muteHelper.isMicMute());
     }
 
 
@@ -111,6 +112,17 @@ public class StartFragment extends BaseBluetoothFragment {
             }
         });
 
+        binding.muteMic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (muteHelper.isMicMute()) {
+                    muteHelper.unMuteMic();
+                } else {
+                    muteHelper.muteMic();
+                }
+                startFragmentModel.isMicMute.set(muteHelper.isMicMute());
+            }
+        });
     }
 
     private void updateCurrentVolumeUI(AudioManager am) {
@@ -121,7 +133,7 @@ public class StartFragment extends BaseBluetoothFragment {
 
     private void updateCurrentVolumeUI(AudioManager am, int stream) {
         int maxVolume = am.getStreamMaxVolume(stream);
-        switch (stream){
+        switch (stream) {
             case AudioManager.STREAM_MUSIC:
                 startFragmentModel.musicMaxVolumeLevel.set(maxVolume);
                 startFragmentModel.musicVolumeLevel.set(am.getStreamVolume(stream));
