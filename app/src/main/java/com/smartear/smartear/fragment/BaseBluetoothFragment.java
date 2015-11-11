@@ -7,10 +7,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
+import com.smartear.smartear.viewmodels.BluetoothDeviceWrapper;
+
+import java.util.ArrayList;
+
 /**
  * Created by Belozerow on 10.11.2015.
  */
 public abstract class BaseBluetoothFragment extends BaseFragment {
+    private ArrayList<BluetoothDeviceWrapper> connectedDivicesList;
     BroadcastReceiver bluetoothReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {

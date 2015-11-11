@@ -2,7 +2,12 @@ package com.smartear.smartear.fragment;
 
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.le.ScanCallback;
+import android.bluetooth.le.ScanFilter;
+import android.bluetooth.le.ScanResult;
+import android.bluetooth.le.ScanSettings;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -57,6 +62,7 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
                 return ItemBluetoothDeviceBinding.inflate(inflater, parent, false);
             }
         };
+
         adapter.setOnItemClickListener(new RecyclerViewAdapterBase.OnItemClickListener<BluetoothDevice>() {
             @Override
             public void onItemClick(BluetoothDevice device) {
@@ -105,6 +111,16 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
     private void requestDevices() {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         bluetoothAdapter.startDiscovery();
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            bluetoothAdapter.getBluetoothLeScanner().startScan(new ArrayList<ScanFilter>(), new ScanSettings.Builder()
+                    .build(), new ScanCallback() {
+                @Override
+                public void onScanResult(int callbackType, ScanResult result) {
+                    super.onScanResult(callbackType, result);
+                    onDeviceFound(result.getDevice());
+                }
+            });
+        }
         for (BluetoothDevice device : bluetoothAdapter.getBondedDevices()) {
             adapter.addItem(device);
         }
