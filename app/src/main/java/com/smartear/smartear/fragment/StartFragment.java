@@ -16,6 +16,7 @@ import android.widget.SeekBar;
 
 import com.smartear.smartear.R;
 import com.smartear.smartear.databinding.FragmentStartBinding;
+import com.smartear.smartear.utils.MuteHelper;
 import com.smartear.smartear.viewmodels.StartFragmentModel;
 
 import java.util.ArrayList;
@@ -29,10 +30,10 @@ import java.util.List;
 public class StartFragment extends BaseBluetoothFragment {
     private static final String TAG = "StartFragment";
     FragmentStartBinding binding;
-    public static final int DEFAULT_STREAM = AudioManager.STREAM_MUSIC;
 
     private SettingsContentObserver settingsContentObserver;
     private StartFragmentModel startFragmentModel = new StartFragmentModel();
+    private MuteHelper muteHelper;
 
     @Override
     public String getFragmentTag() {
@@ -61,22 +62,28 @@ public class StartFragment extends BaseBluetoothFragment {
                 replaceFragment(new BluetoothDevicesFragment(), true);
             }
         });
+        muteHelper = new MuteHelper(getActivity());
         initSoundControl();
-
+        startFragmentModel.isMute.set(muteHelper.isMute());
     }
 
 
     private void initSoundControl() {
         final AudioManager am = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
-        int maxVolume = am.getStreamMaxVolume(DEFAULT_STREAM);
 
-        startFragmentModel.maxVolumeLevel.set(maxVolume);
         updateCurrentVolumeUI(am);
 
-        binding.soundSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        SeekBar.OnSeekBarChangeListener listener = new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                am.setStreamVolume(DEFAULT_STREAM, progress, 0);
+                switch (seekBar.getId()) {
+                    case R.id.musicSeekbar:
+                        am.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
+                        break;
+                    case R.id.ringSeekbar:
+                        am.setStreamVolume(AudioManager.STREAM_RING, progress, 0);
+                        break;
+                }
             }
 
             @Override
@@ -88,18 +95,43 @@ public class StartFragment extends BaseBluetoothFragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
-        });
+        };
+
+        binding.musicSeekbar.setOnSeekBarChangeListener(listener);
+        binding.ringSeekbar.setOnSeekBarChangeListener(listener);
+
         binding.mute.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                am.setStreamVolume(DEFAULT_STREAM, 0, 0);
+                if (muteHelper.isMute()) {
+                    muteHelper.unmuteSound();
+                } else {
+                    muteHelper.muteSound();
+                }
             }
         });
 
     }
 
     private void updateCurrentVolumeUI(AudioManager am) {
-        startFragmentModel.volumeLevel.set(am.getStreamVolume(DEFAULT_STREAM));
+        updateCurrentVolumeUI(am, AudioManager.STREAM_MUSIC);
+        updateCurrentVolumeUI(am, AudioManager.STREAM_RING);
+        startFragmentModel.isMute.set(muteHelper.isMute());
+    }
+
+    private void updateCurrentVolumeUI(AudioManager am, int stream) {
+        int maxVolume = am.getStreamMaxVolume(stream);
+        switch (stream){
+            case AudioManager.STREAM_MUSIC:
+                startFragmentModel.musicMaxVolumeLevel.set(maxVolume);
+                startFragmentModel.musicVolumeLevel.set(am.getStreamVolume(stream));
+                break;
+            case AudioManager.STREAM_RING:
+                startFragmentModel.ringMaxVolumeLevel.set(maxVolume);
+                startFragmentModel.ringVolumeLevel.set(am.getStreamVolume(stream));
+                break;
+        }
+
     }
 
     private void initVolumeObserver() {

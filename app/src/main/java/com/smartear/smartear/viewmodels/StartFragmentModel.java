@@ -1,5 +1,6 @@
 package com.smartear.smartear.viewmodels;
 
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.databinding.ObservableInt;
 
@@ -8,6 +9,11 @@ import android.databinding.ObservableInt;
  */
 public class StartFragmentModel {
     public ObservableField<String> devicesText = new ObservableField<>();
-    public ObservableInt volumeLevel = new ObservableInt();
-    public ObservableInt maxVolumeLevel = new ObservableInt();
+    public ObservableInt musicVolumeLevel = new ObservableInt();
+    public ObservableInt musicMaxVolumeLevel = new ObservableInt();
+
+    public ObservableInt ringVolumeLevel = new ObservableInt();
+    public ObservableInt ringMaxVolumeLevel = new ObservableInt();
+
+    public ObservableBoolean isMute = new ObservableBoolean();
 }
