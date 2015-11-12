@@ -20,4 +20,5 @@
     <string name="voiceRecognizer">Voice Recognizer</string>
     <string name="startRecording">Start recording</string>
     <string name="stopRecording">Stop recording</string>
+    <string name="startTitle">SmartEar %1$s</string>
 </resources>

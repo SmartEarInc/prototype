@@ -2,6 +2,8 @@ package com.smartear.smartear.fragment;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.ContentObserver;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -42,7 +44,18 @@ public class StartFragment extends BaseBluetoothFragment {
 
     @Override
     public String getTitle() {
-        return getString(R.string.app_name);
+        PackageManager pm = getActivity().getPackageManager();
+        PackageInfo info = null;
+        try {
+            info = pm.getPackageInfo(getActivity().getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        if(info == null) {
+            return getString(R.string.app_name);
+        } else {
+            return getString(R.string.startTitle, info.versionName);
+        }
     }
 
     @Nullable
