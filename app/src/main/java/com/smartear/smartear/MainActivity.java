@@ -22,6 +22,7 @@ import android.support.v7.widget.Toolbar;
 
 import com.smartear.smartear.fragment.StartFragment;
 import com.smartear.smartear.receivers.MediaButtonReceiver;
+import com.smartear.smartear.utils.VersionUtils;
 
 public class MainActivity extends BaseActivity {
     private static final int REQUEST_MEDIA_BUTTON_CODE = 11;
@@ -57,12 +58,12 @@ public class MainActivity extends BaseActivity {
     private void registerMediaButtonReceiver() {
         audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         receiverComponent = new ComponentName(this, MediaButtonReceiver.class);
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            audioManager.registerMediaButtonEventReceiver(receiverComponent);
-        } else {
+        if(VersionUtils.lollipopOrHigher()){
             MediaSession mediaSession = new MediaSession(this, "MainActivity");
             pendingIntent = PendingIntent.getBroadcast(this, REQUEST_MEDIA_BUTTON_CODE, new Intent(this, MediaButtonReceiver.class), 0);
             mediaSession.setMediaButtonReceiver(pendingIntent);
+        } else {
+            audioManager.registerMediaButtonEventReceiver(receiverComponent);
         }
 
         IntentFilter intentFilter = new IntentFilter(BluetoothHeadset.ACTION_VENDOR_SPECIFIC_HEADSET_EVENT);

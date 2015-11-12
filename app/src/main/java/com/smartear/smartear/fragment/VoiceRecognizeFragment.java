@@ -5,10 +5,7 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.databinding.Observable;
-import android.media.AudioFormat;
 import android.media.AudioManager;
-import android.media.AudioRecord;
-import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -28,8 +25,6 @@ import com.smartear.smartear.speechkit.AppInfo;
 import com.smartear.smartear.utils.BluetoothHeadsetCompatWrapper;
 import com.smartear.smartear.viewmodels.VoiceRecognizerModel;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -76,7 +71,6 @@ public class VoiceRecognizeFragment extends BaseBluetoothFragment {
     private Handler speechHandler = new Handler();
     private Recognizer recognizer;
     private int REQUEST_AUDIO = 11;
-    private AudioRecord audioRecord;
 
     @Override
     public String getFragmentTag() {

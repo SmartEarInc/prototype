@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.smartear.smartear.R;
 import com.smartear.smartear.databinding.FragmentDevicesListBinding;
 import com.smartear.smartear.databinding.ItemBluetoothDeviceBinding;
+import com.smartear.smartear.utils.VersionUtils;
 import com.smartear.smartear.viewmodels.BluetoothDeviceWrapper;
 import com.smartear.smartear.widget.RecyclerViewAdapterBase;
 
@@ -106,7 +107,7 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
     private void requestDevices() {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         bluetoothAdapter.startDiscovery();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (VersionUtils.lollipopOrHigher()) {
             bluetoothAdapter.getBluetoothLeScanner().startScan(new ArrayList<ScanFilter>(), new ScanSettings.Builder()
                     .build(), new ScanCallback() {
                 @Override
