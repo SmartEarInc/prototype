@@ -23,16 +23,16 @@
             android:paddingTop="@dimen/activity_vertical_margin">
 
             <Button
-                android:layout_gravity="center_horizontal"
                 android:id="@+id/voiceRecognizer"
-                android:text="@string/voiceRecognizer"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginTop="24dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="@string/voiceRecognizer" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
                 android:text="@string/pairedDevices" />
 
             <View
@@ -49,7 +49,6 @@
                 android:text="@{viewModel.devicesText}" />
 
 
-
             <Button
                 android:id="@+id/pairDevice"
                 android:layout_width="wrap_content"
@@ -63,6 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="@string/souncControl" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
@@ -107,14 +107,17 @@
 
 
             <TextView
-                android:text="@string/microphoneControl"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:layout_height="wrap_content" />
+                android:text="@string/microphoneControl"
+                android:visibility="gone" />
+
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="#ccc" />
+                android:background="#ccc"
+                android:visibility="gone" />
 
 
             <Button
@@ -123,7 +126,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="12dp"
-                android:text="@{viewModel.isMicMute?@string/unMute:@string/mute}" />
+                android:text="@{viewModel.isMicMute?@string/unMute:@string/mute}"
+                android:visibility="gone" />
         </LinearLayout>
     </ScrollView>
 
