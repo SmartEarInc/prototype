@@ -64,9 +64,10 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
             }
         };
 
-        adapter.setOnItemClickListener(new RecyclerViewAdapterBase.OnItemClickListener<BluetoothDevice>() {
+        adapter.setOnItemClickListener(new RecyclerViewAdapterBase.OnItemClickListener<BluetoothDeviceWrapper>() {
             @Override
-            public void onItemClick(BluetoothDevice device) {
+            public void onItemClick(BluetoothDeviceWrapper wrapper) {
+                BluetoothDevice device = wrapper.device.get();
                 if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
                     unPairDevice(device);
                 } else {
@@ -78,7 +79,6 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setAdapter(adapter);
 
-        checkBluetoothEnabled();
         requestDevices();
     }
 
@@ -102,12 +102,6 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
         }
     }
 
-    private void checkBluetoothEnabled() {
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (!bluetoothAdapter.isEnabled()) {
-            bluetoothAdapter.enable();
-        }
-    }
 
     private void requestDevices() {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -123,10 +117,7 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
             });
         }
         for (BluetoothDevice device : bluetoothAdapter.getBondedDevices()) {
-            BluetoothDeviceWrapper wrapper = new BluetoothDeviceWrapper();
-            wrapper.device.set(device);
-            wrapper.isConnected.set(false);
-            adapter.addItem(wrapper);
+            addItem(device, false);
             updateConnectedDevices();
         }
     }
@@ -142,6 +133,25 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
         }
     }
 
+
+    private void addItem(BluetoothDevice device, boolean isConnected) {
+        BluetoothDeviceWrapper wrapperToDelete = null;
+        for (BluetoothDeviceWrapper wrapper : adapter.getItems()) {
+            if (wrapper.device.get().toString().equals(device.toString())) {
+                wrapperToDelete = wrapper;
+                break;
+            }
+        }
+        if (wrapperToDelete != null) {
+            adapter.getItems().remove(wrapperToDelete);
+            adapter.notifyDataSetChanged();
+        }
+        BluetoothDeviceWrapper newWrapper = new BluetoothDeviceWrapper();
+        newWrapper.device.set(device);
+        newWrapper.isConnected.set(isConnected);
+        adapter.addItem(newWrapper);
+    }
+
     @Override
     protected void onDeviceConnected(BluetoothDevice device) {
         for (BluetoothDeviceWrapper wrapper : adapter.getItems()) {
@@ -155,10 +165,7 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
 
     @Override
     public void onDeviceFound(BluetoothDevice device) {
-        BluetoothDeviceWrapper wrapper = new BluetoothDeviceWrapper();
-        wrapper.device.set(device);
-        wrapper.isConnected.set(false);
-        adapter.addItem(wrapper);
+        addItem(device, false);
         binding.setIsEmpty(false);
         updateConnectedDevices();
     }

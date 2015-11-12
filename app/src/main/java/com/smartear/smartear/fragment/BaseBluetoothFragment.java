@@ -59,6 +59,13 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
 
     public abstract void onDeviceUnPaired(BluetoothDevice device);
 
+    private void checkBluetoothEnabled() {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (!bluetoothAdapter.isEnabled()) {
+            bluetoothAdapter.enable();
+        }
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -67,7 +74,7 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
         filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
         getActivity().registerReceiver(bluetoothReceiver, filter);
-
+        checkBluetoothEnabled();
         updateConnectedDevices();
     }
 
