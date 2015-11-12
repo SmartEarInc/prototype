@@ -1,7 +1,9 @@
 package com.smartear.smartear.fragment;
 
+import android.bluetooth.BluetoothA2dp;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothHeadset;
 import android.bluetooth.BluetoothProfile;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -46,12 +48,17 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
             }
         }
     };
+    protected BluetoothHeadset bluetoothHeadset;
 
     protected abstract void onDeviceDisconnected(BluetoothDevice device);
 
     protected abstract void onDeviceConnected(BluetoothDevice device);
 
     private List<BluetoothDevice> connectedDevices;
+
+    public List<BluetoothDevice> getConnectedDevices() {
+        return connectedDevices;
+    }
 
     public abstract void onDeviceFound(BluetoothDevice device);
 
@@ -83,8 +90,10 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
         BluetoothProfile.ServiceListener profileListener = new BluetoothProfile.ServiceListener() {
             @Override
             public void onServiceConnected(int profile, BluetoothProfile proxy) {
+//                bluetoothHeadset = (BluetoothHeadset) proxy;
                 connectedDevices = proxy.getConnectedDevices();
                 updateConnectedDevices(connectedDevices);
+
             }
 
             @Override
@@ -92,7 +101,7 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
 
             }
         };
-        bluetoothAdapter.getProfileProxy(getActivity(), profileListener, BluetoothProfile.HEADSET);
+        bluetoothAdapter.getProfileProxy(getActivity(), profileListener, BluetoothProfile.A2DP);
     }
 
     protected abstract void updateConnectedDevices(List<BluetoothDevice> connectedDevices);

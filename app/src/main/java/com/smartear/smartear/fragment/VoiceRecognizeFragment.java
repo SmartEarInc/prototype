@@ -1,11 +1,15 @@
 package com.smartear.smartear.fragment;
 
+import android.Manifest;
+import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.databinding.Observable;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,17 +22,21 @@ import com.nuance.nmdp.speechkit.SpeechKit;
 import com.smartear.smartear.R;
 import com.smartear.smartear.databinding.FragmentVoiceRecognizerBinding;
 import com.smartear.smartear.speechkit.AppInfo;
+import com.smartear.smartear.utils.BluetoothHeadsetCompatWrapper;
 import com.smartear.smartear.viewmodels.VoiceRecognizerModel;
+
+import java.util.List;
 
 /**
  * Created: Belozerov
  * Company: APPGRANULA LLC
  * Date: 11.11.2015
  */
-public class VoiceRecognizeFragment extends BaseFragment {
+public class VoiceRecognizeFragment extends BaseBluetoothFragment {
     private static final String TAG = "VoiceRecognizeFragment";
     FragmentVoiceRecognizerBinding binding;
     VoiceRecognizerModel data = new VoiceRecognizerModel();
+    BluetoothHeadsetCompatWrapper headsetWrapper;
     private SpeechKit speechKit;
     private Recognizer.Listener speechListener = new Recognizer.Listener() {
         @Override
@@ -53,6 +61,8 @@ public class VoiceRecognizeFragment extends BaseFragment {
 
         @Override
         public void onError(Recognizer recognizer, SpeechError speechError) {
+            if (getActivity() == null)
+                return;
             data.state.set(VoiceRecognizerModel.State.ERROR);
             data.recordingResultText.set(speechError.getErrorCode() + "\n" + speechError.getErrorDetail() + "\n" + speechError.getSuggestion());
             data.recordingButtonText.set(getString(R.string.startRecording));
@@ -60,6 +70,7 @@ public class VoiceRecognizeFragment extends BaseFragment {
     };
     private Handler speechHandler = new Handler();
     private Recognizer recognizer;
+    private int REQUEST_AUDIO = 11;
 
     @Override
     public String getFragmentTag() {
@@ -113,6 +124,14 @@ public class VoiceRecognizeFragment extends BaseFragment {
                 }
             }
         });
+
+        requestRecordPermission();
+    }
+
+    private void requestRecordPermission() {
+        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_DENIED) {
+            requestPermissions(new String[]{android.Manifest.permission.RECORD_AUDIO}, REQUEST_AUDIO);
+        }
     }
 
     private void stopRecording() {
@@ -130,12 +149,17 @@ public class VoiceRecognizeFragment extends BaseFragment {
 
     private void startBtMicrophone() {
         AudioManager am = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+        am.setMode(AudioManager.MODE_IN_COMMUNICATION);
+        am.setBluetoothScoOn(true);
+        am.setSpeakerphoneOn(false);
         am.startBluetoothSco();
     }
 
     private void stopBtMicrophone() {
         AudioManager am = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+        am.setSpeakerphoneOn(true);
         am.stopBluetoothSco();
+        am.setBluetoothScoOn(true);
     }
 
     private void initSpeechKit() {
@@ -159,5 +183,35 @@ public class VoiceRecognizeFragment extends BaseFragment {
             recognizer.cancel();
         }
         speechKit.release();
+    }
+
+    @Override
+    protected void onDeviceDisconnected(BluetoothDevice device) {
+
+    }
+
+    @Override
+    protected void onDeviceConnected(BluetoothDevice device) {
+
+    }
+
+    @Override
+    public void onDeviceFound(BluetoothDevice device) {
+
+    }
+
+    @Override
+    public void onDevicePaired(BluetoothDevice device) {
+
+    }
+
+    @Override
+    public void onDeviceUnPaired(BluetoothDevice device) {
+
+    }
+
+    @Override
+    protected void updateConnectedDevices(List<BluetoothDevice> connectedDevices) {
+
     }
 }
