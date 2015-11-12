@@ -5,7 +5,10 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.databinding.Observable;
+import android.media.AudioFormat;
 import android.media.AudioManager;
+import android.media.AudioRecord;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -25,6 +28,8 @@ import com.smartear.smartear.speechkit.AppInfo;
 import com.smartear.smartear.utils.BluetoothHeadsetCompatWrapper;
 import com.smartear.smartear.viewmodels.VoiceRecognizerModel;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -71,6 +76,7 @@ public class VoiceRecognizeFragment extends BaseBluetoothFragment {
     private Handler speechHandler = new Handler();
     private Recognizer recognizer;
     private int REQUEST_AUDIO = 11;
+    private AudioRecord audioRecord;
 
     @Override
     public String getFragmentTag() {
@@ -149,9 +155,9 @@ public class VoiceRecognizeFragment extends BaseBluetoothFragment {
 
     private void startBtMicrophone() {
         AudioManager am = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
-        am.setMode(AudioManager.MODE_IN_COMMUNICATION);
-        am.setBluetoothScoOn(true);
+        am.setMode(AudioManager.MODE_NORMAL);
         am.setSpeakerphoneOn(false);
+        am.setBluetoothScoOn(true);
         am.startBluetoothSco();
     }
 
@@ -159,7 +165,6 @@ public class VoiceRecognizeFragment extends BaseBluetoothFragment {
         AudioManager am = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
         am.setSpeakerphoneOn(true);
         am.stopBluetoothSco();
-        am.setBluetoothScoOn(true);
     }
 
     private void initSpeechKit() {
