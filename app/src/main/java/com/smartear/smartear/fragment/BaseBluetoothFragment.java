@@ -98,6 +98,7 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
                     }
                 }
                 updateConnectedDevices(connectedDevices);
+
             }
 
             @Override
@@ -105,6 +106,7 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
 
             }
         };
+
         bluetoothAdapter.getProfileProxy(getActivity(), profileListener, BluetoothProfile.HEADSET);
         bluetoothAdapter.getProfileProxy(getActivity(), profileListener, BluetoothProfile.A2DP);
     }

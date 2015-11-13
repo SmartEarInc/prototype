@@ -3,7 +3,6 @@ package com.smartear.smartear;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
 
@@ -37,5 +36,9 @@ public class BaseActivity extends AppCompatActivity {
         }
         fragmentTransaction.replace(R.id.fragmentContainer, fragment, fragment.getFragmentTag());
         fragmentTransaction.commitAllowingStateLoss();
+    }
+
+    public BaseFragment getLastFragment() {
+        return (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
     }
 }

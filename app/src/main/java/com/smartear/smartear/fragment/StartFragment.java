@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 
+import com.smartear.smartear.MainActivity;
 import com.smartear.smartear.R;
 import com.smartear.smartear.databinding.FragmentStartBinding;
 import com.smartear.smartear.utils.MuteHelper;
@@ -51,11 +52,19 @@ public class StartFragment extends BaseBluetoothFragment {
         } catch (PackageManager.NameNotFoundException e) {
             e.printStackTrace();
         }
-        if(info == null) {
+        if (info == null) {
             return getString(R.string.app_name);
         } else {
             return getString(R.string.startTitle, info.versionName);
         }
+    }
+
+    public static StartFragment newInstance(boolean startRecognize) {
+        Bundle args = new Bundle();
+        args.putBoolean(MainActivity.EXTRA_START_RECOGNITION, startRecognize);
+        StartFragment fragment = new StartFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Nullable
@@ -80,12 +89,8 @@ public class StartFragment extends BaseBluetoothFragment {
         startFragmentModel.isMute.set(muteHelper.isMute());
         startFragmentModel.isMicMute.set(muteHelper.isMicMute());
 
-        binding.voiceRecognizer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                replaceFragment(new VoiceRecognizeFragment(), true);
-            }
-        });
+        getChildFragmentManager().beginTransaction().replace(R.id.voiceRecognizerContainer, VoiceRecognizeFragment.newInstance(getArguments().getBoolean(MainActivity.EXTRA_START_RECOGNITION, false)))
+                .commitAllowingStateLoss();
     }
 
 
@@ -218,6 +223,10 @@ public class StartFragment extends BaseBluetoothFragment {
     public void onPause() {
         super.onPause();
         getActivity().getApplicationContext().getContentResolver().unregisterContentObserver(settingsContentObserver);
+    }
+
+    public void startRecognize() {
+
     }
 
     private class SettingsContentObserver extends ContentObserver {

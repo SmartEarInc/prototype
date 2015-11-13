@@ -1,7 +1,6 @@
 package com.smartear.smartear.fragment;
 
 import android.Manifest;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.databinding.Observable;
@@ -9,6 +8,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,25 +19,31 @@ import com.nuance.nmdp.speechkit.Recognition;
 import com.nuance.nmdp.speechkit.Recognizer;
 import com.nuance.nmdp.speechkit.SpeechError;
 import com.nuance.nmdp.speechkit.SpeechKit;
+import com.smartear.smartear.MainActivity;
 import com.smartear.smartear.R;
+import com.smartear.smartear.SmartEarApplication;
 import com.smartear.smartear.databinding.FragmentVoiceRecognizerBinding;
 import com.smartear.smartear.speechkit.AppInfo;
-import com.smartear.smartear.utils.BluetoothHeadsetCompatWrapper;
 import com.smartear.smartear.viewmodels.VoiceRecognizerModel;
-
-import java.util.List;
 
 /**
  * Created: Belozerov
  * Company: APPGRANULA LLC
  * Date: 11.11.2015
  */
-public class VoiceRecognizeFragment extends BaseBluetoothFragment {
+public class VoiceRecognizeFragment extends Fragment {
     private static final String TAG = "VoiceRecognizeFragment";
     FragmentVoiceRecognizerBinding binding;
     VoiceRecognizerModel data = new VoiceRecognizerModel();
-    BluetoothHeadsetCompatWrapper headsetWrapper;
-    private SpeechKit speechKit;
+
+    public static VoiceRecognizeFragment newInstance(boolean startRecognize) {
+        Bundle args = new Bundle();
+        args.putBoolean(MainActivity.EXTRA_START_RECOGNITION, startRecognize);
+        VoiceRecognizeFragment fragment = new VoiceRecognizeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     private Recognizer.Listener speechListener = new Recognizer.Listener() {
         @Override
         public void onRecordingBegin(Recognizer recognizer) {
@@ -72,15 +78,6 @@ public class VoiceRecognizeFragment extends BaseBluetoothFragment {
     private Recognizer recognizer;
     private int REQUEST_AUDIO = 11;
 
-    @Override
-    public String getFragmentTag() {
-        return TAG;
-    }
-
-    @Override
-    public String getTitle() {
-        return getString(R.string.voiceRecognizer);
-    }
 
     @Nullable
     @Override
@@ -112,20 +109,15 @@ public class VoiceRecognizeFragment extends BaseBluetoothFragment {
         binding.recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (data.state.get()) {
-                    case NOT_RECORDING:
-                    case COMPLETED:
-                    case ERROR:
-                        startRecording();
-                        break;
-                    default:
-                        stopRecording();
-                        break;
-                }
+                startRecognizeImmediately();
             }
         });
 
         requestRecordPermission();
+
+        if (getArguments() != null && getArguments().getBoolean(MainActivity.EXTRA_START_RECOGNITION, false)) {
+            startRecognize();
+        }
     }
 
     private void requestRecordPermission() {
@@ -141,7 +133,7 @@ public class VoiceRecognizeFragment extends BaseBluetoothFragment {
     }
 
     private void startRecording() {
-        recognizer = speechKit.createRecognizer(Recognizer.RecognizerType.Dictation, Recognizer.EndOfSpeechDetection.Long, "en_US", speechListener, speechHandler);
+        recognizer = SmartEarApplication.getSpeechKit().createRecognizer(Recognizer.RecognizerType.Dictation, Recognizer.EndOfSpeechDetection.Long, "en_US", speechListener, speechHandler);
         data.recordingButtonText.set(getString(R.string.stopRecording));
         data.state.set(VoiceRecognizerModel.State.INITIALIZING);
         recognizer.start();
@@ -161,56 +153,33 @@ public class VoiceRecognizeFragment extends BaseBluetoothFragment {
         am.stopBluetoothSco();
     }
 
-    private void initSpeechKit() {
-        speechKit = SpeechKit.initialize(getActivity(), AppInfo.SpeechKitAppId, AppInfo.SpeechKitServer, AppInfo.SpeechKitPort, AppInfo.SpeechKitSsl, AppInfo.SpeechKitApplicationKey);
-        speechKit.connect();
-
-        Prompt beep = speechKit.defineAudioPrompt(R.raw.beep);
-        speechKit.setDefaultRecognizerPrompts(beep, Prompt.vibration(100), null, null);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        initSpeechKit();
-    }
-
     @Override
     public void onDetach() {
         super.onDetach();
         if (recognizer != null) {
             recognizer.cancel();
         }
-        speechKit.release();
     }
 
-    @Override
-    protected void onDeviceDisconnected(BluetoothDevice device) {
-
+    public void startRecognize() {
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startRecognizeImmediately();
+            }
+        }, 3000);
     }
 
-    @Override
-    protected void onDeviceConnected(BluetoothDevice device) {
-
-    }
-
-    @Override
-    public void onDeviceFound(BluetoothDevice device) {
-
-    }
-
-    @Override
-    public void onDevicePaired(BluetoothDevice device) {
-
-    }
-
-    @Override
-    public void onDeviceUnPaired(BluetoothDevice device) {
-
-    }
-
-    @Override
-    protected void updateConnectedDevices(List<BluetoothDevice> connectedDevices) {
-
+    public void startRecognizeImmediately() {
+        switch (data.state.get()) {
+            case NOT_RECORDING:
+            case ERROR:
+            case COMPLETED:
+                startRecording();
+                break;
+            default:
+                stopRecording();
+                break;
+        }
     }
 }

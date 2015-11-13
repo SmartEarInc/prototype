@@ -10,16 +10,6 @@ import android.util.Log;
  * Company: APPGRANULA LLC
  * Date: 11.11.2015
  */
-public class MediaButtonReceiver extends BroadcastReceiver {
-    private static final String TAG = "MediaButtonReceiver";
+public class MediaButtonReceiver extends android.support.v4.media.session.MediaButtonReceiver {
 
-    public MediaButtonReceiver() {
-        super();
-    }
-
-    @Override
-    public void onReceive(Context context, Intent intent) {
-        String action = intent.getAction();
-        Log.i(TAG, action);
-    }
 }
