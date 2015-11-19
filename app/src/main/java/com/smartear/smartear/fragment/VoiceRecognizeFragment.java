@@ -14,16 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.nuance.nmdp.speechkit.Prompt;
 import com.nuance.nmdp.speechkit.Recognition;
 import com.nuance.nmdp.speechkit.Recognizer;
 import com.nuance.nmdp.speechkit.SpeechError;
-import com.nuance.nmdp.speechkit.SpeechKit;
 import com.smartear.smartear.MainActivity;
 import com.smartear.smartear.R;
 import com.smartear.smartear.SmartEarApplication;
 import com.smartear.smartear.databinding.FragmentVoiceRecognizerBinding;
-import com.smartear.smartear.speechkit.AppInfo;
 import com.smartear.smartear.viewmodels.VoiceRecognizerModel;
 
 /**
@@ -44,6 +41,7 @@ public class VoiceRecognizeFragment extends Fragment {
         return fragment;
     }
 
+    private int recognizeTryCount = 0;
     private Recognizer.Listener speechListener = new Recognizer.Listener() {
         @Override
         public void onRecordingBegin(Recognizer recognizer) {
@@ -63,12 +61,22 @@ public class VoiceRecognizeFragment extends Fragment {
             }
             data.state.set(VoiceRecognizerModel.State.COMPLETED);
             data.recordingButtonText.set(getString(R.string.startRecording));
+            recognizeTryCount = 0;
         }
 
         @Override
         public void onError(Recognizer recognizer, SpeechError speechError) {
             if (getActivity() == null)
                 return;
+            if (speechError.getErrorCode() == 3) {
+                if (recognizeTryCount < 3) {
+                    recognizeTryCount++;
+                    startRecognizeImmediately();
+                    return;
+                } else {
+                    recognizeTryCount = 0;
+                }
+            }
             data.state.set(VoiceRecognizerModel.State.ERROR);
             data.recordingResultText.set(speechError.getErrorCode() + "\n" + speechError.getErrorDetail() + "\n" + speechError.getSuggestion());
             data.recordingButtonText.set(getString(R.string.startRecording));
@@ -98,6 +106,11 @@ public class VoiceRecognizeFragment extends Fragment {
                     case INITIALIZING:
                         startBtMicrophone();
                         break;
+                    case RECORDING:
+                        if (!isBtMicrophoneOn()) {
+                            startBtMicrophone();
+                        }
+                        break;
                     case ERROR:
                     case COMPLETED:
                     case NOT_RECORDING:
@@ -120,6 +133,11 @@ public class VoiceRecognizeFragment extends Fragment {
         }
     }
 
+    private boolean isBtMicrophoneOn() {
+        AudioManager am = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+        return am.isBluetoothScoOn();
+    }
+
     private void requestRecordPermission() {
         if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.RECORD_AUDIO) == PackageManager.PERMISSION_DENIED) {
             requestPermissions(new String[]{android.Manifest.permission.RECORD_AUDIO}, REQUEST_AUDIO);
@@ -133,6 +151,8 @@ public class VoiceRecognizeFragment extends Fragment {
     }
 
     private void startRecording() {
+        if (recognizer != null)
+            recognizer.cancel();
         recognizer = SmartEarApplication.getSpeechKit().createRecognizer(Recognizer.RecognizerType.Dictation, Recognizer.EndOfSpeechDetection.Long, "en_US", speechListener, speechHandler);
         data.recordingButtonText.set(getString(R.string.stopRecording));
         data.state.set(VoiceRecognizerModel.State.INITIALIZING);
@@ -167,7 +187,7 @@ public class VoiceRecognizeFragment extends Fragment {
             public void run() {
                 startRecognizeImmediately();
             }
-        }, 3000);
+        }, 100);
     }
 
     public void startRecognizeImmediately() {
