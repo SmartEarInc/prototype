@@ -24,6 +24,22 @@ public class MainActivity extends BaseActivity {
     private AudioManager audioManager;
     private ComponentName receiverComponent;
     private PendingIntent pendingIntent;
+    private boolean audioFocusGranted = false;
+    private AudioManager.OnAudioFocusChangeListener audioFocusListener = new AudioManager.OnAudioFocusChangeListener() {
+        @Override
+        public void onAudioFocusChange(int focusChange) {
+            switch (focusChange) {
+                case AudioManager.AUDIOFOCUS_LOSS:
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                    audioFocusGranted = false;
+                    audioManager.abandonAudioFocus(audioFocusListener);
+                    break;
+                case AudioManager.AUDIOFOCUS_GAIN:
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +50,7 @@ public class MainActivity extends BaseActivity {
         window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
         window.addFlags(WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
         setContentView(R.layout.activity_main);
+        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         boolean startRecognize = parseIntent(getIntent());
@@ -70,6 +87,17 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        requestFocus();
+    }
+
+    private void requestFocus() {
+        if (!audioFocusGranted) {
+            int result = audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                audioFocusGranted = true;
+            }
+            BTService.restart(this);
+        }
     }
 
     @Override
@@ -78,35 +106,7 @@ public class MainActivity extends BaseActivity {
     }
 
     private void registerMediaButtonReceiver() {
-//        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-//        receiverComponent = new ComponentName(this, MediaButtonReceiver.class);
         BTService.start(this);
-//        if(VersionUtils.lollipopOrHigher()){
-//            MediaSession mediaSession = new MediaSession(this, "MainActivity");
-//            pendingIntent = PendingIntent.getBroadcast(this, REQUEST_MEDIA_BUTTON_CODE, new Intent(this, MediaButtonReceiver.class), 0);
-//            mediaSession.setMediaButtonReceiver(pendingIntent);
-//        } else {
-//            audioManager.registerMediaButtonEventReceiver(receiverComponent);
-//        }
-//
-//        IntentFilter intentFilter = new IntentFilter(BluetoothHeadset.ACTION_VENDOR_SPECIFIC_HEADSET_EVENT);
-//        intentFilter.addCategory(BluetoothHeadset.VENDOR_SPECIFIC_HEADSET_EVENT_COMPANY_ID_CATEGORY + "." + BluetoothAssignedNumbers.SONY_ERICSSON);
-//        registerReceiver(new MediaButtonReceiver(), intentFilter);
-//
-//        BluetoothAdapter adapter = BluetoothAdapter.getDefaultAdapter();
-//        adapter.getProfileProxy(this, new BluetoothProfile.ServiceListener() {
-//            @Override
-//            public void onServiceConnected(int profile, BluetoothProfile proxy) {
-//                BluetoothHeadset bluetoothHeadset = (BluetoothHeadset) proxy;
-//
-//            }
-//
-//            @Override
-//            public void onServiceDisconnected(int profile) {
-//
-//            }
-//        }, BluetoothProfile.HEADSET);
-
     }
 
     private void requestPermissionIfNeeded() {

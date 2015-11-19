@@ -19,6 +19,7 @@ import com.smartear.smartear.MainActivity;
  * Date: 13.11.2015
  */
 public class BTService extends Service {
+    private static final String EXTRA_RESTART_MEDIA_SESSION = "extra_restart_media_session";
     private static boolean isRunning = false;
     private String TAG = "BTService";
     private MediaSessionCompat mediaSession;
@@ -40,6 +41,11 @@ public class BTService extends Service {
     private void parseIntent(Intent mediaButtonIntent) {
         if (mediaButtonIntent == null)
             return;
+        if (mediaButtonIntent.getBooleanExtra(EXTRA_RESTART_MEDIA_SESSION, false)) {
+            releaseMediaSession();
+            initMediaSession();
+            return;
+        }
         KeyEvent keyEvent = mediaButtonIntent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
         if (keyEvent != null && keyEvent.getAction() == KeyEvent.ACTION_DOWN && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_MEDIA_PAUSE || keyEvent.getKeyCode() == KeyEvent.KEYCODE_MEDIA_PLAY)) {
             unlockDevice();
@@ -53,13 +59,17 @@ public class BTService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        releaseMediaSession();
+        isRunning = false;
+    }
+
+    private void releaseMediaSession() {
         try {
             mediaSession.release();
         } catch (Exception ignore) {
 
         }
         mediaSession = null;
-        isRunning = false;
     }
 
     public static void start(Context context) {
@@ -102,5 +112,11 @@ public class BTService extends Service {
                 PowerManager.SCREEN_BRIGHT_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "TAG");
         screenLock.acquire();
         screenLock.release();
+    }
+
+    public static void restart(Context context) {
+        Intent intent = new Intent(context, BTService.class);
+        intent.putExtra(EXTRA_RESTART_MEDIA_SESSION, true);
+        context.startService(intent);
     }
 }
