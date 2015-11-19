@@ -6,7 +6,6 @@ import android.bluetooth.le.ScanCallback;
 import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,6 +23,8 @@ import com.smartear.smartear.widget.RecyclerViewAdapterBase;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -136,21 +137,23 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
 
 
     private void addItem(BluetoothDevice device, boolean isConnected) {
-        BluetoothDeviceWrapper wrapperToDelete = null;
+        boolean alreadyHas = false;
         for (BluetoothDeviceWrapper wrapper : adapter.getItems()) {
             if (wrapper.device.get().toString().equals(device.toString())) {
-                wrapperToDelete = wrapper;
+                wrapper.device.set(device);
+                wrapper.isConnected.set(isConnected);
+                adapter.notifyDataSetChanged();
+                alreadyHas = true;
                 break;
             }
         }
-        if (wrapperToDelete != null) {
-            adapter.getItems().remove(wrapperToDelete);
-            adapter.notifyDataSetChanged();
+
+        if(!alreadyHas){
+            BluetoothDeviceWrapper wrapper = new BluetoothDeviceWrapper();
+            wrapper.device.set(device);
+            wrapper.isConnected.set(isConnected);
+            adapter.addItem(wrapper);
         }
-        BluetoothDeviceWrapper newWrapper = new BluetoothDeviceWrapper();
-        newWrapper.device.set(device);
-        newWrapper.isConnected.set(isConnected);
-        adapter.addItem(newWrapper);
     }
 
     @Override
