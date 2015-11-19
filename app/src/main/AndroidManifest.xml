@@ -56,6 +56,9 @@
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="e86075597677f7825fd03a5785ffda914451b159" />
     </application>
 
 </manifest>

@@ -2,9 +2,11 @@ package com.smartear.smartear;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
 import com.nuance.nmdp.speechkit.Prompt;
 import com.nuance.nmdp.speechkit.SpeechKit;
 import com.smartear.smartear.speechkit.AppInfo;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created: Belozerov
@@ -17,6 +19,7 @@ public class SmartEarApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         speechKit = SpeechKit.initialize(getApplicationContext(), AppInfo.SpeechKitAppId, AppInfo.SpeechKitServer, AppInfo.SpeechKitPort, AppInfo.SpeechKitSsl, AppInfo.SpeechKitApplicationKey);
         speechKit.connect();
 
