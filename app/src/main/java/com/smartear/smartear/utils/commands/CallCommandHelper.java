@@ -43,7 +43,7 @@ public class CallCommandHelper extends BaseCommandHelper {
     };
     private static final String SELECTION =
             ContactsContract.Contacts.HAS_PHONE_NUMBER + " = 1";
-    private static final int REQUEST_CODE = 300;
+    private static final int REQUEST_CODE = 3;
     private final AppCompatActivity activity;
     private String phone;
 
