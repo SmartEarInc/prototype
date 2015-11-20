@@ -81,12 +81,14 @@
                 android:progress="@{viewModel.musicVolumeLevel}" />
 
             <TextView
+                android:visibility="gone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="@string/ringControl" />
 
             <SeekBar
+                android:visibility="gone"
                 android:id="@+id/ringSeekbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

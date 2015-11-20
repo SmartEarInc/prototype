@@ -6,6 +6,7 @@ import android.media.AudioManager;
 import android.support.v7.app.AppCompatActivity;
 
 import com.smartear.smartear.fragment.StartFragment;
+import com.smartear.smartear.utils.MuteHelper;
 
 /**
  * Created: Belozerov
@@ -17,6 +18,8 @@ public class VolumeCommandHelper extends BaseCommandHelper {
     private static final String COMMAND_INCREASE_VOLUME = "INCREASE VOLUME";
     private static final String COMMAND_VOLUME_DOWN = "VOLUME DOWN";
     private static final String COMMAND_DECREASE_VOLUME = "DECREASE VOLUME";
+    private static final String COMMAND_MUTE = "SOUND OFF";
+    private static final String COMMAND_UNMUTE = "SOUND ON";
 
     public VolumeCommandHelper(AppCompatActivity activity) {
         super(activity);
@@ -32,7 +35,25 @@ public class VolumeCommandHelper extends BaseCommandHelper {
             decreaseVolume();
             return true;
         }
+        if (text.toUpperCase().contains(COMMAND_MUTE)) {
+            mute();
+            return true;
+        }
+        if (text.toUpperCase().contains(COMMAND_UNMUTE)) {
+            unmute();
+            return true;
+        }
         return false;
+    }
+
+    private void unmute() {
+        MuteHelper muteHelper = new MuteHelper(activity);
+        muteHelper.unmuteSound();
+    }
+
+    private void mute() {
+        MuteHelper muteHelper = new MuteHelper(activity);
+        muteHelper.muteSound();
     }
 
     private void decreaseVolume() {
