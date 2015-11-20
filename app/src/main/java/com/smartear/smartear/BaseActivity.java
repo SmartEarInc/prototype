@@ -1,5 +1,6 @@
 package com.smartear.smartear;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -7,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
 
 import com.smartear.smartear.fragment.BaseFragment;
+import com.smartear.smartear.utils.CommandHelper;
 
 /**
  * Created: Belozerov
@@ -14,6 +16,18 @@ import com.smartear.smartear.fragment.BaseFragment;
  * Date: 10.11.2015
  */
 public class BaseActivity extends AppCompatActivity {
+    private CommandHelper commandHelper;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        commandHelper = new CommandHelper(this);
+    }
+
+    public CommandHelper getCommandHelper() {
+        return commandHelper;
+    }
+
     public void replaceFragment(BaseFragment fragment, boolean addToBackStack) {
         Bundle arguments;
         if (fragment.getArguments() == null) {
@@ -40,5 +54,12 @@ public class BaseActivity extends AppCompatActivity {
 
     public BaseFragment getLastFragment() {
         return (BaseFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if(!commandHelper.onActivityResult(requestCode, resultCode, data)) {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
     }
 }

@@ -17,10 +17,12 @@ import android.view.ViewGroup;
 import com.nuance.nmdp.speechkit.Recognition;
 import com.nuance.nmdp.speechkit.Recognizer;
 import com.nuance.nmdp.speechkit.SpeechError;
+import com.smartear.smartear.BaseActivity;
 import com.smartear.smartear.MainActivity;
 import com.smartear.smartear.R;
 import com.smartear.smartear.SmartEarApplication;
 import com.smartear.smartear.databinding.FragmentVoiceRecognizerBinding;
+import com.smartear.smartear.utils.CommandHelper;
 import com.smartear.smartear.viewmodels.VoiceRecognizerModel;
 
 /**
@@ -57,7 +59,9 @@ public class VoiceRecognizeFragment extends Fragment {
         public void onResults(Recognizer recognizer, Recognition results) {
             int count = results.getResultCount();
             if (count > 0) {
-                data.recordingResultText.set(results.getResult(0).getText());
+                String text = results.getResult(0).getText();
+                getCommandHelper().parseCommand(text);
+                data.recordingResultText.set(text);
             }
             data.state.set(VoiceRecognizerModel.State.COMPLETED);
             data.recordingButtonText.set(getString(R.string.startRecording));
@@ -86,12 +90,20 @@ public class VoiceRecognizeFragment extends Fragment {
     private Recognizer recognizer;
     private int REQUEST_AUDIO = 11;
 
+    private CommandHelper getCommandHelper() {
+        return ((BaseActivity) getActivity()).getCommandHelper();
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentVoiceRecognizerBinding.inflate(inflater, container, false);
         return binding.getRoot();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
     }
 
     @Override
