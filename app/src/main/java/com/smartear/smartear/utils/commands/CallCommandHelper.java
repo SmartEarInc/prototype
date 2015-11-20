@@ -1,4 +1,4 @@
-package com.smartear.smartear.utils;
+package com.smartear.smartear.utils.commands;
 
 import android.Manifest;
 import android.app.Activity;
@@ -30,12 +30,11 @@ import java.util.ArrayList;
  * Company: APPGRANULA LLC
  * Date: 20.11.2015
  */
-public class CommandHelper {
+public class CallCommandHelper extends BaseCommandHelper {
+    public static final String COMMAND_CALL = "CALL";
     private static final int CONTACTS_ID = 1;
     private static final int CONTACTS_PHONE = 2;
 
-    private static final String ARG_CONTACT_ID = "arg_contact_id";
-    private static final String COMMAND_CALL = "CALL";
     private static final String[] CONTACTS_PROJECTION = {
             ContactsContract.Contacts._ID,
             ContactsContract.Contacts.LOOKUP_KEY,
@@ -44,24 +43,12 @@ public class CommandHelper {
     };
     private static final String SELECTION =
             ContactsContract.Contacts.HAS_PHONE_NUMBER + " = 1";
-    private static final int REQUEST_CODE = 3003;
+    private static final int REQUEST_CODE = 300;
     private final AppCompatActivity activity;
     private String phone;
 
-    public CommandHelper(AppCompatActivity activity) {
+    public CallCommandHelper(AppCompatActivity activity) {
         this.activity = activity;
-    }
-
-    public void parseCommand(String text) {
-        if (text.toUpperCase().contains(COMMAND_CALL)) {
-            String contact = text.substring(text.toUpperCase().indexOf(COMMAND_CALL) + COMMAND_CALL.length() + 1, text.length());
-            if (isNumber(contact)) {
-                makePhoneCall(contact);
-            } else {
-                callToContact(contact);
-            }
-            //8 800 200-6-200
-        }
     }
 
     private boolean isNumber(String contact) {
@@ -151,21 +138,21 @@ public class CommandHelper {
         this.phone = null;
     }
 
-    private void sayText(String text) {
-        Vocalizer vocalizer = SmartEarApplication.getSpeechKit().createVocalizerWithLanguage("en_US", new Vocalizer.Listener() {
-            @Override
-            public void onSpeakingBegin(Vocalizer vocalizer, String s, Object o) {
-
+    @Override
+    public boolean parseCommand(String text) {
+        if (text.toUpperCase().contains(COMMAND_CALL)) {
+            String contact = text.substring(text.toUpperCase().indexOf(COMMAND_CALL) + COMMAND_CALL.length() + 1, text.length());
+            if (isNumber(contact)) {
+                makePhoneCall(contact);
+            } else {
+                callToContact(contact);
             }
-
-            @Override
-            public void onSpeakingDone(Vocalizer vocalizer, String s, SpeechError speechError, Object o) {
-
-            }
-        }, new Handler());
-        vocalizer.speakString(text, new Object());
+            return true;
+        }
+        return false;
     }
 
+    @Override
     public boolean onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {

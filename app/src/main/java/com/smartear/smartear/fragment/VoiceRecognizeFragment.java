@@ -22,7 +22,7 @@ import com.smartear.smartear.MainActivity;
 import com.smartear.smartear.R;
 import com.smartear.smartear.SmartEarApplication;
 import com.smartear.smartear.databinding.FragmentVoiceRecognizerBinding;
-import com.smartear.smartear.utils.CommandHelper;
+import com.smartear.smartear.utils.commands.CommandHelper;
 import com.smartear.smartear.viewmodels.VoiceRecognizerModel;
 
 /**

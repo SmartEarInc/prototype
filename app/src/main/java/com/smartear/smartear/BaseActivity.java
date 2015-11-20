@@ -8,7 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
 
 import com.smartear.smartear.fragment.BaseFragment;
-import com.smartear.smartear.utils.CommandHelper;
+import com.smartear.smartear.utils.commands.CommandHelper;
 
 /**
  * Created: Belozerov
