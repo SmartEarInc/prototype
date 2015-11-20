@@ -33,6 +33,7 @@ import java.util.List;
 public class StartFragment extends BaseBluetoothFragment {
     private static final String TAG = "StartFragment";
     FragmentStartBinding binding;
+    public static final int BT_STREAM = 8;
 
     private SettingsContentObserver settingsContentObserver;
     private StartFragmentModel startFragmentModel = new StartFragmentModel();
@@ -104,7 +105,7 @@ public class StartFragment extends BaseBluetoothFragment {
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 switch (seekBar.getId()) {
                     case R.id.musicSeekbar:
-                        am.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0);
+                        am.setStreamVolume(BT_STREAM, progress, 0);
                         break;
                     case R.id.ringSeekbar:
                         am.setStreamVolume(AudioManager.STREAM_RING, progress, 0);
@@ -151,7 +152,7 @@ public class StartFragment extends BaseBluetoothFragment {
     }
 
     private void updateCurrentVolumeUI(AudioManager am) {
-        updateCurrentVolumeUI(am, AudioManager.STREAM_MUSIC);
+        updateCurrentVolumeUI(am, BT_STREAM);
         updateCurrentVolumeUI(am, AudioManager.STREAM_RING);
         startFragmentModel.isMute.set(muteHelper.isMute());
     }
@@ -159,7 +160,7 @@ public class StartFragment extends BaseBluetoothFragment {
     private void updateCurrentVolumeUI(AudioManager am, int stream) {
         int maxVolume = am.getStreamMaxVolume(stream);
         switch (stream) {
-            case AudioManager.STREAM_MUSIC:
+            case BT_STREAM:
                 startFragmentModel.musicMaxVolumeLevel.set(maxVolume);
                 startFragmentModel.musicVolumeLevel.set(am.getStreamVolume(stream));
                 break;

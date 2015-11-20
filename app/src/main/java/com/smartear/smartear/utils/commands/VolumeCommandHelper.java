@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.support.v7.app.AppCompatActivity;
 
+import com.smartear.smartear.fragment.StartFragment;
+
 /**
  * Created: Belozerov
  * Company: APPGRANULA LLC
@@ -35,12 +37,14 @@ public class VolumeCommandHelper extends BaseCommandHelper {
 
     private void decreaseVolume() {
         AudioManager am = (AudioManager) activity.getSystemService(Context.AUDIO_SERVICE);
-        am.adjustVolume(AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
+        int volume = am.getStreamVolume(StartFragment.BT_STREAM) - 1;
+        am.setStreamVolume(StartFragment.BT_STREAM, volume, AudioManager.FLAG_SHOW_UI);
     }
 
     private void increaseVolume() {
         AudioManager am = (AudioManager) activity.getSystemService(Context.AUDIO_SERVICE);
-        am.adjustVolume(AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
+        int volume = am.getStreamVolume(StartFragment.BT_STREAM) + 1;
+        am.setStreamVolume(StartFragment.BT_STREAM, volume, AudioManager.FLAG_SHOW_UI);
     }
 
     @Override
