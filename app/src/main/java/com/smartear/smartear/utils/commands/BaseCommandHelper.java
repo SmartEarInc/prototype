@@ -2,9 +2,11 @@ package com.smartear.smartear.utils.commands;
 
 import android.content.Intent;
 import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 
 import com.nuance.nmdp.speechkit.SpeechError;
 import com.nuance.nmdp.speechkit.Vocalizer;
+import com.smartear.smartear.BaseActivity;
 import com.smartear.smartear.SmartEarApplication;
 
 /**
@@ -13,6 +15,12 @@ import com.smartear.smartear.SmartEarApplication;
  * Date: 20.11.2015
  */
 public abstract class BaseCommandHelper {
+    protected final AppCompatActivity activity;
+
+    public BaseCommandHelper(AppCompatActivity activity){
+        this.activity = activity;
+    }
+
     public abstract boolean parseCommand(String text);
 
     public abstract boolean onActivityResult(int requestCode, int resultCode, Intent data);

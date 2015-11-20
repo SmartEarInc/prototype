@@ -21,11 +21,8 @@ import java.util.Map;
 public class LaunchCommandHelper extends BaseCommandHelper {
     private static final String COMMAND_LAUNCH = "LAUNCH";
     private static final String COMMAND_OPEN = "OPEN";
-
-    private final AppCompatActivity activity;
-
     public LaunchCommandHelper(AppCompatActivity activity) {
-        this.activity = activity;
+        super(activity);
     }
 
     @Override

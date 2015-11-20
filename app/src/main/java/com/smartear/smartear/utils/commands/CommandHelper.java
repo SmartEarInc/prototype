@@ -17,6 +17,7 @@ public class CommandHelper {
     public CommandHelper(AppCompatActivity activity) {
         helpers.add(new CallCommandHelper(activity));
         helpers.add(new LaunchCommandHelper(activity));
+        helpers.add(new VolumeCommandHelper(activity));
     }
 
     public void parseCommand(String text) {
