@@ -106,7 +106,7 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
 
             }
         };
-
+        connectedDevices.clear();
         bluetoothAdapter.getProfileProxy(getActivity(), profileListener, BluetoothProfile.HEADSET);
         bluetoothAdapter.getProfileProxy(getActivity(), profileListener, BluetoothProfile.A2DP);
     }
