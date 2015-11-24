@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Handler;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -85,31 +86,48 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
         updateConnectedDevices();
     }
 
-    protected void updateConnectedDevices() {
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        BluetoothProfile.ServiceListener profileListener = new BluetoothProfile.ServiceListener() {
-            @Override
-            public void onServiceConnected(int profile, BluetoothProfile proxy) {
+    private Handler requestConnectedHandler = new Handler();
+    private Runnable requestConnectedRunnable = new Runnable() {
+        @Override
+        public void run() {
+            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            BluetoothProfile.ServiceListener profileListener = new BluetoothProfile.ServiceListener() {
+                @Override
+                public void onServiceConnected(int profile, BluetoothProfile proxy) {
 //                bluetoothHeadset = (BluetoothHeadset) proxy;
-                List<BluetoothDevice> devices = proxy.getConnectedDevices();
-                for (BluetoothDevice device : devices) {
-                    if (!connectedDevices.contains(device)) {
-                        connectedDevices.add(device);
+                    List<BluetoothDevice> devices = proxy.getConnectedDevices();
+                    for (BluetoothDevice device : devices) {
+                        if (!connectedDevices.contains(device)) {
+                            connectedDevices.add(device);
+                        }
                     }
+                    updateConnectedDeviceHandler.removeCallbacks(updateConnectedDeviceRunnable);
+                    updateConnectedDeviceHandler.postDelayed(updateConnectedDeviceRunnable, 100);
                 }
-                updateConnectedDevices(connectedDevices);
 
-            }
+                @Override
+                public void onServiceDisconnected(int profile) {
 
-            @Override
-            public void onServiceDisconnected(int profile) {
+                }
+            };
+            connectedDevices.clear();
+            bluetoothAdapter.getProfileProxy(getActivity(), profileListener, BluetoothProfile.HEADSET);
+            bluetoothAdapter.getProfileProxy(getActivity(), profileListener, BluetoothProfile.A2DP);
+        }
+    };
 
-            }
-        };
-        connectedDevices.clear();
-        bluetoothAdapter.getProfileProxy(getActivity(), profileListener, BluetoothProfile.HEADSET);
-        bluetoothAdapter.getProfileProxy(getActivity(), profileListener, BluetoothProfile.A2DP);
+    protected void updateConnectedDevices() {
+        requestConnectedHandler.removeCallbacks(requestConnectedRunnable);
+        requestConnectedHandler.postDelayed(requestConnectedRunnable, 500);
     }
+
+    private Runnable updateConnectedDeviceRunnable = new Runnable() {
+        @Override
+        public void run() {
+            updateConnectedDevices(connectedDevices);
+        }
+    };
+    private Handler updateConnectedDeviceHandler = new Handler();
 
     protected abstract void updateConnectedDevices(List<BluetoothDevice> connectedDevices);
 

@@ -117,7 +117,11 @@ public class EqualizerFragment extends Fragment {
 
             SeekBar bar = (SeekBar) seekbarLinear.findViewById(R.id.equalizerSeek);
             bar.setMax(maxEQLevel - minEQLevel);
-            bar.setProgress((maxEQLevel - minEQLevel) / 2 + equalizer.getBandLevel(band));
+            try {
+                bar.setProgress((maxEQLevel - minEQLevel) / 2 + equalizer.getBandLevel(band));
+            } catch (RuntimeException e){
+                e.printStackTrace();
+            }
             binding.equalizerSeekBars.addView(seekbarLinear);
         }
 
