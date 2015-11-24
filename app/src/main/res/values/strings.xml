@@ -24,4 +24,5 @@
     <string name="contactCanNotBeFound">No contacts found for %1$s</string>
     <string name="noPhoneNumbersError">%1$s has no phone numbers</string>
     <string name="noActivityError">Can not launch %1$s</string>
+    <string name="installDragonMobile">Please, install Dragon Mobile Assistant</string>
 </resources>

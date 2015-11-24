@@ -9,9 +9,7 @@ import android.text.TextUtils;
 
 import com.smartear.smartear.R;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created: Belozerov
@@ -21,6 +19,9 @@ import java.util.Map;
 public class LaunchCommandHelper extends BaseCommandHelper {
     private static final String COMMAND_LAUNCH = "LAUNCH";
     private static final String COMMAND_OPEN = "OPEN";
+    private static final String ASSISTANT = "ASSISTANT";
+    private static final String ASSISTANT_PACKAGENAME = "com.nuance.balerion";
+
     public LaunchCommandHelper(AppCompatActivity activity) {
         super(activity);
     }
@@ -44,6 +45,16 @@ public class LaunchCommandHelper extends BaseCommandHelper {
 
     private void launchApp(String appName) {
         PackageManager packageManager = activity.getPackageManager();
+        if (ASSISTANT.equals(appName.toUpperCase())) {
+            Intent assistantIntent = packageManager.getLaunchIntentForPackage(ASSISTANT_PACKAGENAME);
+            try {
+                activity.startActivity(assistantIntent);
+            } catch (Exception ignore){
+                sayText(activity.getString(R.string.installDragonMobile));
+            }
+            return;
+        }
+
         Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
         List<ResolveInfo> resolveInfoList = packageManager.queryIntentActivities(mainIntent, 0);
