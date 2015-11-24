@@ -33,7 +33,7 @@ import java.util.List;
 public class StartFragment extends BaseBluetoothFragment {
     private static final String TAG = "StartFragment";
     FragmentStartBinding binding;
-    public static final int BT_STREAM = 8;
+    public static final int BT_STREAM = AudioManager.STREAM_MUSIC;
 
     private SettingsContentObserver settingsContentObserver;
     private StartFragmentModel startFragmentModel = new StartFragmentModel();
@@ -92,6 +92,9 @@ public class StartFragment extends BaseBluetoothFragment {
 
         getChildFragmentManager().beginTransaction().replace(R.id.voiceRecognizerContainer, VoiceRecognizeFragment.newInstance(getArguments().getBoolean(MainActivity.EXTRA_START_RECOGNITION, false)))
                 .commitAllowingStateLoss();
+
+        getChildFragmentManager().beginTransaction().replace(R.id.equalizerContainer, EqualizerFragment.newInstance())
+                .commitAllowingStateLoss();
     }
 
 
@@ -147,13 +150,6 @@ public class StartFragment extends BaseBluetoothFragment {
                     muteHelper.muteMic();
                 }
                 startFragmentModel.isMicMute.set(muteHelper.isMicMute());
-            }
-        });
-
-        binding.equalizer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                replaceFragment(new EqualizerFragment(), true);
             }
         });
     }

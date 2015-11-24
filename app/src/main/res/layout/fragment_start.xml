@@ -129,14 +129,21 @@
                 android:text="@{viewModel.isMicMute?@string/unMute:@string/mute}"
                 android:visibility="gone" />
 
-            <Button
-                android:id="@+id/equalizer"
+
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="12dp"
-                android:layout_marginTop="12dp"
+                android:layout_marginTop="24dp"
                 android:text="@string/equalizer" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="#ccc" />
+            <FrameLayout
+                android:id="@+id/equalizerContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 

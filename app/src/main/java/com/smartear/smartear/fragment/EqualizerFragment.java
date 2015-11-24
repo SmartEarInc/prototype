@@ -5,6 +5,7 @@ import android.media.audiofx.Equalizer;
 import android.media.audiofx.Visualizer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,22 +23,12 @@ import com.smartear.smartear.widget.VisualizerView;
  * Company: APPGRANULA LLC
  * Date: 24.11.2015
  */
-public class EqualizerFragment extends BaseFragment {
+public class EqualizerFragment extends Fragment {
     private static final String TAG = "EqualizerFragment";
     FragmentEqualizerBinding binding;
     Equalizer equalizer;
     BassBoost bassBoost;
     private Visualizer visualizer;
-
-    @Override
-    public String getFragmentTag() {
-        return TAG;
-    }
-
-    @Override
-    public String getTitle() {
-        return getString(R.string.equalizer);
-    }
 
     @Nullable
     @Override
@@ -50,6 +41,13 @@ public class EqualizerFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+    }
+
+    public static EqualizerFragment newInstance() {
+        Bundle args = new Bundle();
+        EqualizerFragment fragment = new EqualizerFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     private void initVisualizer() {
