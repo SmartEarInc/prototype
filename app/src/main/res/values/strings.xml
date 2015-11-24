@@ -25,4 +25,16 @@
     <string name="noPhoneNumbersError">%1$s has no phone numbers</string>
     <string name="noActivityError">Can not launch %1$s</string>
     <string name="installDragonMobile">Please, install Dragon Mobile Assistant</string>
+    <string name="equalizer">Equalizer</string>
+    <string name="hz">%1$s Hz</string>
+    <string name="db">%1$s dB</string>
+    <string name="bassBoost">Bass boost</string>
+
+    <string-array name="bandLevels">
+        <item>Bass</item>
+        <item>Low</item>
+        <item>Mid</item>
+        <item>Upper</item>
+        <item>High</item>
+    </string-array>
 </resources>

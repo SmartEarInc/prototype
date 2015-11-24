@@ -149,6 +149,13 @@ public class StartFragment extends BaseBluetoothFragment {
                 startFragmentModel.isMicMute.set(muteHelper.isMicMute());
             }
         });
+
+        binding.equalizer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(new EqualizerFragment(), true);
+            }
+        });
     }
 
     private void updateCurrentVolumeUI(AudioManager am) {
