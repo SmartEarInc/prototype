@@ -102,6 +102,16 @@ public class VoiceRecognizeFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        MainActivity mainActivity = (MainActivity) getActivity();
+        if (mainActivity.isStartRecordingOnResume()) {
+            mainActivity.setStartRecordingOnResume(false);
+            startRecognize();
+        }
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
     }

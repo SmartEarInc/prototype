@@ -40,6 +40,7 @@ public class MainActivity extends BaseActivity {
             }
         }
     };
+    private boolean startRecordingOnResume;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,20 +64,35 @@ public class MainActivity extends BaseActivity {
     }
 
     private boolean parseIntent(Intent intent) {
-        if (intent != null && intent.hasExtra(EXTRA_START_RECOGNITION)) {
-            if (getLastFragment() == null)
-                return true;
-            if (!(getLastFragment() instanceof StartFragment)) {
-                getSupportFragmentManager().popBackStack();
+        if (intent != null && (intent.hasExtra(EXTRA_START_RECOGNITION) || intent.getAction().equals(Intent.ACTION_VOICE_COMMAND))) {
+            if (getLastFragment() == null) {
+                setStartRecordingOnResume(true);
                 return true;
             }
-            ((VoiceRecognizeFragment) getLastFragment()
+            if (!(getLastFragment() instanceof StartFragment)) {
+                getSupportFragmentManager().popBackStack();
+            }
+
+            VoiceRecognizeFragment voiceRecognizeFragment = ((VoiceRecognizeFragment) getLastFragment()
                     .getChildFragmentManager()
-                    .findFragmentById(R.id.voiceRecognizerContainer))
-                    .startRecognize();
+                    .findFragmentById(R.id.voiceRecognizerContainer));
+
+            if (voiceRecognizeFragment != null) {
+                voiceRecognizeFragment.startRecognize();
+            } else {
+                setStartRecordingOnResume(true);
+            }
             return true;
         }
         return false;
+    }
+
+    public boolean isStartRecordingOnResume() {
+        return startRecordingOnResume;
+    }
+
+    public void setStartRecordingOnResume(boolean startRecordingOnResume) {
+        this.startRecordingOnResume = startRecordingOnResume;
     }
 
     @Override
