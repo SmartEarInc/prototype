@@ -17,7 +17,7 @@ public class MuteHelper {
 
     static {
         streams.add(new Stream(AudioManager.STREAM_MUSIC, "music"));
-        streams.add(new Stream(AudioManager.STREAM_RING, "ring"));
+//        streams.add(new Stream(AudioManager.STREAM_RING, "ring"));
     }
 
     public MuteHelper(Context context) {
