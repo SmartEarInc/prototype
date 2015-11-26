@@ -22,6 +22,7 @@ import com.smartear.smartear.MainActivity;
 import com.smartear.smartear.R;
 import com.smartear.smartear.SmartEarApplication;
 import com.smartear.smartear.databinding.FragmentVoiceRecognizerBinding;
+import com.smartear.smartear.utils.GoogleSpeechRecognizerHelper;
 import com.smartear.smartear.utils.commands.CommandHelper;
 import com.smartear.smartear.viewmodels.VoiceRecognizerModel;
 
@@ -34,6 +35,7 @@ public class VoiceRecognizeFragment extends Fragment {
     private static final String TAG = "VoiceRecognizeFragment";
     FragmentVoiceRecognizerBinding binding;
     VoiceRecognizerModel data = new VoiceRecognizerModel();
+    GoogleSpeechRecognizerHelper googleSpeechRecognizerHelper;
 
     public static VoiceRecognizeFragment newInstance(boolean startRecognize) {
         Bundle args = new Bundle();
@@ -169,10 +171,34 @@ public class VoiceRecognizeFragment extends Fragment {
     private void stopRecording() {
         if (recognizer != null)
             recognizer.stopRecording();
+        if (googleSpeechRecognizerHelper != null)
+            googleSpeechRecognizerHelper.stopListening();
         data.state.set(VoiceRecognizerModel.State.NOT_RECORDING);
     }
 
     private void startRecording() {
+        data.state.set(VoiceRecognizerModel.State.RECORDING);
+        googleSpeechRecognizerHelper = new GoogleSpeechRecognizerHelper(getActivity());
+        googleSpeechRecognizerHelper.setSpeechRecordingListener(new GoogleSpeechRecognizerHelper.SpeechRecordingListener() {
+            @Override
+            public void onResults(String text) {
+                getCommandHelper().parseCommand(text);
+                data.recordingResultText.set(text);
+                data.state.set(VoiceRecognizerModel.State.COMPLETED);
+                data.recordingButtonText.set(getString(R.string.startRecording));
+            }
+
+            @Override
+            public void onError(int error) {
+                data.state.set(VoiceRecognizerModel.State.ERROR);
+                data.recordingResultText.set("Error: " + error);
+                data.recordingButtonText.set(getString(R.string.startRecording));
+            }
+        });
+        googleSpeechRecognizerHelper.startListening();
+        data.recordingButtonText.set(getString(R.string.stopRecording));
+        if (true)
+            return;
         if (recognizer != null)
             recognizer.cancel();
         recognizer = SmartEarApplication.getSpeechKit().createRecognizer(Recognizer.RecognizerType.Dictation, Recognizer.EndOfSpeechDetection.Long, "en_US", speechListener, speechHandler);
@@ -203,13 +229,20 @@ public class VoiceRecognizeFragment extends Fragment {
         }
     }
 
+    private Handler startRecognizeHandler = new Handler();
+    private Runnable startRecognizeRunnable = new Runnable() {
+        @Override
+        public void run() {
+            startRecognizeImmediately();
+        }
+    };
+
     public void startRecognize() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startRecognizeImmediately();
-            }
-        }, 100);
+        if (!isBtMicrophoneOn()) {
+            startBtMicrophone();
+        }
+        startRecognizeHandler.removeCallbacks(startRecognizeRunnable);
+        startRecognizeHandler.postDelayed(startRecognizeRunnable, 1000);
     }
 
     public void startRecognizeImmediately() {
