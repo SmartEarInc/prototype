@@ -29,6 +29,9 @@
     <string name="hz">%1$s Hz</string>
     <string name="db">%1$s dB</string>
     <string name="bassBoost">Bass boost</string>
+    <string name="balance">Balance</string>
+    <string name="left">Left</string>
+    <string name="right">Right</string>
 
     <string-array name="bandLevels">
         <item>Bass</item>
