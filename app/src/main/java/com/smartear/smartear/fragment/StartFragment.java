@@ -172,7 +172,6 @@ public class StartFragment extends BaseBluetoothFragment {
                 startFragmentModel.ringVolumeLevel.set(am.getStreamVolume(stream));
                 break;
         }
-
     }
 
     private void initVolumeObserver() {
@@ -188,6 +187,11 @@ public class StartFragment extends BaseBluetoothFragment {
     @Override
     protected void onDeviceConnected(BluetoothDevice device) {
         updateConnectedDevices();
+    }
+
+    @Override
+    protected void onBluetoothConnected() {
+
     }
 
     @Override

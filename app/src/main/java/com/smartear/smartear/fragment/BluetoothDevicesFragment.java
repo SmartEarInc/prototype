@@ -23,8 +23,6 @@ import com.smartear.smartear.widget.RecyclerViewAdapterBase;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -80,7 +78,18 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
         adapter.setItems(new ArrayList<BluetoothDeviceWrapper>());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setAdapter(adapter);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isBluetoothEnabled()) {
+            requestDevices();
+        }
+    }
+
+    @Override
+    protected void onBluetoothConnected() {
         requestDevices();
     }
 
@@ -148,7 +157,7 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
             }
         }
 
-        if(!alreadyHas){
+        if (!alreadyHas) {
             BluetoothDeviceWrapper wrapper = new BluetoothDeviceWrapper();
             wrapper.device.set(device);
             wrapper.isConnected.set(isConnected);

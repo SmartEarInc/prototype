@@ -21,31 +21,32 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
-            if (BluetoothDevice.ACTION_FOUND.equals(action)) {
-                BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                onDeviceFound(device);
-            }
+            final BluetoothDevice device = intent.hasExtra(BluetoothDevice.EXTRA_DEVICE) ? (BluetoothDevice) intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE) : null;
+            switch (action) {
+                case BluetoothDevice.ACTION_FOUND:
+                    onDeviceFound(device);
+                    break;
+                case BluetoothDevice.ACTION_BOND_STATE_CHANGED:
+                    final int state = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.ERROR);
+                    final int prevState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);
+                    if (state == BluetoothDevice.BOND_BONDED && prevState == BluetoothDevice.BOND_BONDING) {
+                        onDevicePaired(device);
 
-            if (BluetoothDevice.ACTION_BOND_STATE_CHANGED.equals(action)) {
-                final int state = intent.getIntExtra(BluetoothDevice.EXTRA_BOND_STATE, BluetoothDevice.ERROR);
-                final int prevState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);
-                final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                if (state == BluetoothDevice.BOND_BONDED && prevState == BluetoothDevice.BOND_BONDING) {
-                    onDevicePaired(device);
-
-                } else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED) {
-                    onDeviceUnPaired(device);
-                }
-            }
-
-            if (BluetoothDevice.ACTION_ACL_CONNECTED.equals(action)) {
-                final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                onDeviceConnected(device);
-            }
-
-            if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-                final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-                onDeviceDisconnected(device);
+                    } else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED) {
+                        onDeviceUnPaired(device);
+                    }
+                    break;
+                case BluetoothDevice.ACTION_ACL_CONNECTED:
+                    onDeviceConnected(device);
+                    break;
+                case BluetoothDevice.ACTION_ACL_DISCONNECTED:
+                    onDeviceDisconnected(device);
+                    break;
+                case BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED:
+                    if (isBluetoothEnabled()) {
+                        onBluetoothConnected();
+                    }
+                    break;
             }
         }
     };
@@ -54,6 +55,8 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
     protected abstract void onDeviceDisconnected(BluetoothDevice device);
 
     protected abstract void onDeviceConnected(BluetoothDevice device);
+
+    protected abstract void onBluetoothConnected();
 
     private List<BluetoothDevice> connectedDevices = new ArrayList<>();
 
@@ -68,10 +71,15 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
     public abstract void onDeviceUnPaired(BluetoothDevice device);
 
     private void checkBluetoothEnabled() {
-        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (!bluetoothAdapter.isEnabled()) {
+        if (!isBluetoothEnabled()) {
+            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
             bluetoothAdapter.enable();
         }
+    }
+
+    protected boolean isBluetoothEnabled() {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        return bluetoothAdapter.isEnabled();
     }
 
     @Override
@@ -81,6 +89,7 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
         filter.addAction(BluetoothDevice.ACTION_BOND_STATE_CHANGED);
         filter.addAction(BluetoothDevice.ACTION_ACL_CONNECTED);
         filter.addAction(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+        filter.addAction(BluetoothAdapter.ACTION_CONNECTION_STATE_CHANGED);
         getActivity().registerReceiver(bluetoothReceiver, filter);
         checkBluetoothEnabled();
         updateConnectedDevices();
