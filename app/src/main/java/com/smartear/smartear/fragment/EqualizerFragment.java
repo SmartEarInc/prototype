@@ -18,6 +18,7 @@ import com.smartear.smartear.R;
 import com.smartear.smartear.databinding.FragmentEqualizerBinding;
 import com.smartear.smartear.widget.VisualizerView;
 
+
 /**
  * Created: Belozerov
  * Company: APPGRANULA LLC
@@ -40,7 +41,6 @@ public class EqualizerFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
     }
 
     public static EqualizerFragment newInstance() {
@@ -119,7 +119,7 @@ public class EqualizerFragment extends Fragment {
             bar.setMax(maxEQLevel - minEQLevel);
             try {
                 bar.setProgress((maxEQLevel - minEQLevel) / 2 + equalizer.getBandLevel(band));
-            } catch (RuntimeException e){
+            } catch (RuntimeException e) {
                 e.printStackTrace();
             }
             binding.equalizerSeekBars.addView(seekbarLinear);
