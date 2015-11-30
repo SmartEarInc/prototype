@@ -1,9 +1,12 @@
 package com.smartear.smartear.fragment;
 
+import android.content.ComponentName;
+import android.content.ServiceConnection;
 import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.Visualizer;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,6 +19,7 @@ import android.widget.TextView;
 
 import com.smartear.smartear.R;
 import com.smartear.smartear.databinding.FragmentEqualizerBinding;
+import com.smartear.smartear.services.EqService;
 import com.smartear.smartear.widget.VisualizerView;
 
 
@@ -27,9 +31,28 @@ import com.smartear.smartear.widget.VisualizerView;
 public class EqualizerFragment extends Fragment {
     private static final String TAG = "EqualizerFragment";
     FragmentEqualizerBinding binding;
-    Equalizer equalizer;
     BassBoost bassBoost;
     private Visualizer visualizer;
+    private boolean bound = false;
+    private EqService eqService;
+    ServiceConnection serviceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            bound = true;
+            eqService = ((EqService.EqBinder) service).getService();
+            initEqualizerUI();
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            bound = false;
+        }
+    };
+
+    private void initEqualizerUI() {
+        initBandLevels();
+        initVisualizer();
+    }
 
     @Nullable
     @Override
@@ -41,6 +64,12 @@ public class EqualizerFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initEqService();
+    }
+
+    private void initEqService() {
+        EqService.start(getActivity());
+        EqService.bind(getActivity(), serviceConnection);
     }
 
     public static EqualizerFragment newInstance() {
@@ -56,7 +85,7 @@ public class EqualizerFragment extends Fragment {
         visualizerView.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, getResources().getDimensionPixelSize(R.dimen.visuzlizerHeight)));
         binding.visualizerContainer.addView(visualizerView);
         visualizer = new Visualizer(0);
-        visualizer.setEnabled(false);
+//        visualizer.setEnabled(false);
         visualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
         visualizer.setEnabled(true);
         visualizer.setDataCaptureListener(new Visualizer.OnDataCaptureListener() {
@@ -76,10 +105,7 @@ public class EqualizerFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        equalizer = new Equalizer(0, 0);
-        bassBoost = new BassBoost(0, 0);
-        initBandLevels();
-        initVisualizer();
+        bassBoost = new BassBoost(1000, 0);
     }
 
     @Override
@@ -87,11 +113,10 @@ public class EqualizerFragment extends Fragment {
         super.onPause();
         if (visualizer != null)
             visualizer.release();
-        if (equalizer != null)
-            equalizer.release();
     }
 
     private void initBandLevels() {
+        final Equalizer equalizer = eqService.getEqualizer();
         Short level = equalizer.getNumberOfBands();
         Short[] bandsList = new Short[level];
         for (short i = 0; i < level; i++) {
@@ -102,7 +127,7 @@ public class EqualizerFragment extends Fragment {
         String[] bandStringArray = getResources().getStringArray(R.array.bandLevels);
         binding.equalizerSeekBars.removeAllViews();
         for (int i = 0; i < bandsList.length; i++) {
-            Short band = bandsList[i];
+            final Short band = bandsList[i];
 
             LinearLayout seekbarLinear = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.equalizer_seekbar, binding.equalizerSeekBars, false);
             seekbarLinear.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
@@ -122,6 +147,25 @@ public class EqualizerFragment extends Fragment {
             } catch (RuntimeException e) {
                 e.printStackTrace();
             }
+            final int finalI = i;
+            bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (fromUser) {
+                        equalizer.setBandLevel((short) finalI, (short) (progress + minEQLevel));
+                    }
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
             binding.equalizerSeekBars.addView(seekbarLinear);
         }
 

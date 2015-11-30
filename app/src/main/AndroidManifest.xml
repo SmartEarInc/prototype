@@ -44,6 +44,8 @@
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </service>
+
+        <service android:name=".services.EqService"/>
         <receiver android:name=".receivers.MediaButtonReceiver">
             <intent-filter android:priority="1000">
                 <action android:name="android.bluetooth.BluetoothHeadset.ACTION_VENDOR_SPECIFIC_HEADSET_EVENT" />

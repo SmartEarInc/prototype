@@ -109,10 +109,10 @@ public class MainActivity extends BaseActivity {
 
     private void requestFocus() {
         if (!audioFocusGranted) {
-            int result = audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
-            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-                audioFocusGranted = true;
-            }
+//            int result = audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
+//            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+//                audioFocusGranted = true;
+//            }
             BTService.restart(this);
         }
     }
