@@ -7,6 +7,7 @@ import android.bluetooth.le.ScanFilter;
 import android.bluetooth.le.ScanResult;
 import android.bluetooth.le.ScanSettings;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
@@ -131,7 +132,26 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
             addItem(device, false);
             updateConnectedDevices();
         }
+        restartDiscoveryHandler.removeCallbacks(restartDiscoveryRunnable);
+        restartDiscoveryHandler.postDelayed(restartDiscoveryRunnable, 3000);
     }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        restartDiscoveryHandler.removeCallbacks(restartDiscoveryRunnable);
+    }
+
+    private Handler restartDiscoveryHandler = new Handler();
+    private Runnable restartDiscoveryRunnable = new Runnable() {
+        @Override
+        public void run() {
+            BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            bluetoothAdapter.cancelDiscovery();
+            bluetoothAdapter.startDiscovery();
+            restartDiscoveryHandler.postDelayed(restartDiscoveryRunnable, 3000);
+        }
+    };
 
     @Override
     protected void onDeviceDisconnected(BluetoothDevice device) {

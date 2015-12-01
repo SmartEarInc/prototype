@@ -1,5 +1,6 @@
 package com.smartear.smartear.fragment;
 
+import android.bluetooth.BluetoothA2dp;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothHeadset;
@@ -10,8 +11,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Belozerow on 10.11.2015.
@@ -31,7 +36,7 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
                     final int prevState = intent.getIntExtra(BluetoothDevice.EXTRA_PREVIOUS_BOND_STATE, BluetoothDevice.ERROR);
                     if (state == BluetoothDevice.BOND_BONDED && prevState == BluetoothDevice.BOND_BONDING) {
                         onDevicePaired(device);
-
+                        connectDevice(device);
                     } else if (state == BluetoothDevice.BOND_NONE && prevState == BluetoothDevice.BOND_BONDED) {
                         onDeviceUnPaired(device);
                     }
@@ -77,6 +82,29 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
         }
     }
 
+    HashMap<Integer, BluetoothProfile> profiles = new HashMap<>();
+
+    protected void connectDevice(BluetoothDevice device) {
+        for (Map.Entry<Integer, BluetoothProfile> profileEntry : profiles.entrySet()) {
+            Method method;
+            try {
+                if (profileEntry.getKey() == BluetoothProfile.A2DP) {
+                    method = BluetoothA2dp.class.getDeclaredMethod("connect", BluetoothDevice.class);
+                } else {
+                    method = BluetoothHeadset.class.getDeclaredMethod("connect", BluetoothDevice.class);
+                }
+                method.setAccessible(true);
+                method.invoke(profileEntry.getValue(), device);
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     protected boolean isBluetoothEnabled() {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         return bluetoothAdapter.isEnabled();
@@ -100,6 +128,9 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
         @Override
         public void run() {
             BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+            for (Map.Entry<Integer, BluetoothProfile> entry : profiles.entrySet()) {
+                bluetoothAdapter.closeProfileProxy(entry.getKey(), entry.getValue());
+            }
             BluetoothProfile.ServiceListener profileListener = new BluetoothProfile.ServiceListener() {
                 @Override
                 public void onServiceConnected(int profile, BluetoothProfile proxy) {
@@ -112,6 +143,7 @@ public abstract class BaseBluetoothFragment extends BaseFragment {
                     }
                     updateConnectedDeviceHandler.removeCallbacks(updateConnectedDeviceRunnable);
                     updateConnectedDeviceHandler.postDelayed(updateConnectedDeviceRunnable, 100);
+                    profiles.put(profile, proxy);
                 }
 
                 @Override
