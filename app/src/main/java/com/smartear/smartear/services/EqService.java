@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.os.Binder;
 import android.os.IBinder;
@@ -22,6 +23,7 @@ public class EqService extends Service {
     private static final int NOTIFICATION_ID = 10;
     private IBinder binder = new EqBinder();
     private Equalizer equalizer;
+    private BassBoost bassBoost;
 
     @Nullable
     @Override
@@ -56,6 +58,8 @@ public class EqService extends Service {
     private void initEq() {
         equalizer = new Equalizer(100, 0);
         equalizer.setEnabled(true);
+        bassBoost = new BassBoost(100, 0);
+        bassBoost.setEnabled(true);
     }
 
     @Override
@@ -63,12 +67,17 @@ public class EqService extends Service {
         super.onDestroy();
         if (equalizer != null)
             equalizer.release();
+        if (bassBoost != null)
+            bassBoost.release();
     }
 
     public Equalizer getEqualizer() {
         return equalizer;
     }
 
+    public BassBoost getBassBoost() {
+        return bassBoost;
+    }
 
     public class EqBinder extends Binder {
         public EqService getService() {

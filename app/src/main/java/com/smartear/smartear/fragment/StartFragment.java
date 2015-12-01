@@ -2,6 +2,7 @@ package com.smartear.smartear.fragment;
 
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.ContentObserver;
@@ -16,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
 
+import com.smartear.smartear.EqualizerActivity;
 import com.smartear.smartear.MainActivity;
 import com.smartear.smartear.R;
 import com.smartear.smartear.databinding.FragmentStartBinding;
@@ -93,8 +95,14 @@ public class StartFragment extends BaseBluetoothFragment {
         getChildFragmentManager().beginTransaction().replace(R.id.voiceRecognizerContainer, VoiceRecognizeFragment.newInstance(getArguments().getBoolean(MainActivity.EXTRA_START_RECOGNITION, false)))
                 .commitAllowingStateLoss();
 
-        getChildFragmentManager().beginTransaction().replace(R.id.equalizerContainer, EqualizerFragment.newInstance())
-                .commitAllowingStateLoss();
+        binding.equalizer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), EqualizerActivity.class));
+            }
+        });
+//        getChildFragmentManager().beginTransaction().replace(R.id.equalizerContainer, EqualizerFragment.newInstance())
+//                .commitAllowingStateLoss();
     }
 
 

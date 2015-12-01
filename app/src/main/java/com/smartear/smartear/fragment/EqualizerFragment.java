@@ -8,7 +8,6 @@ import android.media.audiofx.Visualizer;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,10 +27,10 @@ import com.smartear.smartear.widget.VisualizerView;
  * Company: APPGRANULA LLC
  * Date: 24.11.2015
  */
-public class EqualizerFragment extends Fragment {
+public class EqualizerFragment extends BaseFragment {
     private static final String TAG = "EqualizerFragment";
+    private static final int MAX_BASS_BOOST = 1000;
     FragmentEqualizerBinding binding;
-    BassBoost bassBoost;
     private Visualizer visualizer;
     private boolean bound = false;
     private EqService eqService;
@@ -50,6 +49,8 @@ public class EqualizerFragment extends Fragment {
     };
 
     private void initEqualizerUI() {
+        if (eqService == null)
+            return;
         initBandLevels();
         initVisualizer();
     }
@@ -72,6 +73,16 @@ public class EqualizerFragment extends Fragment {
         EqService.bind(getActivity(), serviceConnection);
     }
 
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (bound) {
+            getActivity().unbindService(serviceConnection);
+            bound = false;
+        }
+    }
+
+
     public static EqualizerFragment newInstance() {
         Bundle args = new Bundle();
         EqualizerFragment fragment = new EqualizerFragment();
@@ -87,7 +98,6 @@ public class EqualizerFragment extends Fragment {
         visualizer = new Visualizer(0);
 //        visualizer.setEnabled(false);
         visualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
-        visualizer.setEnabled(true);
         visualizer.setDataCaptureListener(new Visualizer.OnDataCaptureListener() {
             @Override
             public void onWaveFormDataCapture(Visualizer visualizer, byte[] waveform, int samplingRate) {
@@ -99,13 +109,24 @@ public class EqualizerFragment extends Fragment {
 
             }
         }, Visualizer.getMaxCaptureRate() / 2, true, false);
+        visualizer.setEnabled(true);
     }
 
 
     @Override
+    public String getFragmentTag() {
+        return TAG;
+    }
+
+    @Override
+    public String getTitle() {
+        return getString(R.string.equalizer);
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
-        bassBoost = new BassBoost(1000, 0);
+        initEqualizerUI();
     }
 
     @Override
@@ -143,7 +164,7 @@ public class EqualizerFragment extends Fragment {
             SeekBar bar = (SeekBar) seekbarLinear.findViewById(R.id.equalizerSeek);
             bar.setMax(maxEQLevel - minEQLevel);
             try {
-                bar.setProgress((maxEQLevel - minEQLevel) / 2 + equalizer.getBandLevel(band));
+                bar.setProgress((maxEQLevel - minEQLevel) / 2 + equalizer.getBandLevel((short) i));
             } catch (RuntimeException e) {
                 e.printStackTrace();
             }
@@ -152,7 +173,11 @@ public class EqualizerFragment extends Fragment {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                     if (fromUser) {
-                        equalizer.setBandLevel((short) finalI, (short) (progress + minEQLevel));
+                        try {
+                            equalizer.setBandLevel((short) finalI, (short) (progress - (maxEQLevel - minEQLevel) / 2));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
 
@@ -168,8 +193,34 @@ public class EqualizerFragment extends Fragment {
             });
             binding.equalizerSeekBars.addView(seekbarLinear);
         }
+        try {
+            final BassBoost bassBoost = eqService.getBassBoost();
+            BassBoost.Settings bassSettings = bassBoost.getProperties();
+            BassBoost.Settings newSettings = new BassBoost.Settings(bassSettings.toString());
+            newSettings.strength = MAX_BASS_BOOST;
+            bassBoost.setProperties(newSettings);
+            binding.bassBoost.setMax(MAX_BASS_BOOST);
+            binding.bassBoost.setProgress(bassBoost.getRoundedStrength() / 5);
+            binding.bassBoost.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if (fromUser) {
+                        bassBoost.setStrength((short) progress);
+                    }
+                }
 
-        binding.bassBoost.setMax(200);
-        binding.bassBoost.setProgress(bassBoost.getRoundedStrength() / 5);
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
+        } catch (Exception e) {
+            binding.bassBoost.setEnabled(false);
+        }
     }
 }
