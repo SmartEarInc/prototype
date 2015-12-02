@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,14 +120,14 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         bluetoothAdapter.startDiscovery();
         if (VersionUtils.lollipopOrHigher()) {
-            bluetoothAdapter.getBluetoothLeScanner().startScan(new ArrayList<ScanFilter>(), new ScanSettings.Builder()
-                    .build(), new ScanCallback() {
-                @Override
-                public void onScanResult(int callbackType, ScanResult result) {
-                    super.onScanResult(callbackType, result);
-                    onDeviceFound(result.getDevice());
-                }
-            });
+//            bluetoothAdapter.getBluetoothLeScanner().startScan(new ArrayList<ScanFilter>(), new ScanSettings.Builder()
+//                    .build(), new ScanCallback() {
+//                @Override
+//                public void onScanResult(int callbackType, ScanResult result) {
+//                    super.onScanResult(callbackType, result);
+//                    onDeviceFound(result.getDevice());
+//                }
+//            });
         }
         for (BluetoothDevice device : bluetoothAdapter.getBondedDevices()) {
             addItem(device, false);
@@ -166,6 +167,9 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
 
 
     private void addItem(BluetoothDevice device, boolean isConnected) {
+        if (TextUtils.isEmpty(device.getName())) {
+            return;
+        }
         boolean alreadyHas = false;
         for (BluetoothDeviceWrapper wrapper : adapter.getItems()) {
             if (wrapper.device.get().toString().equals(device.toString())) {
