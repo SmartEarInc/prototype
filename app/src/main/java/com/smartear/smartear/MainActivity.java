@@ -25,6 +25,7 @@ public class MainActivity extends BaseActivity {
     private ComponentName receiverComponent;
     private PendingIntent pendingIntent;
     private boolean audioFocusGranted = false;
+    private boolean isResumed = false;
     private AudioManager.OnAudioFocusChangeListener audioFocusListener = new AudioManager.OnAudioFocusChangeListener() {
         @Override
         public void onAudioFocusChange(int focusChange) {
@@ -32,8 +33,12 @@ public class MainActivity extends BaseActivity {
                 case AudioManager.AUDIOFOCUS_LOSS:
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-                    audioFocusGranted = false;
-                    audioManager.abandonAudioFocus(audioFocusListener);
+                    if (!isResumed) {
+                        audioFocusGranted = false;
+                        audioManager.abandonAudioFocus(audioFocusListener);
+                    } else {
+                        requestAudioFocus();
+                    }
                     break;
                 case AudioManager.AUDIOFOCUS_GAIN:
                     break;
@@ -104,12 +109,13 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        requestFocus();
+        isResumed = true;
+        requestAudioFocus();
     }
 
-    private void requestFocus() {
+    public void requestAudioFocus() {
         if (!audioFocusGranted) {
-            int result = audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN_TRANSIENT);
+            int result = audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
             if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
                 audioFocusGranted = true;
             }
@@ -120,6 +126,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        isResumed = false;
         audioFocusGranted = false;
         audioManager.abandonAudioFocus(audioFocusListener);
     }
@@ -139,6 +146,5 @@ public class MainActivity extends BaseActivity {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CALL_PHONE}, REQUEST_PERMISSION);
         }
     }
-
 
 }
