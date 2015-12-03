@@ -65,7 +65,6 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
                 return ItemBluetoothDeviceBinding.inflate(inflater, parent, false);
             }
         };
-
         adapter.setOnItemClickListener(new RecyclerViewAdapterBase.OnItemClickListener<BluetoothDeviceWrapper>() {
             @Override
             public void onItemClick(BluetoothDeviceWrapper wrapper) {
@@ -77,9 +76,11 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
                 }
             }
         });
+        adapter.setHasStableIds(true);
         adapter.setItems(new ArrayList<BluetoothDeviceWrapper>());
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setAdapter(adapter);
+        binding.recyclerView.setHasFixedSize(true);
     }
 
     @Override
@@ -120,14 +121,14 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         bluetoothAdapter.startDiscovery();
         if (VersionUtils.lollipopOrHigher()) {
-//            bluetoothAdapter.getBluetoothLeScanner().startScan(new ArrayList<ScanFilter>(), new ScanSettings.Builder()
-//                    .build(), new ScanCallback() {
-//                @Override
-//                public void onScanResult(int callbackType, ScanResult result) {
-//                    super.onScanResult(callbackType, result);
-//                    onDeviceFound(result.getDevice());
-//                }
-//            });
+            bluetoothAdapter.getBluetoothLeScanner().startScan(new ArrayList<ScanFilter>(), new ScanSettings.Builder()
+                    .build(), new ScanCallback() {
+                @Override
+                public void onScanResult(int callbackType, ScanResult result) {
+                    super.onScanResult(callbackType, result);
+                    onDeviceFound(result.getDevice());
+                }
+            });
         }
         for (BluetoothDevice device : bluetoothAdapter.getBondedDevices()) {
             addItem(device, false);
@@ -187,6 +188,8 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
             wrapper.isConnected.set(isConnected);
             adapter.addItem(wrapper);
         }
+
+
     }
 
     @Override
