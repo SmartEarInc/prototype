@@ -22,8 +22,12 @@ public class CommandHelper {
 
     public void parseCommand(String text) {
         for (BaseCommandHelper helper : helpers) {
-            if (helper.parseCommand(text))
-                return;
+            try {
+                if (helper.parseCommand(text))
+                    return;
+            } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
         }
     }
 

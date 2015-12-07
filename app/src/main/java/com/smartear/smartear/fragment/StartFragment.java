@@ -84,7 +84,9 @@ public class StartFragment extends BaseBluetoothFragment {
         binding.pairDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(new BluetoothDevicesFragment(), true);
+                Intent settingsIntent = new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
+                startActivity(settingsIntent);
+//                replaceFragment(new BluetoothDevicesFragment(), true);
             }
         });
         muteHelper = new MuteHelper(getActivity());
@@ -224,6 +226,8 @@ public class StartFragment extends BaseBluetoothFragment {
 
     @Override
     protected void updateConnectedDevices(List<BluetoothDevice> connectedDevices) {
+        if(getActivity() == null)
+            return;
         ArrayList<String> names = new ArrayList<>();
         for (BluetoothDevice device : connectedDevices) {
             names.add(!TextUtils.isEmpty(device.getName()) ? device.getName() : device.toString());
