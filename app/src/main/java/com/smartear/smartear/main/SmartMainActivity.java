@@ -1,5 +1,7 @@
 package com.smartear.smartear.main;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +10,7 @@ import com.smartear.smartear.BaseActivity;
 import com.smartear.smartear.R;
 import com.smartear.smartear.databinding.ActivitySmartMainBinding;
 import com.smartear.smartear.main.fragments.EqFragment;
+import com.smartear.smartear.main.fragments.TopPanelFragment;
 import com.smartear.smartear.main.viewmodel.SmartMainModel;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -39,12 +42,12 @@ public class SmartMainActivity extends BaseActivity {
 
             @Override
             public void onPanelCollapsed(View panel) {
-//                binding.eqPanel.setTouchEnabled(false);
+
             }
 
             @Override
             public void onPanelExpanded(View panel) {
-//                binding.eqPanel.setTouchEnabled(true);
+
             }
 
             @Override
@@ -71,6 +74,11 @@ public class SmartMainActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.eqContainer, EqFragment.newInstance())
                 .commitAllowingStateLoss();
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.smartMainButtons, TopPanelFragment.newInstance())
+                .commitAllowingStateLoss();
+
     }
 
     private void hideEqPanel() {

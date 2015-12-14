@@ -1,88 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.smartear.smartear.main.viewmodel.TopPanelModel" />
+    </data>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/mainButtonHeight"
-        android:orientation="horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/launchAssistant"
-            style="@style/AppTheme.MainButton"
-            android:src="@drawable/ic_bt_device" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mainButtonHeight"
+            android:orientation="horizontal">
 
-        <View style="@style/AppTheme.VerticalDivider" />
+            <ImageView
+                android:id="@+id/launchAssistant"
+                style="@style/AppTheme.MainButton"
+                android:src="@drawable/ic_bt_device" />
 
-        <ImageView
-            android:id="@+id/muteSound"
-            style="@style/AppTheme.MainButton"
-            android:src="@drawable/ic_bt_device" />
+            <View style="@style/AppTheme.VerticalDivider" />
 
-        <View style="@style/AppTheme.VerticalDivider" />
+            <ImageView
+                android:id="@+id/muteSound"
+                style="@style/AppTheme.MainButton"
+                android:src="@drawable/ic_bt_device" />
 
-        <ImageView
-            android:id="@+id/noiseCancel"
-            style="@style/AppTheme.MainButton"
-            android:src="@drawable/ic_bt_device" />
+            <View style="@style/AppTheme.VerticalDivider" />
+
+            <ImageView
+                android:id="@+id/noiseCancel"
+                style="@style/AppTheme.MainButton"
+                android:src="@drawable/ic_bt_device" />
+        </LinearLayout>
+
+        <View style="@style/AppTheme.HorizontalDivider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@color/mainButtonColor"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:src="@drawable/ic_bt_device" />
+
+            <SeekBar
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="40dp"
+                android:src="@drawable/ic_bt_device_paired" />
+        </LinearLayout>
+
+        <View style="@style/AppTheme.HorizontalDivider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/mainButtonHeight"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/musicPlayer"
+                style="@style/AppTheme.MainButton"
+                android:src="@drawable/ic_bt_device" />
+
+            <View style="@style/AppTheme.VerticalDivider" />
+
+            <ImageView
+                android:id="@+id/bionicEarSettings"
+                style="@style/AppTheme.MainButton"
+                android:src="@drawable/ic_bt_device" />
+
+            <View style="@style/AppTheme.VerticalDivider" />
+
+            <ImageView
+                android:id="@+id/generalSettings"
+                style="@style/AppTheme.MainButton"
+                android:src="@drawable/ic_bt_device" />
+        </LinearLayout>
+
+        <View style="@style/AppTheme.HorizontalDivider" />
+
     </LinearLayout>
-
-    <View style="@style/AppTheme.HorizontalDivider" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:background="@color/mainButtonColor"
-        android:gravity="center"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:src="@drawable/ic_bt_device" />
-
-        <SeekBar
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="40dp"
-            android:src="@drawable/ic_bt_device_paired" />
-    </LinearLayout>
-
-    <View style="@style/AppTheme.HorizontalDivider" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/mainButtonHeight"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/musicPlayer"
-            style="@style/AppTheme.MainButton"
-            android:src="@drawable/ic_bt_device" />
-
-        <View style="@style/AppTheme.VerticalDivider" />
-
-        <ImageView
-            android:id="@+id/bionicEarSettings"
-            style="@style/AppTheme.MainButton"
-            android:src="@drawable/ic_bt_device" />
-
-        <View style="@style/AppTheme.VerticalDivider" />
-
-        <ImageView
-            android:id="@+id/generalSettings"
-            style="@style/AppTheme.MainButton"
-            android:src="@drawable/ic_bt_device" />
-    </LinearLayout>
-
-    <View style="@style/AppTheme.HorizontalDivider" />
-
-</LinearLayout>
+</layout>
