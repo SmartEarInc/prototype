@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.smartear.smartear.main.viewmodel.SmartMainModel" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="306dp"
+        android:background="@color/mainButtonPressedColor">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/mainButtonPressedColor"
+            android:orientation="horizontal">
+
+            <LinearLayout style="@style/AppTheme.EqSeekBarContainer">
+
+                <TextView
+                    style="@style/AppTheme.EqSeekBarText"
+                    android:text="80" />
+
+                <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper style="@style/AppTheme.EqSeekBarWrapper">
+
+                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar style="@style/AppTheme.EqSeekBar" />
+                </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+            </LinearLayout>
+
+            <View style="@style/AppTheme.VerticalDivider" android:layout_marginTop="1dp"/>
+
+            <LinearLayout style="@style/AppTheme.EqSeekBarContainer">
+
+                <TextView
+                    style="@style/AppTheme.EqSeekBarText"
+                    android:text="240" />
+
+                <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper style="@style/AppTheme.EqSeekBarWrapper">
+
+                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar style="@style/AppTheme.EqSeekBar" />
+                </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
+            </LinearLayout>
+
+            <View style="@style/AppTheme.VerticalDivider" android:layout_marginTop="1dp"/>
+
+            <LinearLayout style="@style/AppTheme.EqSeekBarContainer">
+
+                <TextView
+                    style="@style/AppTheme.EqSeekBarText"
+                    android:text="750" />
+
+                <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper style="@style/AppTheme.EqSeekBarWrapper">
+
+                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar style="@style/AppTheme.EqSeekBar" />
+                </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
+            </LinearLayout>
+
+            <View style="@style/AppTheme.VerticalDivider" android:layout_marginTop="1dp"/>
+
+            <LinearLayout style="@style/AppTheme.EqSeekBarContainer">
+
+                <TextView
+                    style="@style/AppTheme.EqSeekBarText"
+                    android:text="2200" />
+
+                <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper style="@style/AppTheme.EqSeekBarWrapper">
+
+                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar style="@style/AppTheme.EqSeekBar" />
+                </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
+            </LinearLayout>
+
+            <View style="@style/AppTheme.VerticalDivider"
+                android:layout_marginTop="1dp"/>
+
+            <LinearLayout style="@style/AppTheme.EqSeekBarContainer">
+
+                <TextView
+                    style="@style/AppTheme.EqSeekBarText"
+                    android:text="6600" />
+
+                <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper style="@style/AppTheme.EqSeekBarWrapper">
+
+                    <com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBar style="@style/AppTheme.EqSeekBar" />
+                </com.h6ah4i.android.widget.verticalseekbar.VerticalSeekBarWrapper>
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            style="@style/AppTheme.HorizontalDivider"
+            android:layout_marginTop="1dp"
+            android:background="@color/dividerVerticalColor" />
+    </FrameLayout>
+
+
+</layout>
