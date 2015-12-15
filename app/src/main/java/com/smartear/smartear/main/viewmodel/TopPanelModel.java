@@ -2,10 +2,6 @@ package com.smartear.smartear.main.viewmodel;
 
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableInt;
-import android.view.View;
-
-import com.smartear.smartear.SmartEarApplication;
-import com.smartear.smartear.utils.MuteHelper;
 
 /**
  * Created: Belozerov
@@ -13,10 +9,11 @@ import com.smartear.smartear.utils.MuteHelper;
  * Date: 14.12.2015
  */
 public class TopPanelModel {
-
     public ObservableBoolean isMute = new ObservableBoolean();
     public ObservableBoolean isNoise = new ObservableBoolean();
     public ObservableInt soundVolume = new ObservableInt();
     public ObservableInt soundMaxVolume = new ObservableInt();
-
+    public ObservableBoolean isPlayerActive = new ObservableBoolean();
+    public ObservableBoolean isSmartEarSettingsActive = new ObservableBoolean();
+    public ObservableBoolean isGeneralSettingsActive = new ObservableBoolean();
 }

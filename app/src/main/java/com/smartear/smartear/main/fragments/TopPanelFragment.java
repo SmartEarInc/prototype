@@ -34,6 +34,7 @@ public class TopPanelFragment extends Fragment {
 
     private SettingsContentObserver settingsContentObserver;
     private TopPanelModel model;
+    private TopPanelListener topPanelListener;
 
     public static TopPanelFragment newInstance() {
         Bundle args = new Bundle();
@@ -76,6 +77,42 @@ public class TopPanelFragment extends Fragment {
                     muteHelper.muteSound();
                     model.isMute.set(true);
                 }
+            }
+        });
+        binding.noiseCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                model.isNoise.set(!model.isNoise.get());
+            }
+        });
+
+        binding.musicPlayer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                model.isPlayerActive.set(true);
+                model.isGeneralSettingsActive.set(false);
+                model.isSmartEarSettingsActive.set(false);
+                topPanelListener.showPlayer();
+            }
+        });
+
+        binding.generalSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                model.isPlayerActive.set(false);
+                model.isGeneralSettingsActive.set(true);
+                model.isSmartEarSettingsActive.set(false);
+                topPanelListener.showGeneralSettings();
+            }
+        });
+
+        binding.bionicEarSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                model.isPlayerActive.set(false);
+                model.isGeneralSettingsActive.set(false);
+                model.isSmartEarSettingsActive.set(true);
+                topPanelListener.showSmartEarSettings();
             }
         });
 
@@ -153,5 +190,21 @@ public class TopPanelFragment extends Fragment {
                 model.soundVolume.set(am.getStreamVolume(stream));
                 break;
         }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getActivity() instanceof TopPanelListener) {
+            this.topPanelListener = (TopPanelListener) getActivity();
+        }
+    }
+
+    public interface TopPanelListener {
+        void showPlayer();
+
+        void showSmartEarSettings();
+
+        void showGeneralSettings();
     }
 }

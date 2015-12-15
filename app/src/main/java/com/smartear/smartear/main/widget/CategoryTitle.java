@@ -18,6 +18,7 @@ import com.smartear.smartear.main.viewmodel.CategoryTitleModel;
 public class CategoryTitle extends FrameLayout {
 
     CategoryTitleModel model;
+    CategoryTitleBinding binding;
 
     public CategoryTitle(Context context) {
         super(context);
@@ -30,8 +31,13 @@ public class CategoryTitle extends FrameLayout {
     }
 
     private void init() {
-        CategoryTitleBinding binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.category_title, this, true);
+        binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.category_title, this, true);
         model = new CategoryTitleModel();
+        binding.setData(model);
+    }
+
+    public void setModel(CategoryTitleModel model) {
+        this.model = model;
         binding.setData(model);
     }
 }

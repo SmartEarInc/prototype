@@ -1,15 +1,15 @@
 package com.smartear.smartear.main;
 
-import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.View;
 
 import com.smartear.smartear.BaseActivity;
 import com.smartear.smartear.R;
 import com.smartear.smartear.databinding.ActivitySmartMainBinding;
 import com.smartear.smartear.main.fragments.EqFragment;
+import com.smartear.smartear.main.fragments.PlayerFragment;
 import com.smartear.smartear.main.fragments.TopPanelFragment;
 import com.smartear.smartear.main.viewmodel.SmartMainModel;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -19,7 +19,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
  * Company: APPGRANULA LLC
  * Date: 14.12.2015
  */
-public class SmartMainActivity extends BaseActivity {
+public class SmartMainActivity extends BaseActivity implements TopPanelFragment.TopPanelListener {
     private ActivitySmartMainBinding binding;
 
     @Override
@@ -91,11 +91,35 @@ public class SmartMainActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        if (!SlidingUpPanelLayout.PanelState.EXPANDED.equals(binding.eqPanel.getPanelState())) {
+        if (SlidingUpPanelLayout.PanelState.EXPANDED.equals(binding.eqPanel.getPanelState())) {
             hideEqPanel();
             return;
         }
         super.onBackPressed();
+
+    }
+
+    @Override
+    public void showPlayer() {
+
+        if (!(getLastBottomFragment() instanceof PlayerFragment)) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragmentContainer, PlayerFragment.newInstance(), PlayerFragment.TAG)
+                    .commitAllowingStateLoss();
+        }
+    }
+
+    public Fragment getLastBottomFragment() {
+        return getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+    }
+
+    @Override
+    public void showSmartEarSettings() {
+
+    }
+
+    @Override
+    public void showGeneralSettings() {
 
     }
 }

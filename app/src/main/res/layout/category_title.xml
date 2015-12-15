@@ -23,31 +23,35 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_gravity="start|center_vertical"
             android:layout_marginLeft="16dp"
+            android:gravity="start|center_vertical"
             android:text="@{data.title}"
             android:textAllCaps="true"
             android:textColor="@color/smartGrayTextColor"
-            android:textSize="24sp" />
+            android:textSize="18sp" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
             android:layout_marginRight="16dp"
+            android:gravity="end|center_vertical"
             android:orientation="horizontal"
             android:visibility="@{TextUtils.isEmpty(data.action)?View.GONE:View.VISIBLE}">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:text="@{data.getActionText()}"
                 android:textColor="@color/smartWhiteTextColor"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
                 android:src="@drawable/ic_bt_device" />
         </LinearLayout>
     </FrameLayout>

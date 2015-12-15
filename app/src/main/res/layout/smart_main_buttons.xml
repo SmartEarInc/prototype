@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <data>
 
@@ -24,19 +23,17 @@
                 style="@style/AppTheme.MainButton"
                 android:src="@drawable/ic_bt_device" />
 
-            <View style="@style/AppTheme.VerticalDivider" />
 
             <ImageView
                 android:id="@+id/muteSound"
                 style="@style/AppTheme.MainButton"
                 android:src="@{viewModel.isMute?@drawable/ic_bt_device:@drawable/ic_bt_device_paired}" />
 
-            <View style="@style/AppTheme.VerticalDivider" />
 
             <ImageView
                 android:id="@+id/noiseCancel"
                 style="@style/AppTheme.MainButton"
-                android:src="@drawable/ic_bt_device" />
+                android:src="@{viewModel.isNoise?@drawable/ic_bt_device:@drawable/ic_bt_device_paired}" />
         </LinearLayout>
 
         <View style="@style/AppTheme.HorizontalDivider" />
@@ -55,10 +52,10 @@
                 android:src="@drawable/ic_bt_device" />
 
             <SeekBar
+                android:id="@+id/soundSeekbar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:id="@+id/soundSeekbar"
                 android:max="@{viewModel.soundMaxVolume}"
                 android:progress="@{viewModel.soundVolume}" />
 
@@ -79,20 +76,19 @@
             <ImageView
                 android:id="@+id/musicPlayer"
                 style="@style/AppTheme.MainButton"
+                android:background="@{viewModel.isPlayerActive?@drawable/main_button_bg_pressed:@drawable/main_button_bg}"
                 android:src="@drawable/ic_bt_device" />
-
-            <View style="@style/AppTheme.VerticalDivider" />
 
             <ImageView
                 android:id="@+id/bionicEarSettings"
                 style="@style/AppTheme.MainButton"
+                android:background="@{viewModel.isSmartEarSettingsActive?@drawable/main_button_bg_pressed:@drawable/main_button_bg}"
                 android:src="@drawable/ic_bt_device" />
-
-            <View style="@style/AppTheme.VerticalDivider" />
 
             <ImageView
                 android:id="@+id/generalSettings"
                 style="@style/AppTheme.MainButton"
+                android:background="@{viewModel.isGeneralSettingsActive?@drawable/main_button_bg_pressed:@drawable/main_button_bg}"
                 android:src="@drawable/ic_bt_device" />
         </LinearLayout>
 
