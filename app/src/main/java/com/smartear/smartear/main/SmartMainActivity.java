@@ -3,6 +3,7 @@ package com.smartear.smartear.main;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.smartear.smartear.BaseActivity;
@@ -34,7 +35,7 @@ public class SmartMainActivity extends BaseActivity implements TopPanelFragment.
         binding = DataBindingUtil.setContentView(this, R.layout.activity_smart_main);
         SmartMainModel smartMainModel = new SmartMainModel();
         binding.setData(smartMainModel);
-
+        binding.eqPanel.setDragView(binding.eqFab);
         binding.eqPanel.setTouchEnabled(false);
         binding.eqPanel.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override

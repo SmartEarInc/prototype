@@ -43,21 +43,22 @@
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
             android:gravity="bottom"
+            android:clickable="false"
             app:umanoFadeColor="@android:color/transparent"
             app:umanoOverlay="true"
             app:umanoPanelHeight="72dp"
             app:umanoShadowHeight="0dp">
 
             <LinearLayout
+                android:id="@+id/mainContent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
                 <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
                     android:id="@+id/smartMainButtons"
-                    />
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
                 <FrameLayout
                     android:id="@+id/fragmentContainer"
@@ -66,6 +67,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/eqPanelBottom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
