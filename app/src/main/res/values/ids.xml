@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="settingsAssistant" type="id" />
+    <item name="chat" type="id"/>
+    <item name="music" type="id" />
+    <item name="pairing" type="id"/>
+    <item name="tutorial" type="id" />
+</resources>

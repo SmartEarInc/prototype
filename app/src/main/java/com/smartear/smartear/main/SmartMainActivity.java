@@ -11,6 +11,7 @@ import com.smartear.smartear.databinding.ActivitySmartMainBinding;
 import com.smartear.smartear.main.fragments.BionicFragment;
 import com.smartear.smartear.main.fragments.EqFragment;
 import com.smartear.smartear.main.fragments.PlayerFragment;
+import com.smartear.smartear.main.fragments.SettingsFragment;
 import com.smartear.smartear.main.fragments.TopPanelFragment;
 import com.smartear.smartear.main.viewmodel.SmartMainModel;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -119,13 +120,15 @@ public class SmartMainActivity extends BaseActivity implements TopPanelFragment.
 
     @Override
     public void showSmartEarSettings() {
-        if(!(getLastBottomFragment() instanceof BionicFragment)){
-            showBottomFragment(BionicFragment.newInstance(),BionicFragment.TAG);
+        if (!(getLastBottomFragment() instanceof BionicFragment)) {
+            showBottomFragment(BionicFragment.newInstance(), BionicFragment.TAG);
         }
     }
 
     @Override
     public void showGeneralSettings() {
-
+        if (!(getLastBottomFragment() instanceof SettingsFragment)) {
+            showBottomFragment(SettingsFragment.newInstance(), SettingsFragment.TAG);
+        }
     }
 }
