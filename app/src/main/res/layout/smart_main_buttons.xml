@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -28,7 +29,7 @@
             <ImageView
                 android:id="@+id/muteSound"
                 style="@style/AppTheme.MainButton"
-                android:src="@drawable/ic_bt_device" />
+                android:src="@{viewModel.isMute?@drawable/ic_bt_device:@drawable/ic_bt_device_paired}" />
 
             <View style="@style/AppTheme.VerticalDivider" />
 
@@ -56,7 +57,10 @@
             <SeekBar
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                android:id="@+id/soundSeekbar"
+                android:max="@{viewModel.soundMaxVolume}"
+                android:progress="@{viewModel.soundVolume}" />
 
             <ImageView
                 android:layout_width="wrap_content"

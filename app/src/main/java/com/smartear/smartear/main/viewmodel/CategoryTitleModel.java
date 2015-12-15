@@ -7,7 +7,7 @@ import android.databinding.ObservableField;
  * Company: APPGRANULA LLC
  * Date: 14.12.2015
  */
-public class CategoryTitleModel {
+public class CategoryTitleModel{
     public ObservableField<String> title = new ObservableField<>();
     public ObservableField<String> action = new ObservableField<>();
     public ObservableField<String> value = new ObservableField<>();

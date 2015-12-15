@@ -7,6 +7,6 @@ import android.databinding.BaseObservable;
  * Company: APPGRANULA LLC
  * Date: 14.12.2015
  */
-public class SmartMainModel {
+public class SmartMainModel{
 
 }

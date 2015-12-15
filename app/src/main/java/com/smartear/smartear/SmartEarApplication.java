@@ -1,11 +1,13 @@
 package com.smartear.smartear;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
 import com.nuance.nmdp.speechkit.Prompt;
 import com.nuance.nmdp.speechkit.SpeechKit;
 import com.smartear.smartear.speechkit.AppInfo;
+
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -15,6 +17,7 @@ import io.fabric.sdk.android.Fabric;
  */
 public class SmartEarApplication extends Application {
     private static SpeechKit speechKit;
+    private static Context context;
 
     @Override
     public void onCreate() {
@@ -25,6 +28,11 @@ public class SmartEarApplication extends Application {
 
         Prompt beep = speechKit.defineAudioPrompt(R.raw.beep);
         speechKit.setDefaultRecognizerPrompts(beep, Prompt.vibration(100), null, null);
+        context = this;
+    }
+
+    public static Context getContext() {
+        return context;
     }
 
     public static SpeechKit getSpeechKit() {
