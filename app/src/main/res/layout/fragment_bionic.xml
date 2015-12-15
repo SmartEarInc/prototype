@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.smartear.smartear.main.viewmodel.BionicModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.smartear.smartear.main.widget.CategoryTitle
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:categoryModel="@{data.title}" />
+
+        <View style="@style/AppTheme.HorizontalDivider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="32dp"
+            android:layout_marginLeft="56dp"
+            android:layout_marginRight="56dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/left_right_bg"
+            android:orientation="horizontal"
+            android:padding="2dp">
+
+            <TextView
+                android:id="@+id/left"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@{data.isLeftSelected?@drawable/left_right_button_selected:@drawable/left_right_button}"
+                android:gravity="center"
+                android:text="@string/left"
+                android:textAllCaps="true"
+                android:textColor="@{data.isLeftSelected?@color/colorAccent:@color/smartGrayTextColor}" />
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/smartGrayTextColor" />
+
+            <TextView
+                android:id="@+id/right"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@{data.isLeftSelected?@drawable/left_right_button:@drawable/left_right_button_selected}"
+                android:gravity="center"
+                android:text="@string/right"
+                android:textAllCaps="true"
+                android:textColor="@{data.isLeftSelected?@color/smartGrayTextColor:@color/colorAccent}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:background="@color/mainButtonColor"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:src="@drawable/ic_bt_device" />
+
+            <SeekBar
+                android:id="@+id/micSeekbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="@{data.maxMicValue}"
+                android:progress="@{data.micValue}" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="40dp"
+                android:src="@drawable/ic_bt_device_paired" />
+        </LinearLayout>
+
+        <View style="@style/AppTheme.HorizontalDivider" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rounded_button"
+            android:text="@string/local"
+            android:textAllCaps="true"
+            android:textColor="@color/smartGrayTextColor" />
+
+        <com.smartear.smartear.main.widget.CategoryTitle
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:categoryModel="@{data.presets}" />
+    </LinearLayout>
+</layout>

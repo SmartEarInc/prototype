@@ -8,6 +8,7 @@ import android.view.View;
 import com.smartear.smartear.BaseActivity;
 import com.smartear.smartear.R;
 import com.smartear.smartear.databinding.ActivitySmartMainBinding;
+import com.smartear.smartear.main.fragments.BionicFragment;
 import com.smartear.smartear.main.fragments.EqFragment;
 import com.smartear.smartear.main.fragments.PlayerFragment;
 import com.smartear.smartear.main.fragments.TopPanelFragment;
@@ -101,12 +102,15 @@ public class SmartMainActivity extends BaseActivity implements TopPanelFragment.
 
     @Override
     public void showPlayer() {
-
         if (!(getLastBottomFragment() instanceof PlayerFragment)) {
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragmentContainer, PlayerFragment.newInstance(), PlayerFragment.TAG)
-                    .commitAllowingStateLoss();
+            showBottomFragment(PlayerFragment.newInstance(), PlayerFragment.TAG);
         }
+    }
+
+    public void showBottomFragment(Fragment fragment, String tag) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragmentContainer, fragment, tag)
+                .commitAllowingStateLoss();
     }
 
     public Fragment getLastBottomFragment() {
@@ -115,7 +119,9 @@ public class SmartMainActivity extends BaseActivity implements TopPanelFragment.
 
     @Override
     public void showSmartEarSettings() {
-
+        if(!(getLastBottomFragment() instanceof BionicFragment)){
+            showBottomFragment(BionicFragment.newInstance(),BionicFragment.TAG);
+        }
     }
 
     @Override

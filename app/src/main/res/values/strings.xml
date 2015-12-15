@@ -34,6 +34,10 @@
     <string name="right">Right</string>
     <string name="player">Player</string>
     <string name="streaming">Streaming</string>
+    <string name="bionicHearing">Bionic Hearing</string>
+    <string name="local">Local</string>
+    <string name="presets">Presets</string>
+    <string name="prescription">Prescription</string>
 
     <string-array name="bandLevels">
         <item>Bass</item>
