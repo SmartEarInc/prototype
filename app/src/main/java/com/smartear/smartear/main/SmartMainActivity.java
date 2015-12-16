@@ -3,7 +3,6 @@ package com.smartear.smartear.main;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.smartear.smartear.BaseActivity;
@@ -99,13 +98,13 @@ public class SmartMainActivity extends BaseActivity implements TopPanelFragment.
             return;
         }
         super.onBackPressed();
-
     }
 
     @Override
     public void showPlayer() {
         if (!(getLastBottomFragment() instanceof PlayerFragment)) {
             showBottomFragment(PlayerFragment.newInstance(), PlayerFragment.TAG);
+            binding.eqFab.setVisibility(View.VISIBLE);
         }
     }
 
@@ -123,6 +122,7 @@ public class SmartMainActivity extends BaseActivity implements TopPanelFragment.
     public void showSmartEarSettings() {
         if (!(getLastBottomFragment() instanceof BionicFragment)) {
             showBottomFragment(BionicFragment.newInstance(), BionicFragment.TAG);
+            binding.eqFab.setVisibility(View.VISIBLE);
         }
     }
 
@@ -130,6 +130,8 @@ public class SmartMainActivity extends BaseActivity implements TopPanelFragment.
     public void showGeneralSettings() {
         if (!(getLastBottomFragment() instanceof SettingsFragment)) {
             showBottomFragment(SettingsFragment.newInstance(), SettingsFragment.TAG);
+            binding.eqFab.setVisibility(View.GONE);
+            hideEqPanel();
         }
     }
 }
