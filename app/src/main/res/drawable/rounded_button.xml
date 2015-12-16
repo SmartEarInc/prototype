@@ -2,10 +2,10 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:state_pressed="true">
         <shape android:shape="rectangle">
-            <solid android:color="@color/mainButtonPressedColor" />
+            <solid android:color="#10ffffff" />
             <size android:width="1dp" android:height="1dp" />
             <corners android:radius="40dp" />
-            <stroke android:width="1dp" android:color="@color/smartGrayTextColor" />
+            <stroke android:width="1dp" android:color="#999999" />
         </shape>
     </item>
 
@@ -14,7 +14,7 @@
             <solid android:color="@android:color/transparent" />
             <size android:width="1dp" android:height="1dp" />
             <corners android:radius="40dp" />
-            <stroke android:width="1dp" android:color="@color/smartGrayTextColor" />
+            <stroke android:width="1dp" android:color="#999999" />
         </shape>
     </item>
 </selector>

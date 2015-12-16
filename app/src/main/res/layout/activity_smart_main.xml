@@ -12,91 +12,89 @@
 
     </data>
 
-    <LinearLayout
+    <com.smartear.smartear.widget.CustomInsetsFrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/smartBackground"
         android:fitsSystemWindows="true"
-        android:orientation="vertical">
+        android:background="#f9f9f9">
 
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/mainAppbar"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/appBarHeight"
-            android:fitsSystemWindows="true"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/mainToolbar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/actionBarHeight"
-                android:layout_gravity="bottom"
-                android:layout_marginTop="@dimen/statusBarHeight"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:theme="@style/AppTheme.AppBarOverlay"
-                app:title="@string/app_name" />
-        </android.support.design.widget.AppBarLayout>
-
-        <com.sothree.slidinguppanel.SlidingUpPanelLayout
-            android:id="@+id/eqPanel"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            android:gravity="bottom"
-            android:clickable="false"
-            app:umanoFadeColor="@android:color/transparent"
-            app:umanoOverlay="true"
-            app:umanoPanelHeight="72dp"
-            app:umanoShadowHeight="0dp">
+            android:background="@color/smartBackground"
+            android:fitsSystemWindows="true"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:id="@+id/mainContent"
+            <ImageView
+                android:id="@+id/mainAppbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:background="@drawable/top_header"
+                android:fitsSystemWindows="true"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            </ImageView>
 
-                <FrameLayout
-                    android:id="@+id/smartMainButtons"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <FrameLayout
-                    android:id="@+id/fragmentContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/eqPanelBottom"
+            <com.sothree.slidinguppanel.SlidingUpPanelLayout
+                android:id="@+id/eqPanel"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:orientation="vertical">
+                android:clickable="false"
+                android:gravity="bottom"
+                app:umanoFadeColor="@android:color/transparent"
+                app:umanoOverlay="true"
+                app:umanoPanelHeight="72dp"
+                app:umanoShadowHeight="0dp">
 
-                <FrameLayout
+                <LinearLayout
+                    android:id="@+id/mainContent"
                     android:layout_width="match_parent"
-                    android:layout_height="72dp"
-                    android:background="@android:color/transparent">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                    <android.support.design.widget.FloatingActionButton
-                        android:id="@+id/eqFab"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="end|center_vertical"
-                        android:layout_margin="@dimen/fab_margin"
-                        android:padding="0dp"
-                        android:src="@drawable/ic_bt_device"
-                        app:fabSize="mini" />
-                </FrameLayout>
+                    <FrameLayout
+                        android:id="@+id/smartMainButtons"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
 
-                <FrameLayout
-                    android:id="@+id/eqContainer"
+                    <FrameLayout
+                        android:id="@+id/fragmentContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/eqPanelBottom"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:orientation="vertical">
 
-        </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"
+                        android:background="@android:color/transparent">
+
+                        <android.support.design.widget.FloatingActionButton
+                            android:id="@+id/eqFab"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="end|center_vertical"
+                            android:layout_margin="@dimen/fab_margin"
+                            android:padding="0dp"
+                            android:src="@drawable/ic_bt_device"
+                            app:fabSize="mini" />
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/eqContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+            </com.sothree.slidinguppanel.SlidingUpPanelLayout>
 
 
-    </LinearLayout>
+        </LinearLayout>
+    </com.smartear.smartear.widget.CustomInsetsFrameLayout>
 </layout>

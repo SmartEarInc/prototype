@@ -6,6 +6,6 @@
     <dimen name="visuzlizerHeight">120dp</dimen>
     <dimen name="appBarHeight">72dp</dimen>
     <dimen name="statusBarHeight">0dp</dimen>
-    <dimen name="mainButtonHeight">86dp</dimen>
+    <dimen name="mainButtonHeight">64dp</dimen>
     <dimen name="actionBarHeight">72dp</dimen>
 </resources>

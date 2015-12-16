@@ -27,20 +27,20 @@
             <ImageView
                 android:id="@+id/muteSound"
                 style="@style/AppTheme.MainButton"
-                android:src="@{viewModel.isMute?@drawable/ic_bt_device:@drawable/ic_bt_device_paired}" />
+                android:src="@{viewModel.isMute?@drawable/top_mute_active:@drawable/top_mute_inactive}" />
 
 
             <ImageView
                 android:id="@+id/noiseCancel"
                 style="@style/AppTheme.MainButton"
-                android:src="@{viewModel.isNoise?@drawable/ic_bt_device:@drawable/ic_bt_device_paired}" />
+                android:src="@{viewModel.isNoise?@drawable/top_nc_active:@drawable/top_nc_inactive}" />
         </LinearLayout>
 
         <View style="@style/AppTheme.HorizontalDivider" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="56dp"
             android:background="@color/mainButtonColor"
             android:gravity="center"
             android:orientation="horizontal">
@@ -49,9 +49,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:src="@drawable/ic_bt_device" />
+                android:src="@drawable/top_volumedown" />
 
             <SeekBar
+                android:progressDrawable="@drawable/sound_seekbar"
+                android:thumb="@drawable/volume_thumb"
+                android:splitTrack="false"
                 android:id="@+id/soundSeekbar"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -63,7 +66,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="40dp"
-                android:src="@drawable/ic_bt_device_paired" />
+                android:src="@drawable/top_volumeup" />
         </LinearLayout>
 
         <View style="@style/AppTheme.HorizontalDivider" />
@@ -77,19 +80,22 @@
                 android:id="@+id/musicPlayer"
                 style="@style/AppTheme.MainButton"
                 android:background="@{viewModel.isPlayerActive?@drawable/main_button_bg_pressed:@drawable/main_button_bg}"
-                android:src="@drawable/ic_bt_device" />
+                android:src="@{viewModel.isPlayerActive?@drawable/top_music_active:@drawable/top_music_inactive}"
+                 />
 
             <ImageView
                 android:id="@+id/bionicEarSettings"
                 style="@style/AppTheme.MainButton"
                 android:background="@{viewModel.isSmartEarSettingsActive?@drawable/main_button_bg_pressed:@drawable/main_button_bg}"
-                android:src="@drawable/ic_bt_device" />
+                android:src="@{viewModel.isSmartEarSettingsActive?@drawable/top_bionic_active:@drawable/top_bionic_inactive}"
+                />
 
             <ImageView
                 android:id="@+id/generalSettings"
                 style="@style/AppTheme.MainButton"
                 android:background="@{viewModel.isGeneralSettingsActive?@drawable/main_button_bg_pressed:@drawable/main_button_bg}"
-                android:src="@drawable/ic_bt_device" />
+                android:src="@{viewModel.isGeneralSettingsActive?@drawable/top_settings_active:@drawable/top_settings_inactive}"
+                />
         </LinearLayout>
 
         <View style="@style/AppTheme.HorizontalDivider" />

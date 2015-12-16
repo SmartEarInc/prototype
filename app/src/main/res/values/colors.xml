@@ -3,11 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#eb3897</color>
-    <color name="smartBackground">#2d2c2b</color>
-    <color name="smartGrayTextColor">#8a8786</color>
+    <color name="smartBackground">#333333</color>
+    <color name="smartGrayTextColor">#B2ffffff</color>
     <color name="smartWhiteTextColor">#fff</color>
     <color name="dividerColor">#131313</color>
     <color name="dividerVerticalColor">#08ffffff</color>
     <color name="mainButtonColor">#2d2c2b</color>
     <color name="mainButtonPressedColor">#353332</color>
+    <color name="inactiveButtonColor">#626262</color>
 </resources>

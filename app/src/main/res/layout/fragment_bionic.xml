@@ -26,13 +26,13 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="32dp"
-            android:layout_marginLeft="56dp"
-            android:layout_marginRight="56dp"
-            android:layout_marginTop="16dp"
+            android:layout_height="26dp"
+            android:layout_marginLeft="60dp"
+            android:layout_marginRight="60dp"
+            android:layout_marginTop="14dp"
             android:background="@drawable/left_right_bg"
             android:orientation="horizontal"
-            android:padding="2dp">
+            android:padding="1dp">
 
             <TextView
                 android:id="@+id/left"
@@ -43,12 +43,12 @@
                 android:gravity="center"
                 android:text="@string/left"
                 android:textAllCaps="true"
-                android:textColor="@{data.isLeftSelected?@color/colorAccent:@color/smartGrayTextColor}" />
+                android:textColor="@{data.isLeftSelected?@color/colorAccent:@color/inactiveButtonColor}" />
 
             <View
-                android:layout_width="2dp"
+                android:layout_width="1dp"
                 android:layout_height="match_parent"
-                android:background="@color/smartGrayTextColor" />
+                android:background="#999999" />
 
             <TextView
                 android:id="@+id/right"
@@ -59,13 +59,12 @@
                 android:gravity="center"
                 android:text="@string/right"
                 android:textAllCaps="true"
-                android:textColor="@{data.isLeftSelected?@color/smartGrayTextColor:@color/colorAccent}" />
+                android:textColor="@{data.isLeftSelected?@color/inactiveButtonColor:@color/colorAccent}" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            android:background="@color/mainButtonColor"
             android:gravity="center"
             android:orientation="horizontal">
 
@@ -73,7 +72,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="40dp"
-                android:src="@drawable/ic_bt_device" />
+                android:src="@drawable/bionic_noise_down" />
 
             <SeekBar
                 android:id="@+id/micSeekbar"
@@ -81,13 +80,15 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:max="@{data.maxMicValue}"
-                android:progress="@{data.micValue}" />
+                android:progress="@{data.micValue}"
+                android:progressDrawable="@drawable/sound_seekbar"
+                android:thumb="@drawable/volume_thumb" />
 
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="40dp"
-                android:src="@drawable/ic_bt_device_paired" />
+                android:src="@drawable/bionic_noise_up" />
         </LinearLayout>
 
         <View style="@style/AppTheme.HorizontalDivider" />
@@ -96,7 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/rounded_button"
             android:text="@string/local"
             android:textAllCaps="true"
@@ -105,7 +106,7 @@
         <com.smartear.smartear.main.widget.CategoryTitle
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             app:categoryModel="@{data.presets}" />
     </LinearLayout>
 </layout>

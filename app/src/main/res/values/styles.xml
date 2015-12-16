@@ -16,6 +16,10 @@
     <style name="AppTheme.ActionBar.Transparent" parent="AppTheme.NoActionBar">
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowActionBarOverlay">true</item>
+        <item name="windowActionModeOverlay">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:titleTextStyle">@style/AppTheme.TitleTextStyle</item>
     </style>
 
@@ -51,12 +55,12 @@
     </style>
 
     <style name="AppTheme.EqSeekBarText">
-        <item name="android:textColor">@color/smartGrayTextColor</item>
+        <item name="android:textColor">#808080</item>
         <item name="android:background">@color/mainButtonColor</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">46dp</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:layout_height">34dp</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="AppTheme.EqSeekBarContainer">
@@ -79,7 +83,13 @@
     <style name="AppTheme.EqSeekBar">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">0dp</item>
+        <item name="android:minWidth">40dp</item>
         <item name="seekBarRotation">CW270</item>
+        <item name="android:max">100</item>
+        <item name="android:progress">50</item>
+        <item name="android:splitTrack">false</item>
+        <item name="android:progressDrawable">@drawable/eq_seekbar</item>
+        <item name="android:thumb">@drawable/eq_thumb</item>
     </style>
 
 </resources>

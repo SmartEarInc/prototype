@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -12,24 +13,24 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:background="?attr/selectableItemBackground">
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:paddingLeft="48dp"
-            android:paddingTop="16dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="50dp"
             android:text="@{item.getText()}"
             android:textColor="@color/smartGrayTextColor"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:customFont='@{"Roboto-Regular.ttf"}' />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|center_vertical"
-            android:layout_marginRight="16dp"
-            android:src="@drawable/ic_bt_device" />
+            android:layout_marginRight="8dp"
+            android:src="@drawable/general_rightarrow" />
     </FrameLayout>
 </layout>

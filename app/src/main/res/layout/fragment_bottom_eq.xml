@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -13,7 +14,7 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="306dp"
+        android:layout_height="228dp"
         android:background="@color/mainButtonPressedColor">
 
         <LinearLayout
@@ -25,6 +26,7 @@
             <LinearLayout style="@style/AppTheme.EqSeekBarContainer">
 
                 <TextView
+                    app:customFont='@{"RobotoCondensed-Regular.ttf"}'
                     style="@style/AppTheme.EqSeekBarText"
                     android:text="80" />
 
@@ -39,6 +41,7 @@
             <LinearLayout style="@style/AppTheme.EqSeekBarContainer">
 
                 <TextView
+                    app:customFont='@{"RobotoCondensed-Regular.ttf"}'
                     style="@style/AppTheme.EqSeekBarText"
                     android:text="240" />
 
@@ -54,6 +57,7 @@
             <LinearLayout style="@style/AppTheme.EqSeekBarContainer">
 
                 <TextView
+                    app:customFont='@{"RobotoCondensed-Regular.ttf"}'
                     style="@style/AppTheme.EqSeekBarText"
                     android:text="750" />
 
@@ -69,6 +73,7 @@
             <LinearLayout style="@style/AppTheme.EqSeekBarContainer">
 
                 <TextView
+                    app:customFont='@{"RobotoCondensed-Regular.ttf"}'
                     style="@style/AppTheme.EqSeekBarText"
                     android:text="2200" />
 
@@ -85,6 +90,7 @@
             <LinearLayout style="@style/AppTheme.EqSeekBarContainer">
 
                 <TextView
+                    app:customFont='@{"RobotoCondensed-Regular.ttf"}'
                     style="@style/AppTheme.EqSeekBarText"
                     android:text="6600" />
 
