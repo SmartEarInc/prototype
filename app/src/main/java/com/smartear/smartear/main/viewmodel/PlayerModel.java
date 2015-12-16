@@ -1,6 +1,8 @@
 package com.smartear.smartear.main.viewmodel;
 
 import android.databinding.ObservableField;
+import android.databinding.ObservableInt;
+import android.databinding.ObservableLong;
 
 /**
  * Created: Belozerov
@@ -9,4 +11,8 @@ import android.databinding.ObservableField;
  */
 public class PlayerModel {
     public ObservableField<CategoryTitleModel> playerInfo = new ObservableField<>();
+    public ObservableField<String> totalTime = new ObservableField<>();
+    public ObservableField<String> currentTime = new ObservableField<>();
+    public ObservableInt progress = new ObservableInt();
+    public ObservableInt maxProgress = new ObservableInt();
 }

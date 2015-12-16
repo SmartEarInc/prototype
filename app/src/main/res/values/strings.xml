@@ -44,6 +44,8 @@
     <string name="music">Music</string>
     <string name="pairing">Pairing</string>
     <string name="tutorial">Tutorial</string>
+    <string name="raePlayer">RAE Player</string>
+    <string name="runPlaylist">Run Playlist</string>
 
     <string-array name="bandLevels">
         <item>Bass</item>

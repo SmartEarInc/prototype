@@ -17,11 +17,86 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <com.smartear.smartear.main.widget.CategoryTitle
-            app:categoryModel="@{data.playerInfo}"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="70dp"
+            android:gravity="center"
+            android:paddingTop="20dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:clickable="true"
+                android:background="?attr/selectableItemBackground"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/player_previousbutton" />
+
+            <ImageView
+                android:clickable="true"
+                android:background="?attr/selectableItemBackground"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="40dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/player_playbutton" />
+
+            <ImageView
+                android:clickable="true"
+                android:background="?attr/selectableItemBackground"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginLeft="40dp"
+                android:scaleType="centerInside"
+                android:src="@drawable/player_nextbutton" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingLeft="32dp"
+            android:paddingRight="32dp">
+
+            <TextView
+                android:layout_marginRight="-10dp"
+                android:layout_marginBottom="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.currentTime}"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                app:customFont='@{"RobotoCondensed-Regular.ttf"}' />
+
+            <SeekBar
+                android:id="@+id/playerProgress"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:max="@{data.maxProgress}"
+                android:progress="@{data.progress}"
+                android:progressDrawable="@drawable/eq_seekbar"
+                android:splitTrack="false"
+                android:thumb="@null" />
+
+            <TextView
+                android:layout_marginLeft="-10dp"
+                android:layout_marginBottom="4dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{data.totalTime}"
+                android:textColor="#fff"
+                android:textSize="12sp"
+                app:customFont='@{"RobotoCondensed-Regular.ttf"}' />
+        </LinearLayout>
 
         <View style="@style/AppTheme.HorizontalDivider" />
+
+        <com.smartear.smartear.main.widget.CategoryTitle
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:categoryModel="@{data.playerInfo}" />
+
     </LinearLayout>
 </layout>
