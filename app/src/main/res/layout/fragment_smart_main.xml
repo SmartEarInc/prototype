@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="data"
+            type="com.smartear.smartear.main.viewmodel.SmartMainModel" />
+
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/smartBackground"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <com.sothree.slidinguppanel.SlidingUpPanelLayout
+            android:id="@+id/eqPanel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:clickable="false"
+            android:gravity="bottom"
+            app:umanoFadeColor="@android:color/transparent"
+            app:umanoOverlay="true"
+            app:umanoPanelHeight="72dp"
+            app:umanoShadowHeight="0dp">
+
+            <LinearLayout
+                android:id="@+id/mainContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:id="@+id/smartMainButtons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <FrameLayout
+                    android:id="@+id/fragmentContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/eqPanelBottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:orientation="vertical">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:background="@android:color/transparent">
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/eqFab"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_margin="@dimen/fab_margin"
+                        android:padding="0dp"
+                        android:src="@drawable/ic_bt_device"
+                        android:visibility="gone"
+                        app:fabSize="mini" />
+                </FrameLayout>
+
+                <FrameLayout
+                    android:id="@+id/eqContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+    </LinearLayout>
+
+</layout>

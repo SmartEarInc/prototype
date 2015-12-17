@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.FrameLayout;
 
 import com.smartear.smartear.R;
@@ -39,5 +40,9 @@ public class CategoryTitle extends FrameLayout {
     public void setModel(CategoryTitleModel model) {
         this.model = model;
         binding.setData(model);
+    }
+
+    public void setOnBackClickListener(View.OnClickListener onBackClickListener) {
+        binding.back.setOnClickListener(onBackClickListener);
     }
 }

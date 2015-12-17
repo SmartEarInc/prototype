@@ -1,5 +1,6 @@
 package com.smartear.smartear.main.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import com.smartear.smartear.main.viewmodel.SettingsItemModel;
 import com.smartear.smartear.main.viewmodel.SettingsModel;
 import com.smartear.smartear.main.widget.SettingsAdapter;
 import com.smartear.smartear.main.widget.SimpleDividerItemDecoration;
+import com.smartear.smartear.widget.RecyclerViewAdapterBase;
 
 /**
  * Created: Belozerov
@@ -59,5 +61,17 @@ public class SettingsFragment extends Fragment {
         binding.settingsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.settingsRecyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));
         binding.settingsRecyclerView.setAdapter(settingsAdapter);
+
+        settingsAdapter.setOnItemClickListener(new RecyclerViewAdapterBase.OnItemClickListener<SettingsItemModel>() {
+            @Override
+            public void onItemClick(int position, SettingsItemModel item) {
+                switch (item.id.get()) {
+                    case R.id.pairing:
+                        Intent settingsIntent = new Intent(android.provider.Settings.ACTION_BLUETOOTH_SETTINGS);
+                        startActivity(settingsIntent);
+                        break;
+                }
+            }
+        });
     }
 }

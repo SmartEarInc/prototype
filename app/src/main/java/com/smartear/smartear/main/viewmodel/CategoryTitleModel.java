@@ -1,5 +1,6 @@
 package com.smartear.smartear.main.viewmodel;
 
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -17,6 +18,7 @@ public class CategoryTitleModel {
     public ObservableField<String> title = new ObservableField<>();
     public ObservableField<String> action = new ObservableField<>();
     public ObservableField<String> value = new ObservableField<>();
+    public ObservableBoolean isBack = new ObservableBoolean();
 
     public CharSequence getActionText() {
         String action = this.action.get();

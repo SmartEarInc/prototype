@@ -46,6 +46,9 @@
     <string name="tutorial">Tutorial</string>
     <string name="raePlayer">RAE Player</string>
     <string name="runPlaylist">Run Playlist</string>
+    <string name="streamingSpotifySetting">Streaming : Spotify</string>
+    <string name="raePlayerSetting">RaePlayer : Run Playlist</string>
+    <string name="players">Players</string>
 
     <string-array name="bandLevels">
         <item>Bass</item>

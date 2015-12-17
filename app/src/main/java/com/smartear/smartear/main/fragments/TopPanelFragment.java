@@ -195,8 +195,8 @@ public class TopPanelFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (getActivity() instanceof TopPanelListener) {
-            this.topPanelListener = (TopPanelListener) getActivity();
+        if (getParentFragment() instanceof TopPanelListener) {
+            this.topPanelListener = (TopPanelListener) getParentFragment();
         }
     }
 

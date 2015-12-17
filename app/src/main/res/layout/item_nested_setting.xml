@@ -1,0 +1,40 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.text.TextUtils" />
+
+        <import type="android.view.View" />
+
+        <variable
+            name="item"
+            type="com.smartear.smartear.main.viewmodel.NestedSettingsItemModel" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="?attr/selectableItemBackground"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="50dp"
+            android:text="@{item.value}"
+            android:textColor="@color/smartGrayTextColor"
+            android:textSize="16sp"
+            app:customFont='@{"Roboto-Regular.ttf"}' />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="20dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/player_sourceselect_check"
+            android:visibility="@{item.isChecked?View.VISIBLE:View.GONE}" />
+    </FrameLayout>
+</layout>

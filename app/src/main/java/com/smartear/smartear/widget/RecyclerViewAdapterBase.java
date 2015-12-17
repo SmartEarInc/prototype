@@ -55,7 +55,7 @@ public abstract class RecyclerViewAdapterBase<T, V extends ViewDataBinding> exte
             @Override
             public void onClick(View view) {
                 if (onItemClickListener != null)
-                    onItemClickListener.onItemClick(getItem(position));
+                    onItemClickListener.onItemClick(position, getItem(position));
             }
         });
     }
@@ -67,7 +67,7 @@ public abstract class RecyclerViewAdapterBase<T, V extends ViewDataBinding> exte
     public abstract V inflateItem(LayoutInflater inflater, ViewGroup parent, int viewType);
 
     public interface OnItemClickListener<T> {
-        void onItemClick(T item);
+        void onItemClick(int position, T item);
     }
 
     public class ParseViewHolder extends RecyclerView.ViewHolder {

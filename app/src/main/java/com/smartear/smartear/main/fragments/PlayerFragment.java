@@ -1,5 +1,6 @@
 package com.smartear.smartear.main.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,8 +11,12 @@ import android.view.ViewGroup;
 
 import com.smartear.smartear.R;
 import com.smartear.smartear.databinding.FragmentPlayerBinding;
+import com.smartear.smartear.main.SmartMainActivity;
 import com.smartear.smartear.main.viewmodel.CategoryTitleModel;
+import com.smartear.smartear.main.viewmodel.NestedSettingsItemModel;
+import com.smartear.smartear.main.viewmodel.NestedSettingsModel;
 import com.smartear.smartear.main.viewmodel.PlayerModel;
+import com.smartear.smartear.utils.PrefsUtils;
 
 /**
  * Created: Belozerov
@@ -40,22 +45,60 @@ public class PlayerFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        CategoryTitleModel categoryTitleModel = new CategoryTitleModel();
-        categoryTitleModel.title.set(getString(R.string.player));
-        categoryTitleModel.action.set(getString(R.string.raePlayer));
-        categoryTitleModel.value.set(getString(R.string.runPlaylist));
-        model.playerInfo.set(categoryTitleModel);
+
         model.currentTime.set("3.55");
         model.totalTime.set("13.20");
         model.progress.set(4);
         model.maxProgress.set(13);
         binding.setData(model);
-
         binding.playerProgress.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return true;
             }
         });
+
+        binding.goToSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                NestedSettingsModel model = new NestedSettingsModel();
+                CategoryTitleModel titleModel = new CategoryTitleModel();
+                titleModel.title.set(getString(R.string.players));
+                titleModel.isBack.set(true);
+                model.title.set(titleModel);
+                model.settingsKey = PrefsUtils.KEY_PLAYER_MODE;
+
+                SharedPreferences preferences = PrefsUtils.getPrefs(getActivity());
+                int mode = preferences.getInt(PrefsUtils.KEY_PLAYER_MODE, PrefsUtils.MODE_STREAMING);
+
+                model.items.add(new NestedSettingsItemModel(mode == PrefsUtils.MODE_STREAMING, getString(R.string.streaming) + " : " + "Spotify"));
+                model.items.add(new NestedSettingsItemModel(mode == PrefsUtils.MODE_RAE, getString(R.string.raePlayer) + " : " + getString(R.string.runPlaylist)));
+                ((SmartMainActivity) getActivity()).replaceFragment(NestedSettingsFragment.newInstance(model), true);
+            }
+        });
+    }
+
+    private void updateUI() {
+        SharedPreferences preferences = PrefsUtils.getPrefs(getActivity());
+        int mode = preferences.getInt(PrefsUtils.KEY_PLAYER_MODE, PrefsUtils.MODE_STREAMING);
+        boolean isRae = mode == PrefsUtils.MODE_RAE;
+        CategoryTitleModel categoryTitleModel = new CategoryTitleModel();
+        categoryTitleModel.title.set(getString(R.string.player));
+        if (isRae) {
+            categoryTitleModel.action.set(getString(R.string.raePlayer));
+            categoryTitleModel.value.set(getString(R.string.runPlaylist));
+            binding.playerPart.setVisibility(View.VISIBLE);
+        } else {
+            categoryTitleModel.action.set(getString(R.string.streaming));
+            categoryTitleModel.value.set("Spotify");
+            binding.playerPart.setVisibility(View.GONE);
+        }
+        model.playerInfo.set(categoryTitleModel);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
     }
 }

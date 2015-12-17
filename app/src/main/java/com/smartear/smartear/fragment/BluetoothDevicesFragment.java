@@ -67,7 +67,7 @@ public class BluetoothDevicesFragment extends BaseBluetoothFragment {
         };
         adapter.setOnItemClickListener(new RecyclerViewAdapterBase.OnItemClickListener<BluetoothDeviceWrapper>() {
             @Override
-            public void onItemClick(BluetoothDeviceWrapper wrapper) {
+            public void onItemClick(int position, BluetoothDeviceWrapper wrapper) {
                 BluetoothDevice device = wrapper.device.get();
                 if (device.getBondState() == BluetoothDevice.BOND_BONDED) {
                     unPairDevice(device);

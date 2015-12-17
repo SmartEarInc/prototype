@@ -20,17 +20,35 @@
         android:background="@drawable/main_button_bg"
         android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/title"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:gravity="start|center_vertical"
-            android:text="@{data.title}"
-            android:textAllCaps="true"
-            android:textColor="@color/smartGrayTextColor"
-            android:textSize="14sp"
-            app:customFont='@{"Roboto-Medium.ttf"}' />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_marginLeft="12dp"
+                android:id="@+id/back"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:background="?attr/selectableItemBackground"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_back_button"
+                android:visibility="@{data.isBack?View.VISIBLE:View.GONE}" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:gravity="start|center_vertical"
+                android:text="@{data.title}"
+                android:textAllCaps="true"
+                android:textColor="@color/smartGrayTextColor"
+                android:textSize="14sp"
+                app:customFont='@{"Roboto-Medium.ttf"}' />
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="wrap_content"
