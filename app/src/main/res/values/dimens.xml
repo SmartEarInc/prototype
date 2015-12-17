@@ -4,8 +4,5 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="visuzlizerHeight">120dp</dimen>
-    <dimen name="appBarHeight">72dp</dimen>
-    <dimen name="statusBarHeight">0dp</dimen>
     <dimen name="mainButtonHeight">64dp</dimen>
-    <dimen name="actionBarHeight">72dp</dimen>
 </resources>

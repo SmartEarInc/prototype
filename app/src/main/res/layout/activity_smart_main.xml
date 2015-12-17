@@ -12,11 +12,14 @@
 
     </data>
 
-    <com.smartear.smartear.widget.CustomInsetsFrameLayout
+    <com.smartear.smartear.widget.ScrimInsetsFrameLayout
+
+        android:id="@+id/scrimInsetsFrameLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#f9f9f9"
         android:fitsSystemWindows="true"
-        android:background="#f9f9f9">
+        app:insetForeground="#4000">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -31,8 +34,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/top_header"
                 android:fitsSystemWindows="true"
-                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-            </ImageView>
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"></ImageView>
 
             <com.sothree.slidinguppanel.SlidingUpPanelLayout
                 android:id="@+id/eqPanel"
@@ -76,7 +78,6 @@
                         android:background="@android:color/transparent">
 
                         <android.support.design.widget.FloatingActionButton
-                            android:visibility="gone"
                             android:id="@+id/eqFab"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -84,6 +85,7 @@
                             android:layout_margin="@dimen/fab_margin"
                             android:padding="0dp"
                             android:src="@drawable/ic_bt_device"
+                            android:visibility="gone"
                             app:fabSize="mini" />
                     </FrameLayout>
 
@@ -97,5 +99,5 @@
 
 
         </LinearLayout>
-    </com.smartear.smartear.widget.CustomInsetsFrameLayout>
+    </com.smartear.smartear.widget.ScrimInsetsFrameLayout>
 </layout>
