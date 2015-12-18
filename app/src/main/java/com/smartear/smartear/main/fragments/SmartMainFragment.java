@@ -73,6 +73,16 @@ public class SmartMainFragment extends BaseSmartFragment implements TopPanelFrag
 
             }
         });
+
+        binding.eqPanel.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if(SlidingUpPanelLayout.PanelState.EXPANDED.equals(binding.eqPanel.getPanelState())){
+                    binding.eqTransparentPanel.setAlpha(1f);
+                }
+            }
+        }, 100);
+
         binding.eqFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
