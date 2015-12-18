@@ -21,7 +21,7 @@
             <ImageView
                 android:id="@+id/launchAssistant"
                 style="@style/AppTheme.MainButton"
-                android:src="@drawable/ic_bt_device" />
+                android:src="@drawable/ic_rae" />
 
 
             <ImageView

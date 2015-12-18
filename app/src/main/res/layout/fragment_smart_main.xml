@@ -73,7 +73,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|center_vertical"
                         android:padding="0dp"
-                        android:src="@drawable/ic_bt_device"
+                        android:src="@drawable/ic_eq"
                         android:visibility="gone"
                         app:fabSize="mini" />
                 </FrameLayout>
