@@ -53,6 +53,7 @@ public class TopPanelFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = SmartMainButtonsBinding.inflate(inflater, container, false);
         model = new TopPanelModel();
+        model.isPlayerActive.set(true);
         binding.setViewModel(model);
         return binding.getRoot();
     }
@@ -111,9 +112,7 @@ public class TopPanelFragment extends Fragment {
         binding.musicPlayer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                model.isPlayerActive.set(true);
-                model.isGeneralSettingsActive.set(false);
-                model.isSmartEarSettingsActive.set(false);
+                setPlayerActive();
                 topPanelListener.showPlayer();
             }
         });
@@ -121,9 +120,7 @@ public class TopPanelFragment extends Fragment {
         binding.generalSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                model.isPlayerActive.set(false);
-                model.isGeneralSettingsActive.set(true);
-                model.isSmartEarSettingsActive.set(false);
+                setGeneralSettingsActive();
                 topPanelListener.showGeneralSettings();
             }
         });
@@ -131,14 +128,30 @@ public class TopPanelFragment extends Fragment {
         binding.bionicEarSettings.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                model.isPlayerActive.set(false);
-                model.isGeneralSettingsActive.set(false);
-                model.isSmartEarSettingsActive.set(true);
+                setSmartEarSettingsActive();
                 topPanelListener.showSmartEarSettings();
             }
         });
 
         initSoundControl();
+    }
+
+    private void setPlayerActive() {
+        model.isPlayerActive.set(true);
+        model.isGeneralSettingsActive.set(false);
+        model.isSmartEarSettingsActive.set(false);
+    }
+
+    private void setGeneralSettingsActive() {
+        model.isPlayerActive.set(false);
+        model.isGeneralSettingsActive.set(true);
+        model.isSmartEarSettingsActive.set(false);
+    }
+
+    private void setSmartEarSettingsActive() {
+        model.isPlayerActive.set(false);
+        model.isGeneralSettingsActive.set(false);
+        model.isSmartEarSettingsActive.set(true);
     }
 
     private void initSoundControl() {
@@ -185,6 +198,20 @@ public class TopPanelFragment extends Fragment {
     private void initVolumeObserver() {
         settingsContentObserver = new SettingsContentObserver(new Handler());
         getActivity().getApplicationContext().getContentResolver().registerContentObserver(Settings.System.CONTENT_URI, true, settingsContentObserver);
+    }
+
+    public void setActiveButton(int position) {
+        switch (position) {
+            case 0:
+                setPlayerActive();
+                break;
+            case 1:
+                setSmartEarSettingsActive();
+                break;
+            case 2:
+                setGeneralSettingsActive();
+                break;
+        }
     }
 
     private class SettingsContentObserver extends ContentObserver {

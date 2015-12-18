@@ -42,8 +42,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
-                <FrameLayout
-                    android:id="@+id/fragmentContainer"
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/fragmentViewPager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </LinearLayout>
@@ -74,7 +74,6 @@
                         android:layout_gravity="end|center_vertical"
                         android:padding="0dp"
                         android:src="@drawable/ic_eq"
-                        android:visibility="gone"
                         app:fabSize="mini" />
                 </FrameLayout>
 

@@ -3,6 +3,9 @@ package com.smartear.smartear.main.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -88,6 +91,36 @@ public class SmartMainFragment extends BaseSmartFragment implements TopPanelFrag
         getChildFragmentManager().beginTransaction()
                 .replace(R.id.smartMainButtons, TopPanelFragment.newInstance())
                 .commitAllowingStateLoss();
+        if (binding.fragmentViewPager.getAdapter() == null) {
+            binding.fragmentViewPager.setAdapter(new FragmentBottomAdapter(getChildFragmentManager()));
+            binding.fragmentViewPager.setOffscreenPageLimit(3);
+            binding.fragmentViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    getTopPanelFragment().setActiveButton(position);
+                    if (position == 2) {
+                        hideEqPanel();
+                        binding.eqFab.setVisibility(View.GONE);
+                    } else {
+                        binding.eqFab.setVisibility(View.VISIBLE);
+                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+        }
+    }
+
+    private TopPanelFragment getTopPanelFragment() {
+        return ((TopPanelFragment) getChildFragmentManager().findFragmentById(R.id.smartMainButtons));
     }
 
     private void hideEqPanel() {
@@ -100,40 +133,20 @@ public class SmartMainFragment extends BaseSmartFragment implements TopPanelFrag
         binding.eqTransparentPanel.animate().alpha(1f).start();
     }
 
-    public void showBottomFragment(Fragment fragment, String tag) {
-        getChildFragmentManager().beginTransaction()
-                .replace(R.id.fragmentContainer, fragment, tag)
-                .commitAllowingStateLoss();
-    }
-
-    public Fragment getLastBottomFragment() {
-        return getChildFragmentManager().findFragmentById(R.id.fragmentContainer);
-    }
-
     @Override
     public void showPlayer() {
-        if (!(getLastBottomFragment() instanceof PlayerFragment)) {
-            showBottomFragment(PlayerFragment.newInstance(), PlayerFragment.TAG);
-            binding.eqFab.setVisibility(View.VISIBLE);
-        }
+        binding.fragmentViewPager.setCurrentItem(0, true);
     }
 
 
     @Override
     public void showSmartEarSettings() {
-        if (!(getLastBottomFragment() instanceof BionicFragment)) {
-            showBottomFragment(BionicFragment.newInstance(), BionicFragment.TAG);
-            binding.eqFab.setVisibility(View.VISIBLE);
-        }
+        binding.fragmentViewPager.setCurrentItem(1, true);
     }
 
     @Override
     public void showGeneralSettings() {
-        if (!(getLastBottomFragment() instanceof SettingsFragment)) {
-            showBottomFragment(SettingsFragment.newInstance(), SettingsFragment.TAG);
-            binding.eqFab.setVisibility(View.GONE);
-            hideEqPanel();
-        }
+        binding.fragmentViewPager.setCurrentItem(2, true);
     }
 
     @Override
@@ -148,5 +161,30 @@ public class SmartMainFragment extends BaseSmartFragment implements TopPanelFrag
     @Override
     public String getFragmentTag() {
         return TAG;
+    }
+
+    public class FragmentBottomAdapter extends FragmentPagerAdapter {
+
+        public FragmentBottomAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return PlayerFragment.newInstance();
+                case 1:
+                    return BionicFragment.newInstance();
+                case 2:
+                    return SettingsFragment.newInstance();
+            }
+            return null;
+        }
+
+        @Override
+        public int getCount() {
+            return 3;
+        }
     }
 }
