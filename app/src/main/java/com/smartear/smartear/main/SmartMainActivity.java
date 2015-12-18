@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
+import android.view.View;
 
 import com.smartear.smartear.R;
 import com.smartear.smartear.databinding.ActivitySmartMainBinding;
@@ -28,10 +29,18 @@ public class SmartMainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_smart_main);
         SmartMainModel smartMainModel = new SmartMainModel();
         binding.setData(smartMainModel);
-
+        binding.samsungStatusBarFix.setVisibility((isSamsung() && isLollipopAndAbove()) ? View.VISIBLE : View.GONE);
         if (savedInstanceState == null) {
             replaceFragment(SmartMainFragment.newInstance(), false);
         }
+    }
+
+    private boolean isSamsung() {
+        return Build.MANUFACTURER.toLowerCase().contains("samsung");
+    }
+
+    private boolean isLollipopAndAbove() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
     }
 
     public void replaceFragment(BaseSmartFragment fragment, boolean addToBackStack) {

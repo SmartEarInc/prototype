@@ -22,7 +22,7 @@
         <item name="windowActionBarOverlay">true</item>
         <item name="windowActionModeOverlay">true</item>
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">#60000000</item>
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:titleTextStyle">@style/AppTheme.TitleTextStyle</item>
     </style>
