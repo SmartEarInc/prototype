@@ -92,10 +92,12 @@ public class SmartMainFragment extends BaseSmartFragment implements TopPanelFrag
 
     private void hideEqPanel() {
         binding.eqPanel.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+        binding.eqTransparentPanel.animate().alpha(0).start();
     }
 
     private void showEqPanel() {
         binding.eqPanel.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+        binding.eqTransparentPanel.animate().alpha(1f).start();
     }
 
     public void showBottomFragment(Fragment fragment, String tag) {

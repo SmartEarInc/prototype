@@ -31,7 +31,6 @@
                 android:id="@+id/back"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:background="?attr/selectableItemBackground"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_back_button"
                 android:visibility="@{data.isBack?View.VISIBLE:View.GONE}" />

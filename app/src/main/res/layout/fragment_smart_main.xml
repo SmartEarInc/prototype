@@ -28,7 +28,7 @@
             android:gravity="bottom"
             app:umanoFadeColor="@android:color/transparent"
             app:umanoOverlay="true"
-            app:umanoPanelHeight="72dp"
+            app:umanoPanelHeight="64dp"
             app:umanoShadowHeight="0dp">
 
             <LinearLayout
@@ -57,15 +57,21 @@
 
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="72dp"
+                    android:layout_height="64dp"
                     android:background="@android:color/transparent">
+
+                    <View
+                        android:id="@+id/eqTransparentPanel"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:alpha="0"
+                        android:background="#22ffffff" />
 
                     <android.support.design.widget.FloatingActionButton
                         android:id="@+id/eqFab"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|center_vertical"
-                        android:layout_margin="@dimen/fab_margin"
                         android:padding="0dp"
                         android:src="@drawable/ic_bt_device"
                         android:visibility="gone"

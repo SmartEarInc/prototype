@@ -2,7 +2,9 @@ package com.smartear.smartear.main.fragments;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.database.ContentObserver;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.os.Handler;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +23,9 @@ import com.smartear.smartear.SmartEarApplication;
 import com.smartear.smartear.databinding.SmartMainButtonsBinding;
 import com.smartear.smartear.main.viewmodel.TopPanelModel;
 import com.smartear.smartear.utils.MuteHelper;
+import com.smartear.smartear.utils.SettingsUtils;
+
+import java.util.List;
 
 /**
  * Created: Belozerov
@@ -27,7 +33,6 @@ import com.smartear.smartear.utils.MuteHelper;
  * Date: 14.12.2015
  */
 public class TopPanelFragment extends Fragment {
-    private static final String ASSISTANT_PACKAGENAME = "com.nuance.balerion";
     SmartMainButtonsBinding binding;
     MuteHelper muteHelper = new MuteHelper(SmartEarApplication.getContext());
     public static final int BT_STREAM = AudioManager.STREAM_MUSIC;
@@ -59,11 +64,28 @@ public class TopPanelFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 PackageManager packageManager = getActivity().getPackageManager();
-                Intent assistantIntent = packageManager.getLaunchIntentForPackage(ASSISTANT_PACKAGENAME);
-                try {
-                    startActivity(assistantIntent);
-                } catch (Exception ignore) {
+                SharedPreferences sharedPreferences = SettingsUtils.getPrefs(getActivity());
+                String packageName = sharedPreferences.getString(SettingsUtils.KEY_ASSISTANT_PACKAGE_NAME, null);
 
+                if (TextUtils.isEmpty(packageName)) {
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_VOICE_COMMAND);
+                    intent.addCategory(Intent.CATEGORY_DEFAULT);
+                    List<ResolveInfo> infoList = packageManager.queryIntentActivities(intent, PackageManager.GET_RESOLVED_FILTER);
+                    for (ResolveInfo resolveInfo : infoList) {
+                        if (!getActivity().getPackageName().equals(resolveInfo.activityInfo.packageName)) {
+                            packageName = resolveInfo.activityInfo.packageName;
+                            break;
+                        }
+                    }
+                }
+                if (!TextUtils.isEmpty(packageName)) {
+                    Intent assistantIntent = packageManager.getLaunchIntentForPackage(packageName);
+                    try {
+                        startActivity(assistantIntent);
+                    } catch (Exception ignore) {
+
+                    }
                 }
             }
         });

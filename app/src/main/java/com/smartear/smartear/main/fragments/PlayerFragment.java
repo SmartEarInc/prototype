@@ -16,7 +16,7 @@ import com.smartear.smartear.main.viewmodel.CategoryTitleModel;
 import com.smartear.smartear.main.viewmodel.NestedSettingsItemModel;
 import com.smartear.smartear.main.viewmodel.NestedSettingsModel;
 import com.smartear.smartear.main.viewmodel.PlayerModel;
-import com.smartear.smartear.utils.PrefsUtils;
+import com.smartear.smartear.utils.SettingsUtils;
 
 /**
  * Created: Belozerov
@@ -66,22 +66,22 @@ public class PlayerFragment extends Fragment {
                 titleModel.title.set(getString(R.string.players));
                 titleModel.isBack.set(true);
                 model.title.set(titleModel);
-                model.settingsKey = PrefsUtils.KEY_PLAYER_MODE;
+                model.settingsKey = SettingsUtils.KEY_PLAYER_MODE;
 
-                SharedPreferences preferences = PrefsUtils.getPrefs(getActivity());
-                int mode = preferences.getInt(PrefsUtils.KEY_PLAYER_MODE, PrefsUtils.MODE_STREAMING);
+                SharedPreferences preferences = SettingsUtils.getPrefs(getActivity());
+                String mode = preferences.getString(SettingsUtils.KEY_PLAYER_MODE, SettingsUtils.MODE_STREAMING);
 
-                model.items.add(new NestedSettingsItemModel(mode == PrefsUtils.MODE_STREAMING, getString(R.string.streaming) + " : " + "Spotify"));
-                model.items.add(new NestedSettingsItemModel(mode == PrefsUtils.MODE_RAE, getString(R.string.raePlayer) + " : " + getString(R.string.runPlaylist)));
+                model.items.add(new NestedSettingsItemModel(mode.equals(SettingsUtils.MODE_STREAMING), getString(R.string.streaming) + " : " + "Spotify",SettingsUtils.MODE_STREAMING));
+                model.items.add(new NestedSettingsItemModel(mode.equals(SettingsUtils.MODE_RAE), getString(R.string.raePlayer) + " : " + getString(R.string.runPlaylist),SettingsUtils.MODE_RAE));
                 ((SmartMainActivity) getActivity()).replaceFragment(NestedSettingsFragment.newInstance(model), true);
             }
         });
     }
 
     private void updateUI() {
-        SharedPreferences preferences = PrefsUtils.getPrefs(getActivity());
-        int mode = preferences.getInt(PrefsUtils.KEY_PLAYER_MODE, PrefsUtils.MODE_STREAMING);
-        boolean isRae = mode == PrefsUtils.MODE_RAE;
+        SharedPreferences preferences = SettingsUtils.getPrefs(getActivity());
+        String mode = preferences.getString(SettingsUtils.KEY_PLAYER_MODE, SettingsUtils.MODE_STREAMING);
+        boolean isRae = mode.equals(SettingsUtils.MODE_RAE);
         CategoryTitleModel categoryTitleModel = new CategoryTitleModel();
         categoryTitleModel.title.set(getString(R.string.player));
         if (isRae) {

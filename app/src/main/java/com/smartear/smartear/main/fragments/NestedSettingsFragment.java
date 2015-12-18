@@ -13,7 +13,7 @@ import com.smartear.smartear.databinding.ItemNestedSettingBinding;
 import com.smartear.smartear.main.viewmodel.NestedSettingsItemModel;
 import com.smartear.smartear.main.viewmodel.NestedSettingsModel;
 import com.smartear.smartear.main.widget.SimpleDividerItemDecoration;
-import com.smartear.smartear.utils.PrefsUtils;
+import com.smartear.smartear.utils.SettingsUtils;
 import com.smartear.smartear.widget.RecyclerViewAdapterBase;
 
 /**
@@ -62,8 +62,8 @@ public class NestedSettingsFragment extends BaseSmartFragment {
                     nestedSettingsItemModel.isChecked.set(false);
                 }
                 item.isChecked.set(true);
-                SharedPreferences sharedPreferences = PrefsUtils.getPrefs(getActivity());
-                sharedPreferences.edit().putInt(model.settingsKey, position).apply();
+                SharedPreferences sharedPreferences = SettingsUtils.getPrefs(getActivity());
+                sharedPreferences.edit().putString(model.settingsKey, item.storedValue).apply();
             }
         });
         binding.recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getActivity()));

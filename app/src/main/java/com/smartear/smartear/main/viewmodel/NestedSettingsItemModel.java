@@ -11,9 +11,11 @@ import android.databinding.ObservableField;
 public class NestedSettingsItemModel {
     public ObservableBoolean isChecked = new ObservableBoolean();
     public ObservableField<String> value = new ObservableField<>();
+    public String storedValue;
 
-    public NestedSettingsItemModel(boolean isChecked, String value) {
+    public NestedSettingsItemModel(boolean isChecked, String value, String storedValue) {
         this.isChecked.set(isChecked);
         this.value.set(value);
+        this.storedValue = storedValue;
     }
 }

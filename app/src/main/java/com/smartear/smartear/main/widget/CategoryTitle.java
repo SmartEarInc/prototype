@@ -43,6 +43,6 @@ public class CategoryTitle extends FrameLayout {
     }
 
     public void setOnBackClickListener(View.OnClickListener onBackClickListener) {
-        binding.back.setOnClickListener(onBackClickListener);
+        setOnClickListener(onBackClickListener);
     }
 }
