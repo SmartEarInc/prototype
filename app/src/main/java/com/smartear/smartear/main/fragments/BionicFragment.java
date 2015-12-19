@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -61,5 +62,13 @@ public class BionicFragment extends Fragment {
         presets.action.set(getString(R.string.prescription));
         presets.value.set("Dr. Lang");
         model.presets.set(presets);
+
+        binding.micSeekbarWrapper.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                binding.micSeekbar.dispatchTouchEvent(motionEvent);
+                return true;
+            }
+        });
     }
 }

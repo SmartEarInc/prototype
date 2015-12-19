@@ -74,15 +74,22 @@
                 android:layout_marginLeft="40dp"
                 android:src="@drawable/bionic_noise_down" />
 
-            <SeekBar
-                android:id="@+id/micSeekbar"
+            <FrameLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:max="@{data.maxMicValue}"
-                android:progress="@{data.micValue}"
-                android:progressDrawable="@drawable/sound_seekbar"
-                android:thumb="@drawable/volume_thumb" />
+                android:id="@+id/micSeekbarWrapper"
+                android:layout_height="match_parent">
+                <SeekBar
+                    android:id="@+id/micSeekbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:max="@{data.maxMicValue}"
+                    android:progress="@{data.micValue}"
+                    android:progressDrawable="@drawable/sound_seekbar"
+                    android:thumb="@drawable/volume_thumb" />
+            </FrameLayout>
+
 
             <ImageView
                 android:layout_width="wrap_content"
