@@ -29,7 +29,7 @@ public class SmartMainActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_smart_main);
         SmartMainModel smartMainModel = new SmartMainModel();
         binding.setData(smartMainModel);
-        binding.samsungStatusBarFix.setVisibility((isSamsung() && isLollipopAndAbove()) ? View.VISIBLE : View.GONE);
+        binding.samsungStatusBarFix.setVisibility((isSamsung() && isKitkatAndAbove()) ? View.VISIBLE : View.GONE);
         if (savedInstanceState == null) {
             replaceFragment(SmartMainFragment.newInstance(), false);
         }
@@ -39,8 +39,8 @@ public class SmartMainActivity extends AppCompatActivity {
         return Build.MANUFACTURER.toLowerCase().contains("samsung");
     }
 
-    private boolean isLollipopAndAbove() {
-        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP;
+    private boolean isKitkatAndAbove() {
+        return Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT;
     }
 
     public void replaceFragment(BaseSmartFragment fragment, boolean addToBackStack) {
