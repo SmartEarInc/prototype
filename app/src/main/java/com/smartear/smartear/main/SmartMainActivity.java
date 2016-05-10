@@ -14,6 +14,8 @@ import com.smartear.smartear.fragment.BaseFragment;
 import com.smartear.smartear.main.fragments.BaseSmartFragment;
 import com.smartear.smartear.main.fragments.SmartMainFragment;
 import com.smartear.smartear.main.viewmodel.SmartMainModel;
+import com.smartear.smartear.utils.commands.CommandHelper;
+import com.smartear.smartear.voice.VoiceRecognizer;
 
 /**
  * Created: Belozerov
@@ -22,16 +24,27 @@ import com.smartear.smartear.main.viewmodel.SmartMainModel;
  */
 public class SmartMainActivity extends AppCompatActivity {
     private ActivitySmartMainBinding binding;
+    private CommandHelper commandHelper;
+
+
+    VoiceRecognizer voiceRecognizer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        commandHelper = new CommandHelper(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_smart_main);
         SmartMainModel smartMainModel = new SmartMainModel();
         binding.setData(smartMainModel);
         binding.samsungStatusBarFix.setVisibility((isSamsung() && isKitkatAndAbove()) ? View.VISIBLE : View.GONE);
         if (savedInstanceState == null) {
             replaceFragment(SmartMainFragment.newInstance(), false);
+            voiceRecognizer = new VoiceRecognizer();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.voiceContainer, voiceRecognizer)
+                    .commit();
+        } else {
+            voiceRecognizer = (VoiceRecognizer) getSupportFragmentManager().findFragmentById(R.id.voiceContainer);
         }
     }
 
@@ -67,6 +80,10 @@ public class SmartMainActivity extends AppCompatActivity {
         fragmentTransaction.commitAllowingStateLoss();
     }
 
+    public VoiceRecognizer getVoiceRecognizer() {
+        return voiceRecognizer;
+    }
+
     private BaseSmartFragment getLastFragment() {
         return (BaseSmartFragment) getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
     }
@@ -80,5 +97,8 @@ public class SmartMainActivity extends AppCompatActivity {
         super.onBackPressed();
     }
 
+    public CommandHelper getCommandHelper() {
+        return commandHelper;
+    }
 
 }

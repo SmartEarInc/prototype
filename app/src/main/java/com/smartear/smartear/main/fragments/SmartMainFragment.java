@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.smartear.smartear.R;
 import com.smartear.smartear.databinding.FragmentSmartMainBinding;
+import com.smartear.smartear.main.SmartMainActivity;
 import com.smartear.smartear.main.viewmodel.SmartMainModel;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -45,7 +46,7 @@ public class SmartMainFragment extends BaseSmartFragment implements TopPanelFrag
         super.onViewCreated(view, savedInstanceState);
         SmartMainModel smartMainModel = new SmartMainModel();
         binding.setData(smartMainModel);
-        binding.eqPanel.setDragView(binding.eqFab);
+//        binding.eqPanel.setDragView(binding.eqFab);
         binding.eqPanel.setTouchEnabled(false);
         binding.eqPanel.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
             @Override
@@ -77,7 +78,7 @@ public class SmartMainFragment extends BaseSmartFragment implements TopPanelFrag
         binding.eqPanel.postDelayed(new Runnable() {
             @Override
             public void run() {
-                if(SlidingUpPanelLayout.PanelState.EXPANDED.equals(binding.eqPanel.getPanelState())){
+                if (SlidingUpPanelLayout.PanelState.EXPANDED.equals(binding.eqPanel.getPanelState())) {
                     binding.eqTransparentPanel.setAlpha(1f);
                 }
             }
@@ -86,11 +87,13 @@ public class SmartMainFragment extends BaseSmartFragment implements TopPanelFrag
         binding.eqFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!SlidingUpPanelLayout.PanelState.EXPANDED.equals(binding.eqPanel.getPanelState())) {
-                    showEqPanel();
-                } else {
-                    hideEqPanel();
-                }
+//                if (!SlidingUpPanelLayout.PanelState.EXPANDED.equals(binding.eqPanel.getPanelState())) {
+//                    showEqPanel();
+//                } else {
+//                    hideEqPanel();
+//                }
+                ((SmartMainActivity) getActivity()).getVoiceRecognizer().startRecognize();
+//                ((SmartMainActivity) getActivity()).getCommandHelper().parseCommand("good morning");
             }
         });
 

@@ -27,4 +27,9 @@
         android:layout_height="match_parent"
         android:layout_marginTop="?attr/actionBarSize" />
 
+    <FrameLayout
+        android:id="@+id/voiceContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
 </android.support.design.widget.CoordinatorLayout>

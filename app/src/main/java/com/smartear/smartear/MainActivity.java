@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import com.smartear.smartear.fragment.StartFragment;
 import com.smartear.smartear.fragment.VoiceRecognizeFragment;
 import com.smartear.smartear.services.BTService;
+import com.smartear.smartear.voice.VoiceRecognizer;
 
 public class MainActivity extends BaseActivity {
     private static final int REQUEST_MEDIA_BUTTON_CODE = 11;
@@ -46,6 +47,7 @@ public class MainActivity extends BaseActivity {
         }
     };
     private boolean startRecordingOnResume;
+    private VoiceRecognizer voiceRecognizer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,10 @@ public class MainActivity extends BaseActivity {
         boolean startRecognize = parseIntent(getIntent());
         if (savedInstanceState == null) {
             replaceFragment(StartFragment.newInstance(startRecognize), false);
+            voiceRecognizer = new VoiceRecognizer();
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.voiceContainer, voiceRecognizer)
+                    .commit();
         }
         requestPermissionIfNeeded();
         registerMediaButtonReceiver();

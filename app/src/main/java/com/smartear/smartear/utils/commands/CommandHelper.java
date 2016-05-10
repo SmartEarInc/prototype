@@ -18,6 +18,7 @@ public class CommandHelper {
         helpers.add(new CallCommandHelper(activity));
         helpers.add(new LaunchCommandHelper(activity));
         helpers.add(new VolumeCommandHelper(activity));
+        helpers.add(new TTSCommandHelper(activity));
     }
 
     public void parseCommand(String text) {

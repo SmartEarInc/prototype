@@ -54,5 +54,10 @@
                 android:layout_height="match_parent" />
 
         </LinearLayout>
+
+        <FrameLayout
+            android:id="@+id/voiceContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
     </com.smartear.smartear.widget.ScrimInsetsFrameLayout>
 </layout>
