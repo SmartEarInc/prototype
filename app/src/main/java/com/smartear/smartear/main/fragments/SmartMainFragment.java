@@ -93,7 +93,7 @@ public class SmartMainFragment extends BaseSmartFragment implements TopPanelFrag
 //                    hideEqPanel();
 //                }
                 ((SmartMainActivity) getActivity()).getVoiceRecognizer().startRecognize();
-//                ((SmartMainActivity) getActivity()).getCommandHelper().parseCommand("good morning");
+//                ((SmartMainActivity) getActivity()).getCommandHelper().parseCommand("wechat");
             }
         });
 

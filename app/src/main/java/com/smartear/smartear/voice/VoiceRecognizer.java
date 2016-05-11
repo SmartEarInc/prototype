@@ -67,7 +67,11 @@ public class VoiceRecognizer extends Fragment {
         }
     };
 
-    public void startRecognize() {
+    public void
+
+
+
+    startRecognize() {
         if (!isBtMicrophoneOn()) {
             startBtMicrophone();
         }
