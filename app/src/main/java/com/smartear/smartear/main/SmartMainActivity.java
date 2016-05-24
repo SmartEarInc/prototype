@@ -1,9 +1,11 @@
 package com.smartear.smartear.main;
 
+import android.content.DialogInterface;
 import android.databinding.DataBindingUtil;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.transition.TransitionInflater;
 import android.view.View;
@@ -14,7 +16,9 @@ import com.smartear.smartear.fragment.BaseFragment;
 import com.smartear.smartear.main.fragments.BaseSmartFragment;
 import com.smartear.smartear.main.fragments.SmartMainFragment;
 import com.smartear.smartear.main.viewmodel.SmartMainModel;
+import com.smartear.smartear.utils.MediaPlayerHelper;
 import com.smartear.smartear.utils.commands.CommandHelper;
+import com.smartear.smartear.utils.firebase.MessageHelper;
 import com.smartear.smartear.voice.VoiceRecognizer;
 
 /**
@@ -22,12 +26,17 @@ import com.smartear.smartear.voice.VoiceRecognizer;
  * Company: APPGRANULA LLC
  * Date: 14.12.2015
  */
-public class SmartMainActivity extends AppCompatActivity {
+public class SmartMainActivity extends AppCompatActivity implements MessageHelper.OnNewMessageListener {
     private ActivitySmartMainBinding binding;
     private CommandHelper commandHelper;
 
-
+    private MessageHelper messageHelper = new MessageHelper();
     VoiceRecognizer voiceRecognizer;
+    MediaPlayerHelper mediaPlayerHelper = new MediaPlayerHelper();
+
+    public MessageHelper getMessageHelper() {
+        return messageHelper;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +55,8 @@ public class SmartMainActivity extends AppCompatActivity {
         } else {
             voiceRecognizer = (VoiceRecognizer) getSupportFragmentManager().findFragmentById(R.id.voiceContainer);
         }
+
+        messageHelper.addNewMessageListener(this);
     }
 
     private boolean isSamsung() {
@@ -101,4 +112,15 @@ public class SmartMainActivity extends AppCompatActivity {
         return commandHelper;
     }
 
+    @Override
+    public void onNewMessage(final String url) {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.newMessage)
+                .setPositiveButton(R.string.play, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        mediaPlayerHelper.startPlaying(url);
+                    }
+                }).show();
+    }
 }

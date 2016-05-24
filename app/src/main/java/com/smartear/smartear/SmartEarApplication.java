@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
+import com.google.firebase.auth.FirebaseAuth;
 import com.nuance.nmdp.speechkit.Prompt;
 import com.nuance.nmdp.speechkit.SpeechKit;
 import com.smartear.smartear.speechkit.AppInfo;
@@ -29,6 +30,9 @@ public class SmartEarApplication extends Application {
         Prompt beep = speechKit.defineAudioPrompt(R.raw.beep);
         speechKit.setDefaultRecognizerPrompts(beep, Prompt.vibration(100), null, null);
         context = this;
+
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        auth.signInAnonymously();
     }
 
     public static Context getContext() {

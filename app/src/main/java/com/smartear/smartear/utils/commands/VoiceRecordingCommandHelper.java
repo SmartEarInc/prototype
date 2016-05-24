@@ -14,8 +14,10 @@ import android.speech.tts.UtteranceProgressListener;
 import android.support.v7.app.AppCompatActivity;
 
 import com.smartear.smartear.SmartEarApplication;
+import com.smartear.smartear.main.SmartMainActivity;
 import com.smartear.smartear.utils.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -30,15 +32,18 @@ public class VoiceRecordingCommandHelper extends BaseCommandHelper {
     private static final long SECOND = 1000;
     @SuppressLint("SimpleDateFormat")
     private DateFormat fileNameFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
-    Handler uiHandler = new Handler();
     private MediaRecorder recorder;
-    private MediaPlayer mediaPlayer;
     private Handler recordingHandler = new Handler();
     private Runnable recordingRunnable = new Runnable() {
         @Override
         public void run() {
             stopRecording();
-            startPlaying();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ((SmartMainActivity)activity).getMessageHelper().sendFile(Uri.fromFile(new File(filePath)));
+                }
+            }, 500);
         }
     };
     private Handler startRecordingHandelr = new Handler();
@@ -49,20 +54,7 @@ public class VoiceRecordingCommandHelper extends BaseCommandHelper {
         }
     };
 
-    private void startPlaying() {
 
-        uiHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mediaPlayer != null) {
-                    mediaPlayer.release();
-                }
-
-                mediaPlayer = MediaPlayer.create(activity, Uri.parse(filePath));
-                mediaPlayer.start();
-            }
-        }, 500);
-    }
 
     private String filePath;
 
@@ -96,9 +88,6 @@ public class VoiceRecordingCommandHelper extends BaseCommandHelper {
 
                     @Override
                     public void onDone(String s) {
-                        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                        Ringtone r = RingtoneManager.getRingtone(SmartEarApplication.getContext(), notification);
-                        r.play();
                         startRecordingHandelr.postDelayed(startRecordingRunnable, 300);
                     }
 
@@ -148,7 +137,9 @@ public class VoiceRecordingCommandHelper extends BaseCommandHelper {
 
             }
             recorder = null;
+
         }
+
     }
 
     @Override
