@@ -2,12 +2,15 @@ package com.smartear.smartear.utils.commands;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Handler;
+import android.speech.tts.TextToSpeech;
+import android.speech.tts.UtteranceProgressListener;
 import android.support.v7.app.AppCompatActivity;
 
 import com.smartear.smartear.SmartEarApplication;
@@ -17,11 +20,12 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 public class VoiceRecordingCommandHelper extends BaseCommandHelper {
     private static final String[] keyWords = {
-            "WE CHAT",
-            "WECHAT"
+            "voicechat",
+            "voice"
     };
     private static final long SECOND = 1000;
     @SuppressLint("SimpleDateFormat")
@@ -66,11 +70,13 @@ public class VoiceRecordingCommandHelper extends BaseCommandHelper {
         super(activity);
     }
 
+    TextToSpeech tts;
+
     @Override
     public boolean parseCommand(String text) {
         boolean found = false;
         for (String keyWord : keyWords) {
-            if (text.toUpperCase().contains(keyWord)) {
+            if (text.toUpperCase().contains(keyWord.toUpperCase())) {
                 found = true;
                 break;
             }
@@ -79,10 +85,36 @@ public class VoiceRecordingCommandHelper extends BaseCommandHelper {
             return false;
         }
 
-        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        Ringtone r = RingtoneManager.getRingtone(SmartEarApplication.getContext(), notification);
-        r.play();
-        startRecordingHandelr.postDelayed(startRecordingRunnable, 300);
+        tts = new TextToSpeech(activity, new TextToSpeech.OnInitListener() {
+            @Override
+            public void onInit(int i) {
+                tts.setOnUtteranceProgressListener(new UtteranceProgressListener() {
+                    @Override
+                    public void onStart(String s) {
+
+                    }
+
+                    @Override
+                    public void onDone(String s) {
+                        Uri notification = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                        Ringtone r = RingtoneManager.getRingtone(SmartEarApplication.getContext(), notification);
+                        r.play();
+                        startRecordingHandelr.postDelayed(startRecordingRunnable, 300);
+                    }
+
+                    @Override
+                    public void onError(String s) {
+
+                    }
+                });
+                HashMap<String, String> params = new HashMap<>();
+                params.put(TextToSpeech.Engine.KEY_PARAM_STREAM, String.valueOf(AudioManager.STREAM_ALARM));
+                params.put(TextToSpeech.Engine.KEY_PARAM_UTTERANCE_ID, "SOME MESSAGE");
+                tts.speak("Ok, Ready", TextToSpeech.QUEUE_FLUSH, params);
+            }
+        });
+
+
 
         return true;
     }

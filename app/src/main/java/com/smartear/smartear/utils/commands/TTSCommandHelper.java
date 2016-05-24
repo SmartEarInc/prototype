@@ -13,8 +13,9 @@ public class TTSCommandHelper extends BaseCommandHelper {
     private TextToSpeech tts;
 
     static {
-        keyAnswer.put("WEATHER", "The weather is clear. Your first meeting is with Dean Gardner at 9AM at the Vault in San Francisco.");
+        keyAnswer.put("WEATHER", "The weather is seventy-eight degrees with 15mph winds mostly cloudy.");
         keyAnswer.put("Good morning", "Good Morning Kinu! You have been authenticated.");
+        keyAnswer.put("first meeting", "Your first meeting with Dean Garnder at 9am at The Vault");
     }
 
     public TTSCommandHelper(AppCompatActivity activity) {
