@@ -14,6 +14,11 @@ import com.google.firebase.storage.UploadTask;
 
 public class MessageHelper {
     private boolean iAmSender = false;
+
+    public MessageHelper() {
+        super();
+    }
+
     public void sendFile(Uri fileUri) {
         iAmSender = true;
         FirebaseDatabase database = FirebaseDatabase.getInstance();

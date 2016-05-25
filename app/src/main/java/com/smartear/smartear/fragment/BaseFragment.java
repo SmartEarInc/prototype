@@ -17,7 +17,9 @@ public abstract class BaseFragment extends Fragment {
 
     public static final String ADD_TO_BACK_STACK = "add_to_back_stack";
 
-    public abstract String getFragmentTag();
+    public String getFragmentTag() {
+        return getClass().getCanonicalName();
+    }
 
     public abstract String getTitle();
 
@@ -42,18 +44,19 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setTitle(getTitle());
-
-        if (isBackStack()) {
-            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setHomeButtonEnabled(true);
-        } else {
-            getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(false);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            getSupportActionBar().setDisplayShowHomeEnabled(false);
-            getSupportActionBar().setHomeButtonEnabled(false);
+        if (getSupportActionBar() != null) {
+            setTitle(getTitle());
+            if (isBackStack()) {
+                getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+                getSupportActionBar().setDisplayShowHomeEnabled(true);
+                getSupportActionBar().setHomeButtonEnabled(true);
+            } else {
+                getSupportActionBar().setDefaultDisplayHomeAsUpEnabled(false);
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+                getSupportActionBar().setDisplayShowHomeEnabled(false);
+                getSupportActionBar().setHomeButtonEnabled(false);
+            }
         }
     }
 

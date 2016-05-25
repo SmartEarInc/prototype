@@ -5,9 +5,9 @@ import android.media.AudioManager;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 
-import com.smartear.smartear.main.SmartMainActivity;
 import com.smartear.smartear.utils.GoogleSpeechRecognizerHelper;
 import com.smartear.smartear.utils.commands.CommandHelper;
+import com.smartear.smartear.wechat.WeChatMainActivity;
 
 public class VoiceRecognizer extends Fragment {
     GoogleSpeechRecognizerHelper googleSpeechRecognizerHelper;
@@ -84,6 +84,6 @@ public class VoiceRecognizer extends Fragment {
     }
 
     private CommandHelper getCommandHelper() {
-        return ((SmartMainActivity) getActivity()).getCommandHelper();
+        return ((WeChatMainActivity) getActivity()).getCommandHelper();
     }
 }

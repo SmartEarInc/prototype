@@ -51,6 +51,18 @@
     <string name="players">Players</string>
     <string name="newMessage">New Message</string>
     <string name="play">Play</string>
+    <string name="goodMorning">Good Morning</string>
+    <string name="youAre">You are</string>
+    <string name="authenticated">authenticated</string>
+    <string name="sanfrancisco">San Francisco</string>
+    <string name="high">High:</string>
+    <string name="low">Low:</string>
+    <string name="wind">Wind:</string>
+    <string name="humidity">Humidity:</string>
+    <string name="today">Today - %1$s</string>
+    <string name="message">Message</string>
+    <string name="recording">Recording</string>
+    <string name="sent">Sent</string>
 
     <string-array name="bandLevels">
         <item>Bass</item>

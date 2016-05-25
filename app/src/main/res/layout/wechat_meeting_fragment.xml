@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <TextView
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:id="@+id/dayofweek"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#fff"
+        android:textSize="@dimen/textTitleSize"
+        tools:text="Today - Monday" />
+
+    <TextView
+        android:id="@+id/meetingDate"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/greenText"
+        android:textSize="28sp"
+        tools:text="May 21, 2016" />
+
+    <LinearLayout
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#80000000"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:orientation="horizontal">
+        <View
+            android:background="@color/greenText"
+            android:layout_width="4dp"
+            android:layout_height="64dp"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="16sp"
+                android:textColor="#fff"
+                android:text="Meeting with Dean Gardner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textSize="16sp"
+
+                android:textColor="#fff"
+                android:text="Loc: The Vault, 415 Jackson St."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textColor="#fff"
+                android:text="9:00 - 10:00AM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="6dp"
+            android:gravity="end|center_vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textColor="#fff"
+                android:text="Today"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textColor="#fff"
+                android:text="46m"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:alpha="0.5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:orientation="horizontal">
+        <View
+            android:background="@color/greenText"
+            android:layout_width="4dp"
+            android:layout_height="64dp"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textSize="16sp"
+                android:textColor="#fff"
+                android:text="Launch with sister"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textSize="16sp"
+
+                android:textColor="#fff"
+                android:text="Loc: Squat n Gobble, 13 Market St."
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textColor="#fff"
+                android:text="12:00 - 01:00PM"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="6dp"
+            android:gravity="end|center_vertical"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textColor="#fff"
+                android:text="Today"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textColor="#fff"
+                android:text="46m"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

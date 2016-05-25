@@ -3,19 +3,15 @@ package com.smartear.smartear.utils.commands;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.MediaRecorder;
-import android.media.Ringtone;
-import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Handler;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.UtteranceProgressListener;
 import android.support.v7.app.AppCompatActivity;
 
-import com.smartear.smartear.SmartEarApplication;
-import com.smartear.smartear.main.SmartMainActivity;
 import com.smartear.smartear.utils.FileUtils;
+import com.smartear.smartear.wechat.WeChatMainActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -41,7 +37,7 @@ public class VoiceRecordingCommandHelper extends BaseCommandHelper {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ((SmartMainActivity)activity).getMessageHelper().sendFile(Uri.fromFile(new File(filePath)));
+                    ((WeChatMainActivity) activity).getMessageHelper().sendFile(Uri.fromFile(new File(filePath)));
                 }
             }, 500);
         }
@@ -53,7 +49,6 @@ public class VoiceRecordingCommandHelper extends BaseCommandHelper {
             startRecording();
         }
     };
-
 
 
     private String filePath;
@@ -102,7 +97,6 @@ public class VoiceRecordingCommandHelper extends BaseCommandHelper {
                 tts.speak("Ok, Ready", TextToSpeech.QUEUE_FLUSH, params);
             }
         });
-
 
 
         return true;
