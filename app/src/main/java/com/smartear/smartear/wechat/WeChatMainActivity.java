@@ -1,9 +1,8 @@
 package com.smartear.smartear.wechat;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.smartear.smartear.BaseActivity;
@@ -15,6 +14,7 @@ import com.smartear.smartear.voice.VoiceRecognizer;
 import com.smartear.smartear.wechat.bus.VoiceCommandEvent;
 import com.smartear.smartear.wechat.fragments.WeChatAuthFragment;
 import com.smartear.smartear.wechat.fragments.WeChatMeetingFragment;
+import com.smartear.smartear.wechat.fragments.WeChatNewMessageFragment;
 import com.smartear.smartear.wechat.fragments.WeChatRecordingFragment;
 import com.smartear.smartear.wechat.fragments.WeChatWeatherFragment;
 
@@ -93,13 +93,12 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
 
     @Override
     public void onNewMessage(final String url) {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.newMessage)
-                .setPositiveButton(R.string.play, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        mediaPlayerHelper.startPlaying(url);
-                    }
-                }).show();
+        if (!TextUtils.isEmpty(url)) {
+            replaceFragment(WeChatNewMessageFragment.newInstance(url), false);
+        }
+    }
+
+    public void playUrl(String url) {
+        mediaPlayerHelper.startPlaying(url);
     }
 }

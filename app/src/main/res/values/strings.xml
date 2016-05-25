@@ -63,6 +63,7 @@
     <string name="message">Message</string>
     <string name="recording">Recording</string>
     <string name="sent">Sent</string>
+    <string name="newVoiceChat">New Voice Chat</string>
 
     <string-array name="bandLevels">
         <item>Bass</item>
