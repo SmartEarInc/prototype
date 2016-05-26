@@ -1,13 +1,20 @@
 package com.smartear.smartear.wechat;
 
+import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.smartear.smartear.BaseActivity;
 import com.smartear.smartear.R;
+import com.smartear.smartear.fragment.StartFragment;
+import com.smartear.smartear.fragment.VoiceRecognizeFragment;
+import com.smartear.smartear.services.BTService;
 import com.smartear.smartear.utils.MediaPlayerHelper;
 import com.smartear.smartear.utils.commands.CommandHelper;
 import com.smartear.smartear.utils.firebase.MessageHelper;
@@ -15,6 +22,7 @@ import com.smartear.smartear.voice.VoiceRecognizer;
 import com.smartear.smartear.wechat.bus.VoiceCommandEvent;
 import com.smartear.smartear.wechat.fragments.WeChatAuthFragment;
 import com.smartear.smartear.wechat.fragments.WeChatBaseFragment;
+import com.smartear.smartear.wechat.fragments.WeChatDidiFragment;
 import com.smartear.smartear.wechat.fragments.WeChatMeetingFragment;
 import com.smartear.smartear.wechat.fragments.WeChatMusicFragment;
 import com.smartear.smartear.wechat.fragments.WeChatNewMessageFragment;
@@ -25,6 +33,7 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
 public class WeChatMainActivity extends BaseActivity implements MessageHelper.OnNewMessageListener {
+    public static final String EXTRA_START_RECOGNITION = "extra_start_recognition";
     private CommandHelper commandHelper;
     private MessageHelper messageHelper = new MessageHelper();
     VoiceRecognizer voiceRecognizer;
@@ -37,15 +46,58 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
     public VoiceRecognizer getVoiceRecognizer() {
         return voiceRecognizer;
     }
+    private AudioManager audioManager;
 
     private MediaPlayer mediaPlayer;
 
+    public void requestAudioFocus() {
+        if (!audioFocusGranted) {
+            int result = audioManager.requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+            if (result == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+                audioFocusGranted = true;
+            }
+            BTService.restart(this);
+        }
+    }
+    private boolean audioFocusGranted = false;
+    private boolean isResumed = false;
+
+    private AudioManager.OnAudioFocusChangeListener audioFocusListener = new AudioManager.OnAudioFocusChangeListener() {
+        @Override
+        public void onAudioFocusChange(int focusChange) {
+            switch (focusChange) {
+                case AudioManager.AUDIOFOCUS_LOSS:
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                    if (!isResumed) {
+                        audioFocusGranted = false;
+                        audioManager.abandonAudioFocus(audioFocusListener);
+                    } else {
+                        requestAudioFocus();
+                    }
+                    break;
+                case AudioManager.AUDIOFOCUS_GAIN:
+                    break;
+            }
+        }
+    };
+
+    private void registerMediaButtonReceiver() {
+        BTService.start(this);
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Window window = this.getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+        window.addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        window.addFlags(WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON);
         setContentView(R.layout.wechat_activity_main);
         commandHelper = new CommandHelper(this);
+        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        registerMediaButtonReceiver();
 
         if (savedInstanceState == null) {
             voiceRecognizer = new VoiceRecognizer();
@@ -56,17 +108,47 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
             voiceRecognizer = (VoiceRecognizer) getSupportFragmentManager().findFragmentById(R.id.voiceContainer);
         }
 
+        parseIntent(getIntent());
+
         messageHelper.addNewMessageListener(this);
 
         findViewById(R.id.start_record).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getVoiceRecognizer().startRecognize();
-//                onVoiceEvent(new VoiceCommandEvent(RecognizedState.MUSIC));
+//                onVoiceEvent(new VoiceCommandEvent(RecognizedState.DIDI));
             }
         });
 
         EventBus.getDefault().register(this);
+    }
+
+    public boolean isStartRecordingOnResume() {
+        return startRecordingOnResume;
+    }
+
+    public void setStartRecordingOnResume(boolean startRecordingOnResume) {
+        this.startRecordingOnResume = startRecordingOnResume;
+    }
+
+    private boolean startRecordingOnResume;
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        parseIntent(intent);
+    }
+
+    private boolean parseIntent(Intent intent) {
+        if (intent != null && (intent.hasExtra(EXTRA_START_RECOGNITION) || intent.getAction().equals(Intent.ACTION_VOICE_COMMAND))) {
+            if (voiceRecognizer != null && voiceRecognizer.getActivity() != null) {
+                voiceRecognizer.startRecognize();
+            } else {
+                setStartRecordingOnResume(true);
+            }
+            return true;
+        }
+        return false;
     }
 
     @Subscribe
@@ -95,6 +177,7 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
                 break;
             case DIDI:
                 pauseMusic();
+                replaceFragment(new WeChatDidiFragment(), false);
                 break;
         }
     }
@@ -109,13 +192,19 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
     }
 
     public void pauseMusic() {
-        mediaPlayer.pause();
-        getLastWeChatFragment().pauseMusic();
+        if (mediaPlayer != null) {
+            mediaPlayer.pause();
+            WeChatBaseFragment.sayText(this, RecognizedState.PAUSE_MUSIC);
+            getLastWeChatFragment().pauseMusic();
+        }
     }
 
     public void resumeMusic() {
-        mediaPlayer.start();
-        getLastWeChatFragment().resumeMusic();
+        if (mediaPlayer != null) {
+            mediaPlayer.start();
+            WeChatBaseFragment.sayText(this, RecognizedState.RESUME_MUSIC);
+            getLastWeChatFragment().resumeMusic();
+        }
     }
 
     public MediaPlayer getMediaPlayer() {

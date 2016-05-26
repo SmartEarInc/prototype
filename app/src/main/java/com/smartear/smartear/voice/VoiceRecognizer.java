@@ -25,9 +25,28 @@ public class VoiceRecognizer extends Fragment {
         return am.isBluetoothScoOn();
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (getActivity() instanceof WeChatMainActivity) {
+            WeChatMainActivity activity = (WeChatMainActivity) getActivity();
+            if (activity.isStartRecordingOnResume()) {
+                activity.setStartRecordingOnResume(false);
+                startRecognize();
+            }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        stopRecording();
+    }
+
     private void stopRecording() {
-        if (googleSpeechRecognizerHelper != null)
+        if (googleSpeechRecognizerHelper != null) {
             googleSpeechRecognizerHelper.stopListening();
+        }
     }
 
     private void startRecording() {
@@ -68,7 +87,6 @@ public class VoiceRecognizer extends Fragment {
     };
 
     public void
-
 
 
     startRecognize() {

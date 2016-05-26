@@ -35,6 +35,6 @@ public class WeChatMeetingFragment extends WeChatBaseFragment {
         month.setText(new SimpleDateFormat("MMMM").format(today));
         meetingDay.setText(new SimpleDateFormat("dd\nEEEE").format(today));
 
-        sayText(RecognizedState.MEETING);
+        sayText(getWeChatActivity(), RecognizedState.MEETING);
     }
 }

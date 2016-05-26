@@ -13,4 +13,6 @@
     <color name="inactiveButtonColor">#626262</color>
     <color name="greenText">#00aa00</color>
     <color name="grayDivider">#ccc</color>
+    <color name="mainBlackTextColor">#cc000000</color>
+    <color name="secondaryBlackTextColor">#80000000</color>
 </resources>

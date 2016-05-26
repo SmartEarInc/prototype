@@ -24,6 +24,6 @@ public class WeChatWeatherFragment extends WeChatBaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        sayText(RecognizedState.WEATHER);
+        sayText(getWeChatActivity(), RecognizedState.WEATHER);
     }
 }

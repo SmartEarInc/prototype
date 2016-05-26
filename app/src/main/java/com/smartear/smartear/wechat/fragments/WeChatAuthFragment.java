@@ -32,6 +32,6 @@ public class WeChatAuthFragment extends WeChatBaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        sayText(RecognizedState.AUTH);
+        sayText(getWeChatActivity(), RecognizedState.AUTH);
     }
 }

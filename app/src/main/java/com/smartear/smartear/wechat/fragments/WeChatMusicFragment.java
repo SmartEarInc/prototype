@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.SeekBar;
 
 import com.smartear.smartear.R;
+import com.smartear.smartear.wechat.RecognizedState;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -44,6 +45,7 @@ public class WeChatMusicFragment extends WeChatBaseFragment {
         playingContainer = view.findViewById(R.id.musicPlaying);
         seekbar = (SeekBar) view.findViewById(R.id.seekbarProgress);
 
+        sayText(getWeChatActivity(), RecognizedState.MUSIC);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

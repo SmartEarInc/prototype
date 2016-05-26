@@ -11,7 +11,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.view.KeyEvent;
 
-import com.smartear.smartear.MainActivity;
+import com.smartear.smartear.wechat.WeChatMainActivity;
+
 
 /**
  * Created: Belozerov
@@ -49,9 +50,9 @@ public class BTService extends Service {
         KeyEvent keyEvent = mediaButtonIntent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
         if (keyEvent != null && keyEvent.getAction() == KeyEvent.ACTION_DOWN && (keyEvent.getKeyCode() == KeyEvent.KEYCODE_MEDIA_PAUSE || keyEvent.getKeyCode() == KeyEvent.KEYCODE_MEDIA_PLAY)) {
             unlockDevice();
-            Intent intent = new Intent(BTService.this, MainActivity.class);
+            Intent intent = new Intent(BTService.this, WeChatMainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.putExtra(MainActivity.EXTRA_START_RECOGNITION, true);
+            intent.putExtra(WeChatMainActivity.EXTRA_START_RECOGNITION, true);
             startActivity(intent);
         }
     }

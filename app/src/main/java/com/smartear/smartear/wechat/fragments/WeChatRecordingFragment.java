@@ -39,6 +39,7 @@ public class WeChatRecordingFragment extends WeChatBaseFragment {
             statusText.setText(R.string.sent);
             statusIcon.setImageResource(R.drawable.sent);
             seekBarContainer.setVisibility(View.GONE);
+            sayText(getContext(), RecognizedState.SENT);
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -81,7 +82,7 @@ public class WeChatRecordingFragment extends WeChatBaseFragment {
         statusText = (TextView) view.findViewById(R.id.statusText);
         recordingView = view.findViewById(R.id.recording);
         retrievingView = view.findViewById(R.id.retrieving);
-        sayText(RecognizedState.VOICE_MESSAGE);
+        sayText(getWeChatActivity(),RecognizedState.VOICE_MESSAGE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

@@ -47,6 +47,7 @@ public class GoogleSpeechRecognizerHelper implements RecognitionListener {
 
     public void stopListening() {
         speechRecognizer.stopListening();
+        speechRecognizer.destroy();
     }
 
     public interface SpeechRecordingListener {
