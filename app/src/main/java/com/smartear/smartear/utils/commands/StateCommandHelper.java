@@ -24,6 +24,13 @@ public class StateCommandHelper extends BaseCommandHelper {
         keyAnswer.put("play", RecognizedState.MUSIC);
         keyAnswer.put("didi", RecognizedState.DIDI);
         keyAnswer.put("get me a", RecognizedState.DIDI);
+        keyAnswer.put("pause", RecognizedState.PAUSE_MUSIC);
+        keyAnswer.put("boost", RecognizedState.PAUSE_MUSIC);
+        keyAnswer.put("bose", RecognizedState.PAUSE_MUSIC);
+        keyAnswer.put("folk", RecognizedState.PAUSE_MUSIC);
+        keyAnswer.put("ghost", RecognizedState.PAUSE_MUSIC);
+        keyAnswer.put("resume", RecognizedState.RESUME_MUSIC);
+        keyAnswer.put("review", RecognizedState.RESUME_MUSIC);
     }
 
     public StateCommandHelper(AppCompatActivity activity) {

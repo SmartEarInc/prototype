@@ -37,7 +37,7 @@ public class WeChatRecordingFragment extends WeChatBaseFragment {
         public void run() {
             stopRecording();
             statusText.setText(R.string.sent);
-            statusIcon.setImageResource(R.drawable.ic_content_send);
+            statusIcon.setImageResource(R.drawable.sent);
             seekBarContainer.setVisibility(View.GONE);
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -62,6 +62,8 @@ public class WeChatRecordingFragment extends WeChatBaseFragment {
     private ImageView statusIcon;
     private TextView statusText;
     private View seekBarContainer;
+    private View retrievingView;
+    private View recordingView;
 
     @Nullable
     @Override
@@ -77,10 +79,14 @@ public class WeChatRecordingFragment extends WeChatBaseFragment {
         seekBarContainer = view.findViewById(R.id.seekbarContainer);
         statusIcon = (ImageView) view.findViewById(R.id.statusIcon);
         statusText = (TextView) view.findViewById(R.id.statusText);
+        recordingView = view.findViewById(R.id.recording);
+        retrievingView = view.findViewById(R.id.retrieving);
         sayText(RecognizedState.VOICE_MESSAGE);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                recordingView.setVisibility(View.VISIBLE);
+                retrievingView.setVisibility(View.GONE);
                 startRecording();
             }
         }, 2000);
@@ -97,17 +103,21 @@ public class WeChatRecordingFragment extends WeChatBaseFragment {
         stopRecording();
         Date creationDate = new Date();
         filePath = FileUtils.newFilePath(fileNameFormat.format(creationDate) + ".mp3");
-        recorder = new MediaRecorder();
-        recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        recorder.setOutputFile(filePath);
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         try {
-            recorder.prepare();
-        } catch (IOException e) {
+            recorder = new MediaRecorder();
+            recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+            recorder.setOutputFile(filePath);
+            recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+            try {
+                recorder.prepare();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            recorder.start();
+        } catch (Exception e){
             e.printStackTrace();
         }
-        recorder.start();
 
         recordingHandler.postDelayed(recordingRunnable, RECORDING_TIME);
 

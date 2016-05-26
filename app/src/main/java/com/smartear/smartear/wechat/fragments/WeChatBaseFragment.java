@@ -41,4 +41,12 @@ public abstract class WeChatBaseFragment extends BaseFragment {
             });
         }
     }
+
+    public void pauseMusic() {
+
+    }
+
+    public void resumeMusic() {
+
+    }
 }

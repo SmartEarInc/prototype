@@ -1,5 +1,6 @@
 package com.smartear.smartear.wechat;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -13,7 +14,9 @@ import com.smartear.smartear.utils.firebase.MessageHelper;
 import com.smartear.smartear.voice.VoiceRecognizer;
 import com.smartear.smartear.wechat.bus.VoiceCommandEvent;
 import com.smartear.smartear.wechat.fragments.WeChatAuthFragment;
+import com.smartear.smartear.wechat.fragments.WeChatBaseFragment;
 import com.smartear.smartear.wechat.fragments.WeChatMeetingFragment;
+import com.smartear.smartear.wechat.fragments.WeChatMusicFragment;
 import com.smartear.smartear.wechat.fragments.WeChatNewMessageFragment;
 import com.smartear.smartear.wechat.fragments.WeChatRecordingFragment;
 import com.smartear.smartear.wechat.fragments.WeChatWeatherFragment;
@@ -34,6 +37,8 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
     public VoiceRecognizer getVoiceRecognizer() {
         return voiceRecognizer;
     }
+
+    private MediaPlayer mediaPlayer;
 
 
     @Override
@@ -57,6 +62,7 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
             @Override
             public void onClick(View view) {
                 getVoiceRecognizer().startRecognize();
+//                onVoiceEvent(new VoiceCommandEvent(RecognizedState.MUSIC));
             }
         });
 
@@ -78,7 +84,42 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
             case VOICE_MESSAGE:
                 replaceFragment(new WeChatRecordingFragment(), false);
                 break;
+            case MUSIC:
+                replaceFragment(new WeChatMusicFragment(), false);
+                break;
+            case PAUSE_MUSIC:
+                pauseMusic();
+                break;
+            case RESUME_MUSIC:
+                resumeMusic();
+                break;
+            case DIDI:
+                pauseMusic();
+                break;
         }
+    }
+
+    public WeChatBaseFragment getLastWeChatFragment() {
+        return (WeChatBaseFragment) getLastFragment();
+    }
+
+    public void playMusic() {
+        mediaPlayer = MediaPlayer.create(this, R.raw.adele_hello);
+        mediaPlayer.start();
+    }
+
+    public void pauseMusic() {
+        mediaPlayer.pause();
+        getLastWeChatFragment().pauseMusic();
+    }
+
+    public void resumeMusic() {
+        mediaPlayer.start();
+        getLastWeChatFragment().resumeMusic();
+    }
+
+    public MediaPlayer getMediaPlayer() {
+        return mediaPlayer;
     }
 
     @Override

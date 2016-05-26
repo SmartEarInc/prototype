@@ -28,12 +28,12 @@ public class WeChatMeetingFragment extends WeChatBaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        TextView dayOfWeek = (TextView) view.findViewById(R.id.dayofweek);
-        TextView meetingDay = (TextView) view.findViewById(R.id.meetingDate);
+        TextView month = (TextView) view.findViewById(R.id.month);
+        TextView meetingDay = (TextView) view.findViewById(R.id.day);
         Date today = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE");
-        dayOfWeek.setText(getString(R.string.today, simpleDateFormat.format(today)));
-        meetingDay.setText(new SimpleDateFormat("dd MMM, yyyy").format(today));
+        month.setText(new SimpleDateFormat("MMMM").format(today));
+        meetingDay.setText(new SimpleDateFormat("dd\nEEEE").format(today));
 
         sayText(RecognizedState.MEETING);
     }
