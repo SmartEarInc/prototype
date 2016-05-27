@@ -1,6 +1,13 @@
 package com.smartear.smartear.utils.firebase;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
+import android.widget.RemoteViews;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -11,6 +18,9 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.smartear.smartear.R;
+import com.smartear.smartear.SmartEarApplication;
+import com.smartear.smartear.wechat.WeChatMainActivity;
 
 public class MessageHelper {
     private boolean iAmSender = false;
@@ -45,6 +55,7 @@ public class MessageHelper {
                 if (dataSnapshot.exists() && !iAmSender) {
                     onNewMessageListener.onNewMessage(dataSnapshot.getValue().toString());
                     dataSnapshot.getRef().removeValue();
+                    showNotification(dataSnapshot.getValue().toString());
                 }
                 iAmSender = false;
             }
@@ -54,6 +65,21 @@ public class MessageHelper {
 
             }
         });
+    }
+
+    public static void showNotification(String url) {
+        RemoteViews remoteViews = new RemoteViews(SmartEarApplication.getContext().getPackageName(), R.layout.widget_notification);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(SmartEarApplication.getContext())
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setStyle(new NotificationCompat.BigTextStyle())
+                .setContent(remoteViews);
+        Notification notificationCompat = builder.build();
+        notificationCompat.bigContentView = remoteViews;
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(SmartEarApplication.getContext(), 1, new Intent(SmartEarApplication.getContext(), WeChatMainActivity.class), 0);
+        NotificationManager mNotificationManager = (NotificationManager) SmartEarApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+        // mId allows you to update the notification later on.
+        remoteViews.setOnClickPendingIntent(R.id.play, resultPendingIntent);
+        mNotificationManager.notify(100, notificationCompat);
     }
 
     public interface OnNewMessageListener {

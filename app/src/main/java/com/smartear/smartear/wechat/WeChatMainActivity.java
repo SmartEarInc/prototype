@@ -115,8 +115,9 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
         findViewById(R.id.start_record).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getVoiceRecognizer().startRecognize();
-//                onVoiceEvent(new VoiceCommandEvent(RecognizedState.DIDI));
+//                getVoiceRecognizer().startRecognize();
+//                onVoiceEvent(new VoiceCommandEvent(RecognizedState.VOICE_MESSAGE));
+                MessageHelper.showNotification("");
             }
         });
 
@@ -223,9 +224,9 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
 
     @Override
     public void onNewMessage(final String url) {
-        if (!TextUtils.isEmpty(url)) {
-            replaceFragment(WeChatNewMessageFragment.newInstance(url), false);
-        }
+//        if (!TextUtils.isEmpty(url)) {
+//            replaceFragment(WeChatNewMessageFragment.newInstance(url), false);
+//        }
     }
 
     public void playUrl(String url) {

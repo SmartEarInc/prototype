@@ -11,5 +11,8 @@ import android.util.Log;
  * Date: 11.11.2015
  */
 public class MediaButtonReceiver extends android.support.v4.media.session.MediaButtonReceiver {
-
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent);
+    }
 }
