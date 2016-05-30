@@ -54,7 +54,7 @@ public class MessageHelper {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && !iAmSender) {
                     onNewMessageListener.onNewMessage(dataSnapshot.getValue().toString());
-                    dataSnapshot.getRef().removeValue();
+//                    dataSnapshot.getRef().removeValue();
                     showNotification(dataSnapshot.getValue().toString());
                 }
                 iAmSender = false;
@@ -75,10 +75,20 @@ public class MessageHelper {
                 .setContent(remoteViews);
         Notification notificationCompat = builder.build();
         notificationCompat.bigContentView = remoteViews;
-        PendingIntent resultPendingIntent = PendingIntent.getActivity(SmartEarApplication.getContext(), 1, new Intent(SmartEarApplication.getContext(), WeChatMainActivity.class), 0);
-        NotificationManager mNotificationManager = (NotificationManager) SmartEarApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        // mId allows you to update the notification later on.
+
+        Intent playIntent = new Intent(SmartEarApplication.getContext(), WeChatMainActivity.class);
+        playIntent.putExtra(WeChatMainActivity.EXTRA_PLAY, url);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(SmartEarApplication.getContext(), 1, playIntent, 0);
         remoteViews.setOnClickPendingIntent(R.id.play, resultPendingIntent);
+
+
+
+        Intent recordIntent = new Intent(SmartEarApplication.getContext(), WeChatMainActivity.class);
+        recordIntent.putExtra(WeChatMainActivity.EXTRA_RECORD, true);
+        PendingIntent voiceAnswerPendingIntent = PendingIntent.getActivity(SmartEarApplication.getContext(), 2, recordIntent, 0);
+        remoteViews.setOnClickPendingIntent(R.id.voiceAnswer, voiceAnswerPendingIntent);
+
+        NotificationManager mNotificationManager = (NotificationManager) SmartEarApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationManager.notify(100, notificationCompat);
     }
 

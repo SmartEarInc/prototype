@@ -5,15 +5,12 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.smartear.smartear.BaseActivity;
 import com.smartear.smartear.R;
-import com.smartear.smartear.fragment.StartFragment;
-import com.smartear.smartear.fragment.VoiceRecognizeFragment;
 import com.smartear.smartear.services.BTService;
 import com.smartear.smartear.utils.MediaPlayerHelper;
 import com.smartear.smartear.utils.commands.CommandHelper;
@@ -25,7 +22,6 @@ import com.smartear.smartear.wechat.fragments.WeChatBaseFragment;
 import com.smartear.smartear.wechat.fragments.WeChatDidiFragment;
 import com.smartear.smartear.wechat.fragments.WeChatMeetingFragment;
 import com.smartear.smartear.wechat.fragments.WeChatMusicFragment;
-import com.smartear.smartear.wechat.fragments.WeChatNewMessageFragment;
 import com.smartear.smartear.wechat.fragments.WeChatRecordingFragment;
 import com.smartear.smartear.wechat.fragments.WeChatWeatherFragment;
 
@@ -34,6 +30,8 @@ import org.greenrobot.eventbus.Subscribe;
 
 public class WeChatMainActivity extends BaseActivity implements MessageHelper.OnNewMessageListener {
     public static final String EXTRA_START_RECOGNITION = "extra_start_recognition";
+    public static final String EXTRA_PLAY = "extra_play";
+    public static final String EXTRA_RECORD = "extra_record";
     private CommandHelper commandHelper;
     private MessageHelper messageHelper = new MessageHelper();
     VoiceRecognizer voiceRecognizer;
@@ -46,6 +44,7 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
     public VoiceRecognizer getVoiceRecognizer() {
         return voiceRecognizer;
     }
+
     private AudioManager audioManager;
 
     private MediaPlayer mediaPlayer;
@@ -59,6 +58,7 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
             BTService.restart(this);
         }
     }
+
     private boolean audioFocusGranted = false;
     private boolean isResumed = false;
 
@@ -115,8 +115,8 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
         findViewById(R.id.start_record).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getVoiceRecognizer().startRecognize();
-//                onVoiceEvent(new VoiceCommandEvent(RecognizedState.VOICE_MESSAGE));
+//                getVoiceRecognizer().startRecognize();
+                onVoiceEvent(new VoiceCommandEvent(RecognizedState.VOICE_MESSAGE));
 //                MessageHelper.showNotification("");
             }
         });
@@ -141,14 +141,27 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
     }
 
     private boolean parseIntent(Intent intent) {
-        if (intent != null && (intent.hasExtra(EXTRA_START_RECOGNITION) || intent.getAction().equals(Intent.ACTION_VOICE_COMMAND))) {
-            if (voiceRecognizer != null && voiceRecognizer.getActivity() != null) {
-                voiceRecognizer.startRecognize();
-            } else {
-                setStartRecordingOnResume(true);
+        if (intent != null) {
+            if ((intent.hasExtra(EXTRA_START_RECOGNITION) || (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_VOICE_COMMAND)))) {
+                if (voiceRecognizer != null && voiceRecognizer.getActivity() != null) {
+                    voiceRecognizer.startRecognize();
+                } else {
+                    setStartRecordingOnResume(true);
+                }
+                return true;
             }
-            return true;
+            if (intent.getBooleanExtra(EXTRA_RECORD, false)) {
+                replaceFragment(new WeChatRecordingFragment(), false);
+                return true;
+            }
+
+            if (intent.hasExtra(EXTRA_PLAY)) {
+                String url = intent.getStringExtra(EXTRA_PLAY);
+                if(url != null)
+                    playUrl(url);
+            }
         }
+
         return false;
     }
 
