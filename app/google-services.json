@@ -93,6 +93,37 @@
           "status": 2
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:230669650409:android:a294f2a21db7b9b1",
+        "android_client_info": {
+          "package_name": "com.smartear.smartear.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "230669650409-5bcr8ouipvblqbogauqsh2rsvms1guno.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCU4QUa-kUD4EdoAdzP-yoKYLKoHEcUdjw"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
     }
   ],
   "configuration_version": "1"
