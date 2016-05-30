@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.smartear.smartear.R;
+import com.smartear.smartear.wechat.RecognizedState;
 import com.smartear.smartear.wechat.util.GMapV2Direction;
 import com.smartear.smartear.wechat.util.GMapV2DirectionAsyncTask;
 
@@ -55,26 +56,27 @@ public class WeChatDidiFragment extends WeChatBaseFragment implements OnMapReady
         waiting = view.findViewById(R.id.waitingDriver);
         didiRequest = view.findViewById(R.id.didiRequest);
         mapContainer = view.findViewById(R.id.mapContainer);
-
+        sayText(getContext(), RecognizedState.DIDI);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 startDriverSearch();
             }
-        }, 5000);
-
+        }, 7000);
     }
 
     private void startDriverSearch() {
         didiRequest.setVisibility(View.VISIBLE);
         retrieving.setVisibility(View.GONE);
         mapContainer.setVisibility(View.VISIBLE);
+        sayText(getContext(), RecognizedState.CONFIRM_LOCATION);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                sayText(getContext(), RecognizedState.CONFIRMED);
                 driverFound();
             }
-        }, 5000);
+        }, 10000);
     }
 
     private void driverFound() {
@@ -99,11 +101,11 @@ public class WeChatDidiFragment extends WeChatBaseFragment implements OnMapReady
                 }
             }
         };
-        LatLng sourcePosition = new LatLng(37.7899718,-122.4047921);
-        LatLng destPosition = new LatLng(37.796328,-122.4024962);
+        LatLng sourcePosition = new LatLng(37.7899718, -122.4047921);
+        LatLng destPosition = new LatLng(37.796328, -122.4024962);
         new GMapV2DirectionAsyncTask(handler, sourcePosition, destPosition, GMapV2Direction.MODE_DRIVING).execute();
         map.addMarker(new MarkerOptions().position(sourcePosition)
-        .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_from)));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_from)));
 
         map.addMarker(new MarkerOptions().position(destPosition)
                 .icon(BitmapDescriptorFactory.fromResource(R.drawable.location_to)));

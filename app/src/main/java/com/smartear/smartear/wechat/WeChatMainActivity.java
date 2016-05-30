@@ -115,9 +115,9 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
         findViewById(R.id.start_record).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                getVoiceRecognizer().startRecognize();
+                getVoiceRecognizer().startRecognize();
 //                onVoiceEvent(new VoiceCommandEvent(RecognizedState.VOICE_MESSAGE));
-                MessageHelper.showNotification("");
+//                MessageHelper.showNotification("");
             }
         });
 
