@@ -1,13 +1,16 @@
 package com.smartear.smartear.wechat.fragments;
 
+import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.smartear.smartear.R;
 import com.smartear.smartear.wechat.RecognizedState;
@@ -26,6 +29,10 @@ public class WeChatMusicFragment extends WeChatBaseFragment {
     private View playingContainer;
     private SeekBar seekbar;
     private Timer timer;
+    private TextView statusText;
+    private View smallPlayer;
+    private View player;
+    private View musicIconContainer;
 
     @Override
     public String getTitle() {
@@ -44,6 +51,10 @@ public class WeChatMusicFragment extends WeChatBaseFragment {
         retrieving = view.findViewById(R.id.retrieving);
         playingContainer = view.findViewById(R.id.musicPlaying);
         seekbar = (SeekBar) view.findViewById(R.id.seekbarProgress);
+        statusText = (TextView) view.findViewById(R.id.statusText);
+        player = view.findViewById(R.id.musicPlayer);
+        smallPlayer = view.findViewById(R.id.smallMusicPlayer);
+        musicIconContainer = view.findViewById(R.id.musicIconContainer);
 
         sayText(getWeChatActivity(), RecognizedState.MUSIC);
         new Handler().postDelayed(new Runnable() {
@@ -80,5 +91,33 @@ public class WeChatMusicFragment extends WeChatBaseFragment {
         } catch (Exception ignore) {
 
         }
+    }
+
+    @Override
+    public void pauseMusic() {
+        super.pauseMusic();
+        statusText.setText("Paused");
+        statusText.setTextColor(getResources().getColor(R.color.smartGrayTextColor));
+    }
+
+    @Override
+    public void resumeMusic() {
+        super.resumeMusic();
+        statusText.setText("Playing");
+        statusText.setTextColor(getResources().getColor(R.color.greenText));
+    }
+
+    public void showSmallPlayer() {
+        smallPlayer.setAlpha(0);
+        smallPlayer.setVisibility(View.VISIBLE);
+        smallPlayer.animate().alpha(1);
+
+        player.animate().alpha(0);
+
+        Display display = getActivity().getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+
+        musicIconContainer.animate().setDuration(200).translationXBy(-size.x);
     }
 }

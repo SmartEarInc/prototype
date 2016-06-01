@@ -5,12 +5,14 @@ import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.smartear.smartear.BaseActivity;
 import com.smartear.smartear.R;
+import com.smartear.smartear.fragment.BaseFragment;
 import com.smartear.smartear.services.BTService;
 import com.smartear.smartear.utils.MediaPlayerHelper;
 import com.smartear.smartear.utils.commands.CommandHelper;
@@ -116,7 +118,7 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
             @Override
             public void onClick(View view) {
                 getVoiceRecognizer().startRecognize();
-//                onVoiceEvent(new VoiceCommandEvent(RecognizedState.VOICE_MESSAGE));
+//                onVoiceEvent(new VoiceCommandEvent(RecognizedState.DIDI));
 //                MessageHelper.showNotification("");
             }
         });
@@ -157,7 +159,7 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
 
             if (intent.hasExtra(EXTRA_PLAY)) {
                 String url = intent.getStringExtra(EXTRA_PLAY);
-                if(url != null)
+                if (url != null)
                     playUrl(url);
             }
         }
@@ -191,7 +193,25 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
                 break;
             case DIDI:
                 pauseMusic();
-                replaceFragment(new WeChatDidiFragment(), false);
+                Bundle arguments;
+                WeChatDidiFragment fragment = new WeChatDidiFragment();
+                if (fragment.getArguments() == null) {
+                    arguments = new Bundle();
+                } else {
+                    arguments = fragment.getArguments();
+                }
+                arguments.putBoolean(BaseFragment.ADD_TO_BACK_STACK, false);
+                fragment.setArguments(arguments);
+                FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.setCustomAnimations(R.anim.enter, R.anim.exit, R.anim.pop_enter, R.anim.pop_exit);
+                fragmentTransaction.replace(R.id.taxiContainer, fragment, fragment.getFragmentTag());
+                fragmentTransaction.commitAllowingStateLoss();
+
+                WeChatBaseFragment weChatBaseFragment = getLastWeChatFragment();
+                if (weChatBaseFragment instanceof WeChatMusicFragment) {
+                    ((WeChatMusicFragment) weChatBaseFragment).showSmallPlayer();
+                }
+
                 break;
         }
     }
@@ -207,9 +227,13 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
 
     public void pauseMusic() {
         if (mediaPlayer != null) {
-            mediaPlayer.pause();
-            WeChatBaseFragment.sayText(this, RecognizedState.PAUSE_MUSIC);
-            getLastWeChatFragment().pauseMusic();
+            if (!mediaPlayer.isPlaying()) {
+                mediaPlayer.start();
+            } else {
+                mediaPlayer.pause();
+                WeChatBaseFragment.sayText(this, RecognizedState.PAUSE_MUSIC);
+                getLastWeChatFragment().pauseMusic();
+            }
         }
     }
 

@@ -52,13 +52,14 @@ public class GoogleSpeechRecognizerHelper implements RecognitionListener {
 
     public interface SpeechRecordingListener {
         void onResults(String text);
+
         void onError(int error);
     }
 
     @Override
     public void onReadyForSpeech(Bundle params) {
         Log.i(TAG, "onReadyForSpeech");
-        if(!isBtMicrophoneOn())
+        if (!isBtMicrophoneOn())
             startBtMicrophone();
     }
 
@@ -86,7 +87,7 @@ public class GoogleSpeechRecognizerHelper implements RecognitionListener {
     @Override
     public void onError(int error) {
         Log.i(TAG, "onError");
-        if(error == SpeechRecognizer.ERROR_NO_MATCH || speechRecordingListener == null)
+        if (error == SpeechRecognizer.ERROR_NO_MATCH || speechRecordingListener == null)
             return;
         speechRecordingListener.onError(error);
     }
@@ -104,6 +105,10 @@ public class GoogleSpeechRecognizerHelper implements RecognitionListener {
     @Override
     public void onPartialResults(Bundle partialResults) {
         Log.i(TAG, "onPartialResults");
+        ArrayList<String> data = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+        if (data != null && !data.isEmpty()) {
+            speechRecordingListener.onResults(data.get(0));
+        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
 
 import com.smartear.smartear.utils.GoogleSpeechRecognizerHelper;
 import com.smartear.smartear.utils.commands.CommandHelper;
@@ -54,11 +55,13 @@ public class VoiceRecognizer extends Fragment {
         googleSpeechRecognizerHelper.setSpeechRecordingListener(new GoogleSpeechRecognizerHelper.SpeechRecordingListener() {
             @Override
             public void onResults(String text) {
+                Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
                 getCommandHelper().parseCommand(text);
             }
 
             @Override
             public void onError(int error) {
+                Toast.makeText(getActivity(), "Error: " + error, Toast.LENGTH_LONG).show();
             }
         });
         googleSpeechRecognizerHelper.startListening();
