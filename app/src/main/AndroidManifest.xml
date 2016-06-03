@@ -74,6 +74,12 @@
             </intent-filter>
         </service>
 
+        <receiver android:name=".receivers.NotificationReceiver">
+            <intent-filter>
+                <action android:name="com.smartear.smartear.NOTIFICATION" />
+            </intent-filter>
+        </receiver>
+
         <service android:name=".services.EqService" />
 
         <receiver android:name=".receivers.MediaButtonReceiver">
