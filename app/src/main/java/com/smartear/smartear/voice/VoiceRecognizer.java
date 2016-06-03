@@ -57,6 +57,7 @@ public class VoiceRecognizer extends Fragment {
             public void onResults(String text) {
                 Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
                 getCommandHelper().parseCommand(text);
+                stopBtMicrophone();
             }
 
             @Override
@@ -93,6 +94,7 @@ public class VoiceRecognizer extends Fragment {
 
 
     startRecognize() {
+        ((WeChatMainActivity) getActivity()).requestAudioFocus();
         if (!isBtMicrophoneOn()) {
             startBtMicrophone();
         }

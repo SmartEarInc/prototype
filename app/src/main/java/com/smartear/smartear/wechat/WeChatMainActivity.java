@@ -71,18 +71,32 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
                 case AudioManager.AUDIOFOCUS_LOSS:
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-                    if (!isResumed) {
-                        audioFocusGranted = false;
-                        audioManager.abandonAudioFocus(audioFocusListener);
-                    } else {
-                        requestAudioFocus();
-                    }
+                    abandonAudioFocus();
                     break;
                 case AudioManager.AUDIOFOCUS_GAIN:
                     break;
             }
         }
     };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isResumed = true;
+        requestAudioFocus();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isResumed = false;
+        abandonAudioFocus();
+    }
+
+    private void abandonAudioFocus() {
+        audioFocusGranted = false;
+        audioManager.abandonAudioFocus(audioFocusListener);
+    }
 
     private void registerMediaButtonReceiver() {
         BTService.start(this);
@@ -117,9 +131,9 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
         findViewById(R.id.start_record).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getVoiceRecognizer().startRecognize();
+//                getVoiceRecognizer().startRecognize();
 //                onVoiceEvent(new VoiceCommandEvent(RecognizedState.DIDI));
-//                MessageHelper.showNotification("");
+                MessageHelper.showNotification("");
             }
         });
 
@@ -169,6 +183,7 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
 
     @Subscribe
     public void onVoiceEvent(VoiceCommandEvent event) {
+        abandonAudioFocus();
         switch (event.recognizedState) {
             case AUTH:
                 replaceFragment(new WeChatAuthFragment(), false);
@@ -221,8 +236,16 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
     }
 
     public void playMusic() {
+        if (mediaPlayer != null) {
+            try {
+                mediaPlayer.release();
+            } catch (Exception ignore) {
+
+            }
+        }
         mediaPlayer = MediaPlayer.create(this, R.raw.adele_hello);
         mediaPlayer.start();
+
     }
 
     public void pauseMusic() {
