@@ -243,7 +243,7 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
 
             }
         }
-        mediaPlayer = MediaPlayer.create(this, R.raw.adele_hello);
+        mediaPlayer = MediaPlayer.create(this, R.raw.adele_flac);
         mediaPlayer.start();
 
     }
