@@ -207,7 +207,7 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
                 resumeMusic();
                 break;
             case DIDI:
-                pauseMusic();
+                forcePauseMusic();
                 Bundle arguments;
                 WeChatDidiFragment fragment = new WeChatDidiFragment();
                 if (fragment.getArguments() == null) {
@@ -253,10 +253,16 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
             if (!mediaPlayer.isPlaying()) {
                 mediaPlayer.start();
             } else {
-                mediaPlayer.pause();
+                forcePauseMusic();
                 WeChatBaseFragment.sayText(this, RecognizedState.PAUSE_MUSIC);
-                getLastWeChatFragment().pauseMusic();
             }
+        }
+    }
+
+    public void forcePauseMusic(){
+        if(mediaPlayer != null && mediaPlayer.isPlaying()) {
+            mediaPlayer.pause();
+            getLastWeChatFragment().pauseMusic();
         }
     }
 
