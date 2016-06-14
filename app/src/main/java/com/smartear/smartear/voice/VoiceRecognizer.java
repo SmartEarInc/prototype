@@ -55,7 +55,7 @@ public class VoiceRecognizer extends Fragment {
         googleSpeechRecognizerHelper.setSpeechRecordingListener(new GoogleSpeechRecognizerHelper.SpeechRecordingListener() {
             @Override
             public void onResults(String text) {
-//                Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), text, Toast.LENGTH_LONG).show();
                 getCommandHelper().parseCommand(text);
                 stopBtMicrophone();
             }
