@@ -24,9 +24,9 @@ public abstract class WeChatBaseFragment extends BaseFragment {
         ttsMap.put(RecognizedState.PAUSE_MUSIC, "Ok, pause music");
         ttsMap.put(RecognizedState.RESUME_MUSIC, "Ok, playing Adele");
         ttsMap.put(RecognizedState.SENT, "Message sent");
-        ttsMap.put(RecognizedState.CONFIRM_LOCATION, "Ok, getting Didi. Confirm your location at 250 Sutter Street");
-        ttsMap.put(RecognizedState.CONFIRMED, "Your Didi driver Daisy Lee will be here in 5 minutes");
-        ttsMap.put(RecognizedState.DIDI, "Getting Didi to the Vault of 415 Jackson in San Francisco");
+        ttsMap.put(RecognizedState.CONFIRM_LOCATION, "Ok, getting Uber. Confirm your location at 250 Sutter Street");
+        ttsMap.put(RecognizedState.CONFIRMED, "Your Uber driver Daisy Lee will be here in 5 minutes");
+        ttsMap.put(RecognizedState.DIDI, "Getting Uber to the Vault of 415 Jackson in San Francisco");
     }
 
     protected WeChatMainActivity getWeChatActivity() {

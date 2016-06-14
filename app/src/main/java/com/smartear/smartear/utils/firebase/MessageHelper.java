@@ -25,7 +25,7 @@ public class MessageHelper {
     public void sendFile(Uri fileUri) {
 //        iAmSender = true;
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference reference = database.getReference("message");
+        final DatabaseReference reference = database.getReference("message_new");
         FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageReference = storage.getReference();
         StorageReference fileRef = storageReference.child("messages/message.mp3");
@@ -41,16 +41,16 @@ public class MessageHelper {
 
     public void addNewMessageListener(final OnNewMessageListener onNewMessageListener) {
         final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference reference = database.getReference("message");
+        final DatabaseReference reference = database.getReference("message_new");
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && !iAmSender) {
-                    onNewMessageListener.onNewMessage(dataSnapshot.getValue().toString());
-                    dataSnapshot.getRef().removeValue();
-                    showNotification(dataSnapshot.getValue().toString());
+//                    onNewMessageListener.onNewMessage(dataSnapshot.getValue().toString());
+//                    dataSnapshot.getRef().removeValue();
+//                    showNotification(dataSnapshot.getValue().toString());
                 }
-                iAmSender = false;
+//                iAmSender = false;
             }
 
             @Override
