@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="#fff"
+    android:padding="0dp"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/snapchat_toolbar"
+        android:layout_margin="0dp"
+        android:scaleType="fitXY"
+        android:paddingTop="0dp"
+        android:src="@drawable/snapchat_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:layout_below="@id/snapchat_toolbar"
+        android:scaleType="fitXY"
+        android:src="@drawable/snapchat_items"
+        android:layout_width="match_parent"
+        android:layout_height="164dp" />
+
+    <ImageView
+        android:src="@drawable/snapchat_bottom_toolbar"
+        android:layout_alignParentBottom="true"
+        android:scaleType="fitXY"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</RelativeLayout>
