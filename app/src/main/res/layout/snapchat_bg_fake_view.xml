@@ -16,7 +16,7 @@
     <ImageView
         android:layout_below="@id/snapchat_toolbar"
         android:scaleType="fitXY"
-        android:src="@drawable/snapchat_items"
+        android:src="@drawable/snap_items"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
