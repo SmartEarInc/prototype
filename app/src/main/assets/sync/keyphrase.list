@@ -1,0 +1,8 @@
+morning /1e-3/
+weather /1e-3/
+meeting /1e-10/
+voice chat /1e-10/
+play /1e-10/
+pause /1e-4/
+resume /1e-4/
+uber /1e-4/

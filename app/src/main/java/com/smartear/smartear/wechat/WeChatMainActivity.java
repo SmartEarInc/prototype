@@ -18,6 +18,8 @@ import com.smartear.smartear.services.BTService;
 import com.smartear.smartear.utils.MediaPlayerHelper;
 import com.smartear.smartear.utils.commands.CommandHelper;
 import com.smartear.smartear.utils.firebase.MessageHelper;
+import com.smartear.smartear.voice.BaseVoiceRecognizer;
+import com.smartear.smartear.voice.SphinxVoiceRecognizer;
 import com.smartear.smartear.voice.VoiceRecognizer;
 import com.smartear.smartear.wechat.bus.VoiceCommandEvent;
 import com.smartear.smartear.wechat.fragments.WeChatAuthFragment;
@@ -37,14 +39,15 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
     public static final String EXTRA_RECORD = "extra_record";
     private CommandHelper commandHelper;
     private MessageHelper messageHelper = new MessageHelper();
-    VoiceRecognizer voiceRecognizer;
+    BaseVoiceRecognizer voiceRecognizer;
     MediaPlayerHelper mediaPlayerHelper = new MediaPlayerHelper();
+    private RecognizedState currentState = null;
 
     public MessageHelper getMessageHelper() {
         return messageHelper;
     }
 
-    public VoiceRecognizer getVoiceRecognizer() {
+    public BaseVoiceRecognizer getVoiceRecognizer() {
         return voiceRecognizer;
     }
 
@@ -117,12 +120,12 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
         registerMediaButtonReceiver();
 
         if (savedInstanceState == null) {
-            voiceRecognizer = new VoiceRecognizer();
+            voiceRecognizer = new SphinxVoiceRecognizer();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.voiceContainer, voiceRecognizer)
                     .commit();
         } else {
-            voiceRecognizer = (VoiceRecognizer) getSupportFragmentManager().findFragmentById(R.id.voiceContainer);
+            voiceRecognizer = (BaseVoiceRecognizer) getSupportFragmentManager().findFragmentById(R.id.voiceContainer);
         }
 
         parseIntent(getIntent());
@@ -184,7 +187,10 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
 
     @Subscribe
     public void onVoiceEvent(VoiceCommandEvent event) {
+        if(currentState == event.recognizedState)
+            return;
         abandonAudioFocus();
+        currentState = event.recognizedState;
         switch (event.recognizedState) {
             case AUTH:
                 replaceFragment(new WeChatAuthFragment(), false);

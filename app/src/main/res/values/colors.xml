@@ -11,7 +11,7 @@
     <color name="mainButtonColor">#2d2c2b</color>
     <color name="mainButtonPressedColor">#353332</color>
     <color name="inactiveButtonColor">#626262</color>
-    <color name="greenText">#00aa00</color>
+    <color name="greenText">#3cb2e2</color>
     <color name="grayDivider">#ccc</color>
     <color name="mainBlackTextColor">#cc000000</color>
     <color name="secondaryBlackTextColor">#80000000</color>

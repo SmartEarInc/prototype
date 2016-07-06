@@ -60,3 +60,7 @@ dependencies {
 }
 
 apply plugin: 'com.google.gms.google-services'
+
+ant.importBuild 'assets.xml'
+preBuild.dependsOn(list, checksum)
+clean.dependsOn(clean_assets)

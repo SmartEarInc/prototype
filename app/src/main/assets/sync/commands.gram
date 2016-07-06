@@ -1,0 +1,10 @@
+#JSGF V1.0;
+
+grammar commands;
+
+public <music> = (resume | play | pause | stop) (music | ([adele] station));
+public <weather> = [(what | what is)] (the weather | weather);
+public <meeting> = [first] meeting;
+public <voicechat> = voice (chat | message);
+public <taxi> = [get me] [a | an] (uber | taxi | didi);
+public <hello> = [good] morning;

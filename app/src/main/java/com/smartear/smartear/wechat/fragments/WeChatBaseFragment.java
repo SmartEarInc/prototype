@@ -4,6 +4,7 @@ import android.content.Context;
 import android.speech.tts.TextToSpeech;
 
 import com.smartear.smartear.fragment.BaseFragment;
+import com.smartear.smartear.voice.BaseVoiceRecognizer;
 import com.smartear.smartear.voice.VoiceRecognizer;
 import com.smartear.smartear.wechat.RecognizedState;
 import com.smartear.smartear.wechat.WeChatMainActivity;
@@ -33,7 +34,7 @@ public abstract class WeChatBaseFragment extends BaseFragment {
         return (WeChatMainActivity) getActivity();
     }
 
-    protected VoiceRecognizer getVoiceRecognizer() {
+    protected BaseVoiceRecognizer getVoiceRecognizer() {
         return getWeChatActivity().getVoiceRecognizer();
     }
 
