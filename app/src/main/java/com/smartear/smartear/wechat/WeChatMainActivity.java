@@ -9,7 +9,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Toast;
 
 import com.smartear.smartear.BaseActivity;
 import com.smartear.smartear.R;
@@ -18,7 +17,8 @@ import com.smartear.smartear.services.BTService;
 import com.smartear.smartear.utils.MediaPlayerHelper;
 import com.smartear.smartear.utils.commands.CommandHelper;
 import com.smartear.smartear.utils.firebase.MessageHelper;
-import com.smartear.smartear.voice.VoiceRecognizer;
+import com.smartear.smartear.voice.BaseVoiceRecognizer;
+import com.smartear.smartear.voice.FakeScriptVoiceRecognizer;
 import com.smartear.smartear.wechat.bus.VoiceCommandEvent;
 import com.smartear.smartear.wechat.fragments.WeChatAuthFragment;
 import com.smartear.smartear.wechat.fragments.WeChatBaseFragment;
@@ -37,14 +37,14 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
     public static final String EXTRA_RECORD = "extra_record";
     private CommandHelper commandHelper;
     private MessageHelper messageHelper = new MessageHelper();
-    VoiceRecognizer voiceRecognizer;
+    BaseVoiceRecognizer voiceRecognizer;
     MediaPlayerHelper mediaPlayerHelper = new MediaPlayerHelper();
 
     public MessageHelper getMessageHelper() {
         return messageHelper;
     }
 
-    public VoiceRecognizer getVoiceRecognizer() {
+    public BaseVoiceRecognizer getVoiceRecognizer() {
         return voiceRecognizer;
     }
 
@@ -117,12 +117,12 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
         registerMediaButtonReceiver();
 
         if (savedInstanceState == null) {
-            voiceRecognizer = new VoiceRecognizer();
+            voiceRecognizer = new FakeScriptVoiceRecognizer();
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.voiceContainer, voiceRecognizer)
                     .commit();
         } else {
-            voiceRecognizer = (VoiceRecognizer) getSupportFragmentManager().findFragmentById(R.id.voiceContainer);
+            voiceRecognizer = (BaseVoiceRecognizer) getSupportFragmentManager().findFragmentById(R.id.voiceContainer);
         }
 
         parseIntent(getIntent());
@@ -260,8 +260,8 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
         }
     }
 
-    public void forcePauseMusic(){
-        if(mediaPlayer != null && mediaPlayer.isPlaying()) {
+    public void forcePauseMusic() {
+        if (mediaPlayer != null && mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
             getLastWeChatFragment().pauseMusic();
         }
