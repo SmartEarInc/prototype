@@ -46,9 +46,9 @@ public class MessageHelper {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists() && !iAmSender) {
-                    onNewMessageListener.onNewMessage(dataSnapshot.getValue().toString());
+//                    onNewMessageListener.onNewMessage(dataSnapshot.getValue().toString());
 //                    dataSnapshot.getRef().removeValue();
-                    showNotification(dataSnapshot.getValue().toString());
+//                    showNotification(dataSnapshot.getValue().toString());
                 }
 //                iAmSender = false;
             }
