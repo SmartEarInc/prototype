@@ -4,14 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="#aa000000"
     tools:context=".wechat.WeChatMainActivity">
-    <include layout="@layout/snapchat_bg_fake_view"/>
-    <View
-        android:background="#cc000000"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+
     <FrameLayout
-        android:layout_marginTop="65dp"
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,7 +20,7 @@
 
     <FrameLayout
         android:id="@+id/taxiContainer"
-        android:layout_marginTop="218dp"
+        android:layout_marginTop="148dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
