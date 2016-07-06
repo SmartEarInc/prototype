@@ -25,6 +25,7 @@ public class FakeScriptVoiceRecognizer extends BaseVoiceRecognizer {
         stateList.add(new RecognitionStep(3500, RecognizedState.PAUSE_MUSIC));
         stateList.add(new RecognitionStep(5000, RecognizedState.DIDI));
         stateList.add(new RecognitionStep(3500, RecognizedState.RESUME_MUSIC));
+        stateList.add(new RecognitionStep(3500, RecognizedState.PAUSE_MUSIC));
     }
 
     @Override
