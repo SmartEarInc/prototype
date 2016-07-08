@@ -149,8 +149,8 @@
     <orderEntry type="library" exported="" name="firebase-database-9.0.0" level="project" />
     <orderEntry type="library" exported="" name="baseLibrary-2.1.2" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-23.1.0" level="project" />
-    <orderEntry type="library" exported="" name="antlr4-annotations-4.5" level="project" />
     <orderEntry type="library" exported="" name="antlr4-runtime-4.5" level="project" />
+    <orderEntry type="library" exported="" name="antlr4-annotations-4.5" level="project" />
     <orderEntry type="library" exported="" name="org.abego.treelayout.core-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="firebase-storage-9.0.0" level="project" />
     <orderEntry type="library" exported="" name="firebase-auth-9.0.0" level="project" />
