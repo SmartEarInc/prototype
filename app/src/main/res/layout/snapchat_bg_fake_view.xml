@@ -18,12 +18,13 @@
         android:scaleType="fitXY"
         android:src="@drawable/snapchat_items"
         android:layout_width="match_parent"
-        android:layout_height="164dp" />
+        android:layout_height="wrap_content" />
 
     <ImageView
         android:src="@drawable/snapchat_bottom_toolbar"
         android:layout_alignParentBottom="true"
-        android:scaleType="fitXY"
-        android:layout_width="match_parent"
+        android:layout_centerHorizontal="true"
+        android:scaleType="centerInside"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 </RelativeLayout>
