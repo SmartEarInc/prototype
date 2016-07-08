@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
     <FrameLayout
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="12dp"
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -24,7 +24,7 @@
 
     <FrameLayout
         android:id="@+id/taxiContainer"
-        android:layout_marginTop="218dp"
+        android:layout_marginTop="165dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
