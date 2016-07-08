@@ -133,7 +133,7 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
             @Override
             public void onClick(View view) {
                 getVoiceRecognizer().startRecognize();
-//                onVoiceEvent(new VoiceCommandEvent(RecognizedState.VOICE_MESSAGE));
+//                onVoiceEvent(new VoiceCommandEvent(RecognizedState.DIDI));
 //                MessageHelper.showNotification("");
             }
         });

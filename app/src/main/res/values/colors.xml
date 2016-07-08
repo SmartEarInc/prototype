@@ -15,4 +15,5 @@
     <color name="grayDivider">#ccc</color>
     <color name="mainBlackTextColor">#cc000000</color>
     <color name="secondaryBlackTextColor">#80000000</color>
+    <color name="mapBg">#f0ede5</color>
 </resources>

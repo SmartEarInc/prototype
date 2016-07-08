@@ -417,6 +417,13 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <ImageView
+            android:scaleType="centerCrop"
+            android:background="@color/mapBg"
+            android:src="@drawable/map_screenshot"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </FrameLayout>
 
 </LinearLayout>

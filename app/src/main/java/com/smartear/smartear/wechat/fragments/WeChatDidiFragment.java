@@ -62,7 +62,7 @@ public class WeChatDidiFragment extends WeChatBaseFragment implements OnMapReady
             public void run() {
                 startDriverSearch();
             }
-        }, 7000);
+        }, 8000);
     }
 
     private void startDriverSearch() {
