@@ -20,9 +20,9 @@ public abstract class WeChatBaseFragment extends BaseFragment {
         ttsMap.put(RecognizedState.WEATHER, "The weather is seventy-eight degrees with 11mph. Partly cloudy.");
         ttsMap.put(RecognizedState.MEETING, "Your first meeting is with Dean Gardner at 9am at the Vault");
         ttsMap.put(RecognizedState.VOICE_MESSAGE, "Ok, ready");
-        ttsMap.put(RecognizedState.MUSIC, "Ok, playing Adele");
+        ttsMap.put(RecognizedState.MUSIC, "Ok, playing Lady Gaga");
         ttsMap.put(RecognizedState.PAUSE_MUSIC, "Ok, pause music");
-        ttsMap.put(RecognizedState.RESUME_MUSIC, "Ok, playing Adele");
+        ttsMap.put(RecognizedState.RESUME_MUSIC, "Ok, playing Lady Gaga");
         ttsMap.put(RecognizedState.SENT, "Message sent");
         ttsMap.put(RecognizedState.CONFIRM_LOCATION, "Ok, getting Uber. Confirm your location at 250 Sutter Street");
         ttsMap.put(RecognizedState.CONFIRMED, "Your Uber driver Daisy Lee will be here in 5 minutes");

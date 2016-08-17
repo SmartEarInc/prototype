@@ -244,7 +244,7 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
 
             }
         }
-        mediaPlayer = MediaPlayer.create(this, R.raw.adele_flac);
+        mediaPlayer = MediaPlayer.create(this, R.raw.lady_gaga_poker_face);
         mediaPlayer.start();
 
     }

@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
-            android:text="Retrieving Adele Station..."
+            android:text="Retrieving Lady Gaga..."
             android:textColor="#fff"
             android:textSize="26sp" />
 
@@ -27,7 +27,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="48dp"
             android:scaleType="centerInside"
-            android:src="@drawable/adale" />
+            android:src="@drawable/gaga" />
 
         <TextView
             android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Adele Station"
+                            android:text="Lady Gaga"
                             android:textColor="#fff"
                             android:textSize="@dimen/textTitleSize" />
 
@@ -154,7 +154,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Adele Station"
+                            android:text="Lady Gaga"
                             android:textColor="#fff"
                             android:textSize="@dimen/textTitleSize" />
                     </LinearLayout>
@@ -218,7 +218,7 @@
                 android:layout_height="140dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="32dp"
-                android:src="@drawable/adale" />
+                android:src="@drawable/gaga" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
