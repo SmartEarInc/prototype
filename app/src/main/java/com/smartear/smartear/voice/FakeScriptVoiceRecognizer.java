@@ -1,5 +1,6 @@
 package com.smartear.smartear.voice;
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Handler;
 
@@ -39,6 +40,7 @@ public class FakeScriptVoiceRecognizer extends BaseVoiceRecognizer {
             return;
         final RecognitionStep step = stateList.get(currentPosition);
         MediaPlayer mediaPlayer = MediaPlayer.create(SmartEarApplication.getContext(), R.raw.beep);
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         mediaPlayer.start();
         new Handler().postDelayed(new Runnable() {
             @Override

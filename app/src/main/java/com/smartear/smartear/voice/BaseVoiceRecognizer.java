@@ -72,9 +72,9 @@ public abstract class BaseVoiceRecognizer extends Fragment {
 
     public void startRecognize() {
         ((WeChatMainActivity) getActivity()).requestAudioFocus();
-        if (!isBtMicrophoneOn()) {
-            startBtMicrophone();
-        }
+//        if (!isBtMicrophoneOn()) {
+//            startBtMicrophone();
+//        }
         startRecognizeHandler.removeCallbacks(startRecognizeRunnable);
         startRecognizeHandler.postDelayed(startRecognizeRunnable, 1000);
     }

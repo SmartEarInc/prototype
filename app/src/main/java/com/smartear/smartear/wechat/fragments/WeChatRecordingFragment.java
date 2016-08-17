@@ -90,7 +90,7 @@ public class WeChatRecordingFragment extends WeChatBaseFragment {
                 retrievingView.setVisibility(View.GONE);
                 startRecording();
             }
-        }, 2000);
+        }, 5000);
     }
 
     @Override
@@ -98,9 +98,10 @@ public class WeChatRecordingFragment extends WeChatBaseFragment {
         return null;
     }
 
-    private static final long RECORDING_TIME = SECOND * 5;
+    private static final long RECORDING_TIME = SECOND * 7;
 
     public void startRecording() {
+        getVoiceRecognizer().startBtMicrophone();
         stopRecording();
         Date creationDate = new Date();
         filePath = FileUtils.newFilePath(fileNameFormat.format(creationDate) + ".mp3");
@@ -151,6 +152,7 @@ public class WeChatRecordingFragment extends WeChatBaseFragment {
 
             }
         }
+        getVoiceRecognizer().stopBtMicrophone();
 
     }
 }

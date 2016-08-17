@@ -114,6 +114,7 @@ public class WeChatMainActivity extends BaseActivity implements MessageHelper.On
         setContentView(R.layout.wechat_activity_main);
         commandHelper = new CommandHelper(this);
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
         registerMediaButtonReceiver();
 
         if (savedInstanceState == null) {
